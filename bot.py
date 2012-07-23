@@ -21,7 +21,7 @@ class Sevabot:
         cron = []
 
         for source in glob('modules/*.py'):
-            name = source[8:3]
+            name = source[8:-3]
             module = imp.load_source("!"+name, source)
             
             commands = module.getCommands()
