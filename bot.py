@@ -2,19 +2,21 @@
 
 from glob import glob
 import imp
-import time
 
 import Skype4Py
+
 
 class Sevabot:
     def __init__(self):
         self.cmds = {}
         self.cron = []
+        self.chats = {}
         self.loadModules()
 
         self.skype = Skype4Py.Skype(Transport='x11')
         self.skype.Attach()
         self.skype.OnMessageStatus = self.handleMessages
+        self.getChats()
 
     def loadModules(self):
         cmds = {}
@@ -22,8 +24,8 @@ class Sevabot:
 
         for source in glob('modules/*.py'):
             name = source[8:-3]
-            module = imp.load_source("!"+name, source)
-            
+            module = imp.load_source("!" + name, source)
+
             commands = module.getCommands()
             if commands:
                 cmds.update(commands)
@@ -35,13 +37,19 @@ class Sevabot:
         self.cmds = cmds
         self.cron = cron
 
+    def getChats(self):
+        chats = {}
+        for chat in self.skype.Chats:
+            chats[chat.FriendlyName] = chat
+        self.chats = chats
+
     def handleMessages(self, msg, status):
         """
         Handle incoming messages
         """
         if status == "RECEIVED" or status == "SENT":
-            print(status + " " + msg.FromHandle + ": " + msg.Body)
-        if status == "RECEIVED":
+            print("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
+        if status == "RECEIVED" and msg.FromHandle == "sevanteri":
             if msg.Body == "!loadModules":
                 msg.Chat.SendMessage("Loading modules...")
                 try:
@@ -49,15 +57,31 @@ class Sevabot:
                 except Exception as e:
                     msg.Chat.SendMessage(str(e))
                     return
+                return
 
+            elif msg.Body == "!loadChats":
+                self.getChats()
                 return
 
             if msg.Body[0] == "!":
                 args = msg.Body.split(" ")
                 try:
-                    msg.Chat.SendMessage(self.cmds[args[0]](msg=msg, *args[1:]))
+                    func = self.cmds[args[0]]
+                    msg.Chat.SendMessage(func(
+                            *args[1:],
+                            msg=msg,
+                            skype=self.skype,
+                            bot=self
+                        ))
                 except Exception as e:
                     msg.Chat.SendMessage(str(e))
+
+    def runCmd(self, cmd):
+        args = cmd.split(" ")
+        return self.cmds["!" + args[0]](*args[1:], bot=self, skype=self.skype)
+
+    def sendMsg(self, chat, msg):
+        self.chats[chat].SendMessage(msg)
 
     def runCron(self, interval):
         """
@@ -74,7 +98,7 @@ class Sevabot:
             chats = []
             if type(job['chats'][0]) == str:
                 for chat in job['chats']:
-                    chat = [c for c in self.skype.Chats if c.FriendlyName == chat][0]
+                    chat = self.chats[chat]
                     chats.append(chat)
                 job['chats'] = chats
 
@@ -86,4 +110,3 @@ class Sevabot:
                 except Exception as e:
                     print("Error " + str(e))
                 job['timer'] = job['interval']
-

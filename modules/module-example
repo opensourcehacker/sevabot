@@ -2,23 +2,24 @@
 
 import datetime
 
+
 def date(*args, **kwargs):
     today = datetime.date.today()
-    return 'Today is '+str(today)
+    return 'Today is ' + str(today)
 
 
 # remember to loop through the chats
 def crondate(chats, *args, **kwargs):
     today = datetime.date.today()
     for chat in chats:
-        chat.SendMessage('Today is '+str(today))
-
+        chat.SendMessage('Today is ' + str(today))
 
 
 # List the commands the module has.
 # Remember to put ! in front of the command name.
 def getCommands():
     return {"!date": date}
+
 
 # List all cronjobs for your module.
 # Give interval in seconds.
