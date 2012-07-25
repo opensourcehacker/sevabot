@@ -4,17 +4,27 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from glob import glob
 import imp
 import sys
+import logging
 
 import Skype4Py
 
+from sevabot import modules
+
+logger = logging.getLogger("sevabot")
+
 
 class Sevabot:
+    """
+    Skype bot interface handler.
+    """
 
     def __init__(self):
         self.cmds = {}
         self.cron = []
         self.chats = {}
         self.loadModules()
+
+    def start(self):
 
         if sys.platform == "Linux":
             self.skype = Skype4Py.Skype(Transport='x11')
@@ -26,26 +36,10 @@ class Sevabot:
         self.skype.OnMessageStatus = self.handleMessages
         self.getChats()
 
-    def loadModules(self):
-        cmds = {}
-        cron = []
-
-        for source in glob('modules/*.py'):
-            name = source[8:-3]
-            module = imp.load_source("!" + name, source)
-
-            commands = module.getCommands()
-            if commands:
-                cmds.update(commands)
-
-            jobs = module.getCron()
-            if jobs:
-                cron.extend(jobs)
-
-        self.cmds = cmds
-        self.cron = cron
-
     def getChats(self):
+        """
+        Scan all chats on initial connect.
+        """
         chats = {}
         for chat in self.skype.Chats:
             chats[chat.FriendlyName] = chat
@@ -56,8 +50,33 @@ class Sevabot:
         Handle incoming messages
         """
         if status == "RECEIVED" or status == "SENT":
-            print("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
+            logger.debug("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
+
         if status == "RECEIVED" and msg.Body:
+
+            words = msg.Body.split()
+
+            if len(words) < 0:
+                return
+
+            keyword = words[0]
+
+            logger.debug("Trying to identify keyword: %s" % keyword)
+
+            if modules.is_module(keyword):
+                # Execute module asynchronously
+
+                def callback(output):
+                    msg.Chat.SendMessage(func(
+                            *args[1:],
+                            msg=output,
+                            skype=self.skype,
+                            bot=self
+                        ))
+
+                modules.run_module(keyword, words[1:], callback)
+                return
+
             if msg.Body == "!loadModules":
                 msg.Chat.SendMessage("Loading modules...")
                 try:

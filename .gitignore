@@ -54,3 +54,4 @@ __pycache__
 virtualenv.py
 tests/test-installation-environment
 settings.py
+Skype4Py

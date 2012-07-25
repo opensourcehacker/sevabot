@@ -7,20 +7,25 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import imp
-import time
-from sevabot.bot import Sevabot
-
+import sys
 from hashlib import md5
+import logging
 
 from flask import Flask, request
 import plac
 
+from sevabot import modules
+
+logger = logging.getLogger("sevabot")
+
+# http://docs.python.org/library/logging.html
+LOG_FORMAT = "%(message)s"
+
 server = Flask(__name__)
-sevabot = Sevabot()
 
 
 @plac.annotations( \
-    settings=("Settings file", 'optional', 's', None, None, "settings.py"),
+    settings=("Settings file", 'option', 's', None, None, "settings.py"),
     )
 def main(settings="settings.py"):
     """
@@ -30,7 +35,22 @@ def main(settings="settings.py"):
     # Expose settings global module
     settings = imp.load_source("settings", settings)
 
-    print("Starting bot")
+    logging.basicConfig(level=logging.DEBUG, stream=sys.stdout, format=LOG_FORMAT)
+
+    logger.info("Starting sevabot")
+
+    modules.load_modules()
+
+    # We do lazy import here, because
+    # importing Skype4Py causes native DLL loading
+    # and may cause random segfaults, Skype pop-up dialogs or
+    # other unwanted side effects
+    from sevabot.bot import Sevabot
+    sevabot = Sevabot()
+
+    logger.info("Skype API connection established")
+
+    sevabot.start()
     server.run()
 
     #fuck cron stuff for now
@@ -38,6 +58,8 @@ def main(settings="settings.py"):
     # while(True):
     #     time.sleep(interval)
     #     sevabot.runCron(interval)
+
+    # Should be never reached
     return 0
 
 

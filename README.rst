@@ -103,8 +103,6 @@ Install using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 Usage
 ------
 
-Start Skype on the computer.
-
 Customize settings for you::
 
     # Create a copy of settings.py
@@ -112,23 +110,34 @@ Customize settings for you::
 
 Setup your Skype admin username and HTTP interface password by editing ``settings.py``.
 
+Start Skype on the computer using the bot username.
+
+Invite the bot to the Skype chat where you indent to run the bot.
+
 Activate virtualenv::
 
-    source venv/bin/activate
+    . venv/bin/activate
 
 Run on Ubuntu::
 
   sevabot
 
-Run on OSX::
-
-    arch -i386 sevabot
-
 or ::
 
   DISPLAY=:1 python2 main.py
 
+Run on OSX::
+
+    arch -i386 sevabot
+
+When you launch it for the first time you need to accept the confirmation dialog in the desktop
+environment (over VNC on the server).
+
+.. image :: https://github.com/downloads/sevanteri/sevabot/Screen%20Shot%202012-07-25%20at%201.13.57%20PM.png
+
 or which ever display you're running your skype on your server.
+
+There might be a lot of logging and stdout output when the bot scans all the chats of running Skype instance.
 
 Sending messages to the chat from external service
 -----------------------------------------------------
