@@ -1,6 +1,6 @@
-=======
-Sevabot
-=======
+===================
+Sevabot for Skype
+===================
 
 .. contents:: local
 
@@ -16,24 +16,27 @@ Generic purpose hack-it-together Skype bot
 
 It is based on `Skype4Py framework <https://github.com/stigkj/Skype4Py>`_
 
+The bot is written in Python 2.7.x programming language, but can be integrated with any programming
+languages over UNIX command piping and HTTP interface.
+
+Skype4Py API is free and **you do not need to enlist and pay Skype development program 10 USD fee**.
+
 Use cases
 -----------
 
 * Connect Skype to your server monitoring system like Zabbix
 
-* Connect with continuous integration system
+* Connect with continuous integration system and get message from failed builds
 
-* Print out notifications of new commits and issues in your software project
+* Get notifications of new commits and issues in your software project
 
-* Run deployments directly from Skype
+* Control production deployments from Skype chat with your fellow developers
 
 Prerequisitements
 ------------------
 
 OSX or Linux required. For running the bot on the server-side, a headless X must be installed.
 Supporting Windows is possible, but currently lacks a sponsor for the feature.
-
-Python 2.7.x is supported. Python 3.x is not supported due to Skype4Py dependency.
 
 First you need to `register a Skype account for your bot <http://skype.com>`_.
 
