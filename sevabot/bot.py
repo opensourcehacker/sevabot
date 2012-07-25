@@ -1,19 +1,27 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from glob import glob
 import imp
+import sys
 
 import Skype4Py
 
 
 class Sevabot:
+
     def __init__(self):
         self.cmds = {}
         self.cron = []
         self.chats = {}
         self.loadModules()
 
-        self.skype = Skype4Py.Skype(Transport='x11')
+        if sys.platform == "Linux":
+            self.skype = Skype4Py.Skype(Transport='x11')
+        else:
+            # OSX
+            self.skype = Skype4Py.Skype()
+
         self.skype.Attach()
         self.skype.OnMessageStatus = self.handleMessages
         self.getChats()

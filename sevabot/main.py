@@ -6,26 +6,29 @@
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import imp
 import time
-from bot import Sevabot
+from sevabot.bot import Sevabot
 
 from hashlib import md5
 
 from flask import Flask, request
-
 import plac
-
 
 server = Flask(__name__)
 sevabot = Sevabot()
 
 
 @plac.annotations( \
-    settings=("Settings file", 'positional', 's', None, None, "settings.py"),
+    settings=("Settings file", 'optional', 's', None, None, "settings.py"),
     )
 def main(settings="settings.py"):
+    """
+    Application entry point.
+    """
 
-
+    # Expose settings global module
+    settings = imp.load_source("settings", settings)
 
     print("Starting bot")
     server.run()
@@ -35,6 +38,7 @@ def main(settings="settings.py"):
     # while(True):
     #     time.sleep(interval)
     #     sevabot.runCron(interval)
+    return 0
 
 
 @server.route("/cmd/<string:cmd>")
@@ -67,6 +71,6 @@ def message():
         return str(e)
 
 
-if __name__ == "__main__":
+def entry_point():
     exit_code = plac.call(main)
-    sys.exit(exit_code)
+    return exit_code

@@ -28,7 +28,7 @@ setup(name = "sevabot",
     classifiers=[
         "Programming Language :: Python",
     ],
-    license="GPL2",
+    license="BSD",
     include_package_data = True,
     entry_points="""
       [console_scripts]
