@@ -34,6 +34,10 @@ Weather: %s
 Temperature: %s °C
 """
 
+city = root.find("weather/forecast_information/city")
+if not city:
+    sys.exit("Could not find city: %s" % sys.argv[1])
+
 place = root.find("weather/forecast_information/city").get("data")
 weather = root.find("weather/current_conditions/condition").get("data")
 temp = root.find("weather/current_conditions/temp_c").get("data")
