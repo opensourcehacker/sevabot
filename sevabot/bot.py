@@ -25,7 +25,7 @@ class Sevabot:
 
     def start(self):
 
-        if sys.platform == "Linux":
+        if sys.platform == "Linux" or sys.platform == "linux" or sys.platform == "linux2":
             self.skype = Skype4Py.Skype(Transport='x11')
         else:
             # OSX
