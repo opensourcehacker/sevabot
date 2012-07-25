@@ -49,7 +49,7 @@ class Sevabot:
         """
         if status == "RECEIVED" or status == "SENT":
             print("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
-        if status == "RECEIVED" and msg.FromHandle == "sevanteri":
+        if status == "RECEIVED" and msg.Body:
             if msg.Body == "!loadModules":
                 msg.Chat.SendMessage("Loading modules...")
                 try:
