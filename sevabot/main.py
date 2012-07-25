@@ -14,8 +14,6 @@ import logging
 from flask import Flask, request
 import plac
 
-from sevabot import modules
-
 logger = logging.getLogger("sevabot")
 
 # http://docs.python.org/library/logging.html
@@ -40,6 +38,7 @@ def get_bot():
 
     return _sevabot
 
+
 @plac.annotations( \
     settings=("Settings file", 'option', 's', None, None, "settings.py"),
     )
@@ -49,12 +48,16 @@ def main(settings="settings.py"):
     """
 
     # Expose settings global module
-    settings = imp.load_source("settings", settings)
+    try:
+        settings = imp.load_source("settings", settings)
+    except:
+        sys.exit("Could not load settings file: %s" % settings)
 
     logging.basicConfig(level=logging.DEBUG, stream=sys.stdout, format=LOG_FORMAT)
 
     logger.info("Starting sevabot")
 
+    from sevabot import modules
     modules.load_modules()
 
     sevabot = get_bot()
