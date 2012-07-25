@@ -9,10 +9,9 @@ Introduction
 
 Generic purpose hack-it-together Skype bot
 
-* Sends incoming messages to chat from any source over HTTP requests. This allows
-  the bot to be connected to virtually any system.
+* Has extensible command system based on UNIX scripts
 
-* Will be able to run scripts and report
+* Send chat message nofications from any system using HTTP GET requests
 
 It is based on `Skype4Py framework <https://github.com/stigkj/Skype4Py>`_
 
