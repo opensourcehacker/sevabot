@@ -72,7 +72,7 @@ Setting up Skype and Sevabot
         - Skype (in vnc) will now ask if Skype4Py should be allowed. **Click on Remember and Allow.**
     #. Stop vnc server: **sevabot/scripts/start-vnc.sh stop**
 
-Install using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
+Install ``sevabot`` using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
     git clone git://github.com/sevanteri/sevabot.git
     cd sevabot
@@ -91,7 +91,7 @@ These instructions are for desktop OSX.
 Extra complications cause the fact that you need to create a 32-bit virtualenv
 using Apple's fat binary ``python`` command.
 
-Install using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
+Install ``sevabot`` using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
     git clone git://github.com/sevanteri/sevabot.git
     cd sevabot
@@ -137,12 +137,61 @@ environment (over VNC on the server).
 
 or which ever display you're running your skype on your server.
 
-There might be a lot of logging and stdout output when the bot scans all the chats of running Skype instance.
+.. note ::
+
+    There might be a lot of logging and stdout output when the bot starts and scans all the chats of running Skype instance.
+
+Eventually you see in the console::
+
+    Running on http://127.0.0.1:5000/
+
+Now you can send commands to the bot by typing them into the chat. All commands start with ``!``.
+You can try ``!ping`` command see if the bot is alive.
+
+.. image :: https://github.com/downloads/sevanteri/sevabot/Screen%20Shot%202012-07-25%20at%202.33.48%20PM.png
+
+Integration
+-------------
+
+Creating custom commands
+==============================
+
+The bot can use any UNIX executables printing to stdout as commands
+
+* Shell scripts
+
+* Python scripts, Ruby scripts, etc.
+
+All commands must be in one of *modules* folders of the bot. The bot comes with some built-in
+commands like ``ping``, but you can add your own custom commands by
+
+* Creating a new modules folder for your internal purposes - the name doesn't matter
+
+* Put this folder to ``MODULES_PATHS`` in settings.py
+
+* Create a a script in this folder. Example ``myscript.sh``::
+
+    #!/bin/sh
+    echo "Hello world from my sevabot command"
+
+* Add UNIX execution bit on the script using ``chmod u+x myscript.sh``
+
+* Restart bot
+
+* Now you have command ``!myscript``
+
+You can also use command ``!reload`` to reload all modules paths
+if you have added new scripst in them. ``!reload`` will output
+available commands.
 
 Sending messages to the chat from external service
------------------------------------------------------
+====================================================
 
-`Generic shell script can be found on Github <https://github.com/sevanteri/sevabot/blob/master/examples/send.sh>`_.
+You can send a message to the bot over HTTP interface.
+
+Messages are MD5 signed with a shared secret.
+
+`Generic shell script example using curl can be found on Github <https://github.com/sevanteri/sevabot/blob/master/examples/send.sh>`_.
 
 Troubleshooting
 -----------------

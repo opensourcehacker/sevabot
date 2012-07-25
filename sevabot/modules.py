@@ -43,6 +43,8 @@ def load_modules():
     if len(_modules.keys()) == 0:
         raise RuntimeError("No modules found in: %s" % settings.MODULE_PATHS)
 
+    return _modules.keys()
+
 
 def is_module(name):
     """

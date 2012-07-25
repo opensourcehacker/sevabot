@@ -5,4 +5,10 @@ SHARED_SECRET = "koskela"
 #: List of Skype usernames who can administrate the bot
 ADMINS = ["oulu"]
 
-# there will be more here
+#: List of paths where we scan command-line modules
+#: Can be absolute path or relative to the current working directory
+MODULE_PATHS = ["modules"]
+
+#: How fast module script must finish
+TIMEOUT = 30
+

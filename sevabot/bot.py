@@ -68,6 +68,11 @@ class Sevabot:
 
             logger.debug("Trying to identify keyword: %s" % keyword)
 
+            if keyword == "reload":
+                commands = modules.load_modules()
+                msg.Chat.SendMessage("Available commands: %s" % ", ".join(commands))
+                return
+
             if modules.is_module(keyword):
                 # Execute module asynchronously
 
