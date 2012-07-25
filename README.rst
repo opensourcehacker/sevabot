@@ -39,7 +39,9 @@ or which ever display you're running your skype on your server.
 Tested with python2.7.
 
 
-Packages needed::
+Packages and python modules needed::
 
-  python-gobject-2
+  apt-get install python-gobject-2
+  easy_install-2.7 Flask
+  easy_install-2.7 Skype4Py
 
