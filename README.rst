@@ -42,7 +42,7 @@ First you need to `register a Skype account for your bot <http://skype.com>`_.
 Ubuntu
 ========
 
-Installing Skype and xvfb to your server::
+Installing Skype and xvfb to your server. Under ``sudo -i``::
 
     useradd skype
     apt-get install xvfb
@@ -56,7 +56,7 @@ Installing Skype and xvfb to your server::
 
 Other packages and Python modules needed::
 
-    apt-get install python-gobject-2 curl
+    apt-get install python-gobject-2 curl git
 
 Setting up Skype and Sevabot
 
