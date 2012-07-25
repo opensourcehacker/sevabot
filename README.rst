@@ -149,9 +149,15 @@ Eventually you see in the console::
     Running on http://127.0.0.1:5000/
 
 Now you can send commands to the bot by typing them into the chat. All commands start with ``!``.
-You can try ``!ping`` command see if the bot is alive.
+You can try ``!ping`` command see if the bot is alive. Type into chat::
+
+    !ping
 
 .. image :: https://github.com/downloads/sevanteri/sevabot/Screen%20Shot%202012-07-25%20at%202.33.48%20PM.png
+
+You can also try stock ``!weather`` command::
+
+    !weather helsinki
 
 Integration
 -------------
