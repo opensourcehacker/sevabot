@@ -48,6 +48,8 @@ docs/build/*
 *.db
 *.jar
 .vvv
+venv
+venv-py2
 __pycache__
-
+virtualenv.py
 tests/test-installation-environment
