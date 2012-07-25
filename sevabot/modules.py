@@ -37,7 +37,7 @@ def load_modules():
             body, ext = os.path.splitext(f)
 
             if os.access(fpath, os.X_OK):
-                logger.debug("Discovered module %s: %s" % (body, fpath))
+                logger.info("Discovered module %s: %s" % (body, fpath))
                 _modules[body] = fpath
 
     if len(_modules.keys()) == 0:
@@ -81,20 +81,23 @@ def run_module(name, args, callback):
         out = out.decode("utf-8")
         err = err.decode("utf-8")
 
-        callback(out + err)
+        return out + err
 
     thread = ExecutionManagedThread(run, default, settings.TIMEOUT, callback)
     thread.start()
 
 
 class ExecutionManagedThread(threading.Thread):
-
+    """
+    A thread which will wait the actual task thread.join()
+    """
     def __init__(self, func, default, timeout, callback):
         threading.Thread.__init__(self)
         self.result = default
         self.func = func
         self.callback = callback
         self.default = default
+        self.timeout = timeout
 
     def run(self):
         runner = ExecutionThread(self.func)
@@ -102,16 +105,21 @@ class ExecutionManagedThread(threading.Thread):
         runner.join(self.timeout)
 
         if runner.isAlive():
+            logger.warn("Timeouted running external command")
             return self.callback(self.default)
         else:
             return self.callback(runner.result)
 
 
 class ExecutionThread(threading.Thread):
-
+    """
+    Run any function.
+    """
     def __init__(self, func):
+        threading.Thread.__init__(self)
         self.result = None
         self.func = func
 
-    def run(self, func, *args):
-        self.result = func(*args)
+    def run(self):
+        self.result = self.func()
+

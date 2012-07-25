@@ -3,5 +3,5 @@
 # Test timeout functionality
 #
 
-sleep(31)
+sleep 31
 echo "Never reached"

@@ -33,6 +33,7 @@ class Sevabot:
 
         self.skype.Attach()
         self.skype.OnMessageStatus = self.handleMessages
+
         self.getChats()
 
     def getChats(self):
@@ -51,7 +52,7 @@ class Sevabot:
         if status == "RECEIVED" or status == "SENT":
             logger.debug("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
 
-        if status == "RECEIVED" and msg.Body:
+        if status in ["RECEIVED", "SENT"] and msg.Body:
 
             words = msg.Body.split()
 
@@ -60,18 +61,18 @@ class Sevabot:
 
             keyword = words[0]
 
+            if not keyword.startswith("!"):
+                return
+
+            keyword = keyword[1:]
+
             logger.debug("Trying to identify keyword: %s" % keyword)
 
             if modules.is_module(keyword):
                 # Execute module asynchronously
 
                 def callback(output):
-                    msg.Chat.SendMessage(func(
-                            *args[1:],
-                            msg=output,
-                            skype=self.skype,
-                            bot=self
-                        ))
+                    msg.Chat.SendMessage(output)
 
                 modules.run_module(keyword, words[1:], callback)
                 return
@@ -88,19 +89,6 @@ class Sevabot:
             elif msg.Body == "!loadChats":
                 self.getChats()
                 return
-
-            if msg.Body[0] == "!":
-                args = msg.Body.split(" ")
-                try:
-                    func = self.cmds[args[0]]
-                    msg.Chat.SendMessage(func(
-                            *args[1:],
-                            msg=msg,
-                            skype=self.skype,
-                            bot=self
-                        ))
-                except Exception as e:
-                    msg.Chat.SendMessage(str(e))
 
     def runCmd(self, cmd):
         args = cmd.split(" ")
