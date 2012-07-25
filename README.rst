@@ -142,6 +142,22 @@ If you get segfault on OSX make sure you are using `32-bit Python <http://stacko
 
 `Debugging segmentation faults with Python <http://wiki.python.org/moin/DebuggingWithGdb>`_.
 
+Related gdb dump::
+
+    Program received signal EXC_BAD_ACCESS, Could not access memory.
+    Reason: KERN_INVALID_ADDRESS at address: 0x0000000001243b68
+    0x00007fff8c12d878 in CFRetain ()
+    (gdb) bt
+    #0  0x00007fff8c12d878 in CFRetain ()
+    #1  0x00000001007e07ec in ffi_call_unix64 ()
+    #2  0x00007fff5fbfbb50 in ?? ()
+    (gdb) c
+    Continuing.
+
+    Program received signal EXC_BAD_ACCESS, Could not access memory.
+    Reason: KERN_INVALID_ADDRESS at address: 0x0000000001243b68
+    0x00007fff8c12d878 in CFRetain ()
+
 License
 --------
 
