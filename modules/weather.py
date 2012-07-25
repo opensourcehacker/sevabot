@@ -34,8 +34,8 @@ Weather: %s
 Temperature: %s °C
 """
 
-city = root.find("weather/forecast_information/city")
-if not city:
+city = root.find("weather/forecast_information")
+if city is None:
     sys.exit("Could not find city: %s" % sys.argv[1])
 
 place = root.find("weather/forecast_information/city").get("data")
