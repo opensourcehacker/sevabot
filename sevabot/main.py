@@ -23,6 +23,22 @@ LOG_FORMAT = "%(message)s"
 
 server = Flask(__name__)
 
+_sevabot = None
+
+
+def get_bot():
+    """
+    We do lazy import here, because
+    importing Skype4Py causes native DLL loading
+    and may cause random segfaults, Skype pop-up dialogs or
+    other unwanted side effects
+    """
+    global _sevabot
+    if not _sevabot:
+        from sevabot.bot import Sevabot
+        _sevabot = Sevabot()
+
+    return _sevabot
 
 @plac.annotations( \
     settings=("Settings file", 'option', 's', None, None, "settings.py"),
@@ -41,12 +57,7 @@ def main(settings="settings.py"):
 
     modules.load_modules()
 
-    # We do lazy import here, because
-    # importing Skype4Py causes native DLL loading
-    # and may cause random segfaults, Skype pop-up dialogs or
-    # other unwanted side effects
-    from sevabot.bot import Sevabot
-    sevabot = Sevabot()
+    sevabot = get_bot()
 
     logger.info("Skype API connection established")
 
@@ -63,16 +74,25 @@ def main(settings="settings.py"):
     return 0
 
 
-@server.route("/cmd/<string:cmd>")
-def command(cmd):
-    try:
-        return sevabot.runCmd(cmd).replace("\n", "<br />")
-    except Exception as e:
-        return str(e)
+@server.route("/hello")
+def hello():
+    """
+    A simple HTTP interface test callback.
+    """
+    sevabot = get_bot()
+    if sevabot:
+        return "OK"
+    else:
+        return "UHOH"
 
 
 @server.route("/msg/", methods=['POST'])
 def message():
+
+    import settings
+
+    sevabot = get_bot()
+
     try:
         if request.method == 'POST':
             if ('chat' in request.form and
