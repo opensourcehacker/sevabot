@@ -2,8 +2,28 @@
 Sevabot
 =======
 
+.. contents:: local
+
+Introduction
+-------------
+
+Generic purpose hack-it-together Skype bot
+
+* Sends incoming messages to chat from any source over HTTP POST requests
+
+* Will be able to run scripts and report
+
+It is based on `Skype4Py framework <https://github.com/stigkj/Skype4Py>`_
+
+Installation
+---------------
+
+OSX or Linux required.
 
 
+
+Usage
+------
 
 Run with ::
 
