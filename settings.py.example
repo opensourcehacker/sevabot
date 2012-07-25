@@ -1,0 +1,8 @@
+
+#: Known shared secret key in order to send messages over HTTP interface
+SHARED_SECRET = "koskela"
+
+#: List of Skype usernames who can administrate the bot
+ADMINS = ["oulu"]
+
+# there will be more here

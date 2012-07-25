@@ -9,19 +9,25 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 from bot import Sevabot
 
-from flask import Flask, request
-import settings
 from hashlib import md5
+
+from flask import Flask, request
+
+import plac
 
 
 server = Flask(__name__)
 sevabot = Sevabot()
 
 
-def main():
+@plac.annotations( \
+    settings=("Settings file", 'positional', 's', None, None, "settings.py"),
+    )
+def main(settings="settings.py"):
+
+
 
     print("Starting bot")
-
     server.run()
 
     #fuck cron stuff for now
@@ -62,4 +68,5 @@ def message():
 
 
 if __name__ == "__main__":
-    main()
+    exit_code = plac.call(main)
+    sys.exit(exit_code)

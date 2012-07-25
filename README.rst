@@ -32,6 +32,8 @@ Prerequisitements
 
 OSX or Linux required. For running the bot on the server-side, a headless X must be installed.
 
+Python 2.7.x is supported. Python 3.x is not supported due to Skype4Py dependency.
+
 Ubuntu
 ========
 
@@ -58,15 +60,18 @@ Install using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
     source venv/bin/activate
     python setup.py develop
 
+    # Create a copy of settings.py
+    cp settings.py.example settings.py
+
 
 Setup your Skype admin username and HTTP interface password by editing ``settings.py``.
 
 Usage
 ------
 
-Run with ::
+Run with::
 
-  python2 main.py
+  sevabot
 
 or ::
 
@@ -74,8 +79,10 @@ or ::
 
 or which ever display you're running your skype on your server.
 
+Sending messages to the chat from external service
+-----------------------------------------------------
 
-Tested with python2.7.
+Generic example
 
 Authors
 ----------
