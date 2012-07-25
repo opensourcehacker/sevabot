@@ -111,7 +111,7 @@ Tested with python2.7.
 Authors
 ----------
 
-`Pete Sevantari <https://twitter.com/sevanteri>`_ - coding
+`Pete Sevander <https://twitter.com/sevanteri>`_ - coding
 
 `Mikko Ohtamaa <https://twitter.com/moo9000>`_ - concept, documentation and packing
 
