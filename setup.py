@@ -23,7 +23,7 @@ setup(name = "sevabot",
     author = "Pete Sevander, Mikko Ohtamaa",
     author_email = "",
     url = "https://github.com/sevanteri/sevabot",
-    install_requires = ["Flask"],
+    install_requires = ["Flask", "Skype4Py"],
     packages = ['sevabot'],
     classifiers=[
         "Framework :: Plone",

@@ -15,12 +15,33 @@ Generic purpose hack-it-together Skype bot
 
 It is based on `Skype4Py framework <https://github.com/stigkj/Skype4Py>`_
 
+Prerequisitements
+------------------
+
+OSX or Linux required. For running the bot on the server-side, a headless X must be installed.
+
+Ubuntu
+========
+
+Packages and Python modules needed::
+
+  apt-get install python-gobject-2 python-virtualenv
+
+OSX
+====
+
+XXX
+
 Installation
----------------
+----------------
 
-OSX or Linux required.
+Install using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
-
+    git clone git://github.com/sevanteri/sevabot.git
+    cd sevabot
+    virtualenv venv
+    source venv/bin/activate
+    python setup.py develop
 
 Usage
 ------
@@ -39,9 +60,4 @@ or which ever display you're running your skype on your server.
 Tested with python2.7.
 
 
-Packages and python modules needed::
-
-  apt-get install python-gobject-2
-  easy_install-2.7 Flask
-  easy_install-2.7 Skype4Py
 
