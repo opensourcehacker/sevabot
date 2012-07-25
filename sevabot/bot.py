@@ -22,7 +22,6 @@ class Sevabot:
         self.cmds = {}
         self.cron = []
         self.chats = {}
-        self.loadModules()
 
     def start(self):
 
