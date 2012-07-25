@@ -98,8 +98,11 @@ class Sevabot:
             chats = []
             if type(job['chats'][0]) == str:
                 for chat in job['chats']:
-                    chat = self.chats[chat]
-                    chats.append(chat)
+                    try:
+                        chat = self.chats[chat]
+                        chats.append(chat)
+                    except KeyError:
+                        pass
                 job['chats'] = chats
 
             job['timer'] -= interval
