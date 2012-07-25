@@ -32,5 +32,7 @@ setup(name = "sevabot",
     license="GPL2",
     include_package_data = True,
     entry_points="""
+      [console_scripts]
+      sevabot = sevabot.main:entry_point
       """,
 )
