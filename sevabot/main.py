@@ -108,10 +108,9 @@ def message():
 
                 mcheck = md5(chat + msg + settings.SHARED_SECRET).hexdigest()
                 if mcheck == m:
-                    sevabot.sendMsg(chat, msg)
+                    return sevabot.sendMsg(chat, msg)
                 else:
-                    return "No can do %s\n" % (mcheck)
-        return "Message sent"
+                    return "No can do\n"
     except Exception as e:
         return str(e)
 

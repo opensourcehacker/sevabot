@@ -100,7 +100,11 @@ class Sevabot:
         return self.cmds["!" + args[0]](*args[1:], bot=self, skype=self.skype)
 
     def sendMsg(self, chat, msg):
-        self.chats[chat].SendMessage(msg)
+        try:
+            self.chats[chat].SendMessage(msg)
+            return "Message sent\n"
+        except KeyError as e:
+            return "Chat not found\n"
 
     def runCron(self, interval):
         """
