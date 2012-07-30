@@ -5,7 +5,9 @@ from glob import glob
 import imp
 import sys
 import logging
-
+import hashlib
+import time
+from collections import OrderedDict
 import Skype4Py
 
 from sevabot import modules
@@ -25,25 +27,51 @@ class Sevabot:
 
     def start(self):
 
-        if sys.platform == "Linux" or sys.platform == "linux" or sys.platform == "linux2":
+        if sys.platform == "linux2":
             self.skype = Skype4Py.Skype(Transport='x11')
         else:
             # OSX
             self.skype = Skype4Py.Skype()
 
+        logger.debug("Attaching to Skype")
         self.skype.Attach()
+
+        logger.debug("Skype API connection established")
         self.skype.OnMessageStatus = self.handleMessages
 
-        self.getChats()
+        self.cacheChats()
 
-    def getChats(self):
+    def cacheChats(self):
         """
         Scan all chats on initial connect.
         """
-        chats = {}
+        logger.debug("getChats()")
+        self.chats = OrderedDict()
+
+        # First get all fresh chats
+        chats = []
         for chat in self.skype.Chats:
-            chats[chat.FriendlyName] = chat
-        self.chats = chats
+
+            # filter chats older than 6 months
+            if time.time() - chat.Timestamp > 3600 * 24 * 180:
+                continue
+
+            chats.append(chat)
+
+        chats = sorted(chats, key=lambda c: c.Timestamp, reverse=True)
+
+        for chat in chats:
+            # Encode ids in b64 so they are easier to pass in URLs
+            m = hashlib.md5()
+            m.update(chat.Name)
+            self.chats[m.hexdigest()] = chat
+
+    def getOpenChats(self):
+        """
+        Get list of id -> chat object of all chats which are open.
+        """
+        for chat_id, chat in self.chats.items():
+            yield chat_id, chat
 
     def handleMessages(self, msg, status):
         """
@@ -103,7 +131,7 @@ class Sevabot:
         try:
             self.chats[chat].SendMessage(msg)
             return "Message sent\n"
-        except KeyError as e:
+        except KeyError:
             return "Chat not found\n"
 
     def runCron(self, interval):

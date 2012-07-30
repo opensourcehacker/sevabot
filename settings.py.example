@@ -12,3 +12,8 @@ MODULE_PATHS = ["modules"]
 #: How fast module script must finish
 TIMEOUT = 30
 
+#: Where we run our HTTP interface
+HTTP_HOST = "localhost"
+
+#: Which port we run our HTTP interface
+HTTP_PORT = 5000

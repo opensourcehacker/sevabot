@@ -192,6 +192,20 @@ You can also use command ``!reload`` to reload all modules paths
 if you have added new scripst in them. ``!reload`` will output
 available commands.
 
+Getting chat list
+=======================
+
+To send messages to the bot you need to know
+
+* Skype chat id (we use MD5 encoded ids to conveniently pass them in URLs)
+
+* Bot shared secret in ``settings.py``
+
+To get list of the chat ids visit in the address::
+
+    http://localhost:5000/chats/YOURSHAREDSECRET/
+
+
 Sending messages to the chat from external service
 ====================================================
 
@@ -203,6 +217,9 @@ Messages are MD5 signed with a shared secret.
 
 Troubleshooting
 -----------------
+
+Segfaults
+===========
 
 If you get segfault on OSX make sure you are using `32-bit Python <http://stackoverflow.com/questions/2088569/how-do-i-force-python-to-be-32-bit-on-snow-leopard-and-other-32-bit-64-bit-quest>`_.
 
@@ -223,6 +240,19 @@ Related gdb dump::
     Program received signal EXC_BAD_ACCESS, Could not access memory.
     Reason: KERN_INVALID_ADDRESS at address: 0x0000000001243b68
     0x00007fff8c12d878 in CFRetain ()
+
+Skype4Py distribution for OSX
+===============================
+
+Currently Skype4Py distribution is broken.
+
+To fix this do::
+
+    source venv/bin/activate
+    git clone git://github.com/stigkj/Skype4Py.git
+    cd Skype4Py
+    arch -i386 python setup.py install
+
 
 License
 --------
