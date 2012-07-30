@@ -44,7 +44,7 @@ Ubuntu
 
 Installing Skype and xvfb to your server. Under ``sudo -i``::
 
-    useradd skype
+    useradd skype # We must run Skype under non-root user
     apt-get install xvfb
     apt-get install fluxbox x11vnc
     apt-get install dbus
@@ -60,7 +60,7 @@ Other packages and Python modules needed::
 
 Setting up Skype and Sevabot
 
-    #. Login to your server with: **ssh -L 5900:localhost:5900 skype@your.zabbix.server**
+    #. Login to your server with: **ssh -L 5900:localhost:5900 skype@yourserver.com**
     #. Get Sevabot: **git clone git://github.com/sevanteri/sevabot.git**
     #. Start xvfb, fluxbox and Skype: **sevabot/scripts/start-server.sh start**
     #. Start vnc server: **sevabot/scripts/start-vcn.sh start**
@@ -70,9 +70,6 @@ Setting up Skype and Sevabot
         - no chat history
         - only people on my list can write me
         - only people on my list can call me
-    #. Start Sevabot: **python2 sevabot/main.py**
-        - Skype (in vnc) will now ask if Skype4Py should be allowed. **Click on Remember and Allow.**
-    #. Stop vnc server: **sevabot/scripts/start-vnc.sh stop**
 
 Install ``sevabot`` using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
@@ -116,19 +113,26 @@ Start Skype on the computer using the bot username.
 
 Invite the bot to the Skype chat where you indent to run the bot.
 
+
+Run on Ubuntu
+==============
+
 Activate virtualenv::
 
     . venv/bin/activate
 
-Run on Ubuntu::
+Type::
 
   sevabot
 
-or ::
+Skype desktop app (in VNC) will now ask if Skype4Py should be allowed. **Click on Remember and Allow.**
 
-  DISPLAY=:1 python2 main.py
+Stop VNC server: **sevabot/scripts/start-vnc.sh stop**
 
-Run on OSX::
+Run on OSX
+============
+
+Type::
 
     arch -i386 sevabot
 
@@ -204,7 +208,6 @@ To send messages to the bot you need to know
 To get list of the chat ids visit in the address::
 
     http://localhost:5000/chats/YOURSHAREDSECRET/
-
 
 Sending messages to the chat from external service
 ====================================================
