@@ -218,6 +218,35 @@ Messages are MD5 signed with a shared secret.
 
 `Generic shell script example using curl can be found on Github <https://github.com/sevanteri/sevabot/blob/master/examples/send.sh>`_.
 
+Github commit notifications
+=============================
+
+Sevabot has built-in support for Github post-receive hook a.k.a. commit notifications.
+
+To add one
+
+* You need to be the repository admin
+
+* Go *Admin* > *Service hooks* on Github
+
+* Add Webhooks URL with your bot info::
+
+    http://yourserver.com:5000/github-post-commit/CHATID/SHAREDSECRET/
+
+* Save
+
+* Now you can use *Test hook* button to send a test message to the chat
+
+* Following commits should come automatically to the chatß
+
+Testing HTTP interface
+========================
+
+If you run the bot on non-internet facing computer (desktop)
+you can tunnel HTTP interface to a public server::
+
+    ssh -gNR 5000:yourserver.com:5000 yourserver.com
+
 Troubleshooting
 -----------------
 

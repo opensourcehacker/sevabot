@@ -11,6 +11,7 @@ import imp
 import sys
 from hashlib import md5
 import logging
+import json
 
 from flask import Flask, request
 import plac
@@ -23,6 +24,19 @@ LOG_FORMAT = "%(message)s"
 server = Flask(__name__)
 
 _sevabot = None
+
+INTRO = """<!doctype html>
+<h1><a href="https://github.com/sevanteri/sevabot">Sevabot</a></h1>
+
+<p>
+A generic purpose hack together Skype bot at your service.
+</p>
+
+<p>
+For the chat list and other administrative HTTP interface functions
+please read the README above.
+</p>
+"""
 
 
 def get_bot():
@@ -86,16 +100,12 @@ def main(settings="settings.py", verbose=False):
     return 0
 
 
-@server.route("/hello/")
+@server.route("/")
 def hello():
     """
     A simple HTTP interface test callback.
     """
-    sevabot = get_bot()
-    if sevabot:
-        return "OK"
-    else:
-        return "UHOH"
+    return INTRO
 
 
 @server.route("/chats/<string:shared_secret>/")
@@ -111,6 +121,10 @@ def chats(shared_secret):
         return ("Bad shared secret", 403, {"Content-type": "text/plain"})
 
     buffer = StringIO()
+
+    print("Chat id                           Title", file=buffer)
+    print("--------------------------------- -----------------------------", file=buffer)
+
     for chat_id, chat in chats:
         print("%s: %s" % (chat_id, chat.FriendlyName), file=buffer)
 
@@ -143,20 +157,31 @@ def message():
         return str(e)
 
 
-@server.route("/github-post-commit/<int:chat_id>/<string:shared_secret>/", methods=['POST'])
+@server.route("/github-post-commit/<string:chat_id>/<string:shared_secret>/", methods=['POST'])
 def github_post_commit(chat_id, shared_secret):
     """
     Handle post-commit hook from Github.
 
-    The URL is in format
-
-    /github-post-commit/${chat-id}/${shared-secret}
+    https://help.github.com/articles/post-receive-hooks/
     """
 
     settings = get_settings()
     sevabot = get_bot()
 
+    if shared_secret != settings.SHARED_SECRET:
+        return ("Bad shared secret", 403, {"Content-type": "text/plain"})
 
+    #print(request.form.items())
+    #print(request.form[":payload"])
+    payload = json.loads(request.form["payload"])
+
+    msg = "〜 %s fresh commits: %s 〜\n" % (payload["repository"]["name"], payload["repository"]["url"])
+    for c in payload["commits"]:
+        msg += "%s ★ %s: %s\n" % (c["author"]["name"], c["message"], c["url"])
+
+    sevabot.sendMsg(chat_id, msg)
+
+    return "OK"
 
 
 def entry_point():
