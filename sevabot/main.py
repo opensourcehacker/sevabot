@@ -68,6 +68,10 @@ def main(settings="settings.py", verbose=False):
     logging.basicConfig(level=level, stream=sys.stdout, format=LOG_FORMAT)
     logger.info("Starting sevabot")
 
+    for skype_logger_name in ["Skype4Py.utils.EventHandlingBase", "Skype4Py.skype.Skype", "Skype4Py.api.darwin.SkypeAPI"]:
+        skype_logger = logging.getLogger(skype_logger_name)
+        skype_logger.setLevel(logging.WARN)
+
     from sevabot import modules
     modules.load_modules()
 
@@ -151,6 +155,8 @@ def github_post_commit(chat_id, shared_secret):
 
     settings = get_settings()
     sevabot = get_bot()
+
+
 
 
 def entry_point():
