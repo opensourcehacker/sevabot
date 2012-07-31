@@ -201,7 +201,7 @@ Getting chat list
 
 To send messages to the bot you need to know
 
-* Skype chat id (we use MD5 encoded ids to conveniently pass them in URLs)
+* Skype chat id - we use MD5 encoded ids to conveniently pass them in URLs.
 
 * Bot shared secret in ``settings.py``
 
@@ -238,6 +238,41 @@ To add one
 * Now you can use *Test hook* button to send a test message to the chat
 
 * Following commits should come automatically to the chatß
+
+Github issue notifications
+================================
+
+Use *Zapier* webhook as described below.
+
+This applies for
+
+* New Github issues
+
+* New Github comments
+
+Zapier Web hooks
+=====================
+
+`zapier.com <https://zapier.com/>`_ offers free mix-and-match
+different event sources to different triggers. The event sources
+includes popular services like Github, Dropbox, Salesforce, etc.
+
+* You need to register your *zap* in zapier.com
+
+* *Sevabot* offers support for Zapier web hook HTTP POST requests as JSON
+
+* Create a zap in zapier.com. Register. Add Webhooks *URL* with your bot info::
+
+    http://yourserver.com:5000/zapier/CHATID/SHAREDSECRET/
+
+* The followning Zapier settings must be used: *Send as JSON: no*
+
+* The Zapier data field is posted to the Skype chat as a message as is
+
+Example of Zapier *Data* field for Github issues::
+
+    ಠ_ಠ New issue 〜 {{title}} 〜 by {{user__login}} - {{html_url}}
+
 
 Testing HTTP interface
 ========================

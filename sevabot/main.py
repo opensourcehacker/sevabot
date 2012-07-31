@@ -184,6 +184,27 @@ def github_post_commit(chat_id, shared_secret):
     return "OK"
 
 
+@server.route("/zapier/<string:chat_id>/<string:shared_secret>/", methods=['POST'])
+def zapier(chat_id, shared_secret):
+    """
+    Process incoming Zapier Webhook pushes.
+
+    https://zapier.com/
+    """
+
+    settings = get_settings()
+    sevabot = get_bot()
+
+    if shared_secret != settings.SHARED_SECRET:
+        return ("Bad shared secret", 403, {"Content-type": "text/plain"})
+
+    msg = request.form["data"]
+
+    sevabot.sendMsg(chat_id, msg)
+
+    return "OK"
+
+
 def entry_point():
     exit_code = plac.call(main)
     return exit_code
