@@ -5,8 +5,8 @@
 HOST=$1
 
 if [ -z "$HOST" ]; then
-    echo "Usage: !memoryhog <host or *>"
-elif [ "$HOST" = "*" ]; then
+    echo "Usage: !memoryhog <host or all>"
+elif [ "$HOST" = "all" ]; then
     HOSTS=`grep "Host " ~/.ssh/config | awk '{print $2}'`
 
     for h in $HOSTS; do
