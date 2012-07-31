@@ -7,29 +7,53 @@ Sevabot for Skype
 Introduction
 -------------
 
-Generic purpose hack-it-together Skype bot
+Sevabot is a generic purpose hack-it-together Skype bot
 
 * Has extensible command system based on UNIX scripts
 
-* Send chat message nofications from any system using HTTP GET requests
+* Send chat message nofications from any system using HTTP requests
+
+* Bult-in support for Github commit notifications and other popular services
 
 It is based on `Skype4Py framework <https://github.com/stigkj/Skype4Py>`_
 
 The bot is written in Python 2.7.x programming language, but can be integrated with any programming
 languages over UNIX command piping and HTTP interface.
 
-Skype4Py API is free and **you do not need to enlist and pay Skype development program 10 USD fee**.
+The underlying Skype4Py API is free - **you do not need to enlist and pay Skype development program fee**.
 
 Use cases
 -----------
 
-* Connect Skype to your server monitoring system like Zabbix
+* Get monitoring alerts to Skype from monitoring system like Zabbix
 
-* Connect with continuous integration system and get message from failed builds
+* Get alerts from continuous integration system build fails (Travis CI, Jenkins)
 
-* Get notifications of new commits and issues in your software project
+* Get notifications of new commits and issues in your software project (Git, SVN)
 
-* Control production deployments from Skype chat with your fellow developers
+* Control production deployments from Skype chat with your fellow developers with in-house scripts
+
+* Get a local weather
+
+Benefits
+-----------
+
+Skype is the most popular work related chat program around the world.
+Skype is easy: anyone can use Skype.
+
+Skype group chat provides noise-free medium with a context.
+People follow Skype more actively than email; the discussion in the group chat
+around the notification messages feels natural.
+
+For example our organization has an admin group chat where the team members
+get notifications what other people are doing (commits, issues)
+and when something goes wrong (monitoring). This provides pain free
+follow up of the daily tasks.
+
+A custom scripts can be thrown for the skype bot to execute:
+these can be follow up actions like see that back-ups are running and up-to-date or
+deployment actions like deploying the trunk on the production server
+(As far as I know the latter use case is practiced Github internally).
 
 Prerequisitements
 ------------------
@@ -273,6 +297,57 @@ Example of Zapier *Data* field for Github issues::
 
     ಠ_ಠ New issue 〜 {{title}} 〜 by {{user__login}} - {{html_url}}
 
+Zabbix monitoring alerts
+===========================
+
+`Zabbix <http://www.zabbix.com/>`_ is a popular open source monitoring solution.
+
+You can get Zabbix monitoring alerts like server down, disk near full, etc.
+to Skype with *Sevabot*.
+
+
+First you need to configure *Media* for your Zabbix user. The default user is called *Admin*.
+
+Go to *Administrator* > *Media types*.
+
+Add new media *Skype* with *Script name* **send.sh**.
+
+Go to *Administrator* > *Users* > *Admin*. Open *Media* tab. Enable media *Skype* for this user.
+In the *Send to* parameter put in your *chat id* (see instructions above).
+
+On the server running the Zabbix server process
+create a file ``/usr/local/share/zabbix/alertscripts/send.sh``::
+
+    #!/bin/sh
+    #
+    # Example shell script for sending a message into sevabot
+    #
+    # Give command line parameters [chat id] and [message].
+    # The message is md5 signed with a shared secret specified in settings.py
+    # Then we use curl do to the request to sevabot HTTP interface.
+    #
+    #
+
+    # Chat id comes as Send To parameter from Zabbix
+    chat=$1
+
+    # Message is the second parameter
+    msg=$2
+
+    # Our Skype bot shared secret
+    secret="xxx"
+
+    # The Skype bot HTTP msg interface
+    msgaddress="http://yourserver.com:5000/msg/"
+
+    md5=`echo -n "$chat$msg$secret" | md5sum`
+
+    #md5sum prints a '-' to the end. Let's get rid of that.
+    for m in $md5; do
+        break
+    done
+
+    curl $msgaddress -d "chat=$chat&msg=$msg&md5=$m"
 
 Testing HTTP interface
 ========================
