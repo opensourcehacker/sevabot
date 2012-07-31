@@ -53,12 +53,12 @@ class Sevabot:
         for chat in self.skype.Chats:
 
             # filter chats older than 6 months
-            if time.time() - chat.Timestamp > 3600 * 24 * 180:
+            if time.time() - chat.ActivityTimestamp > 3600 * 24 * 180:
                 continue
 
             chats.append(chat)
 
-        chats = sorted(chats, key=lambda c: c.Timestamp, reverse=True)
+        chats = sorted(chats, key=lambda c: c.ActivityTimestamp, reverse=True)
 
         for chat in chats:
             # Encode ids in b64 so they are easier to pass in URLs
