@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Subversion post commit hook example.
+# Subversion post commit hook example. Please change YOUR parts.
 #
 # Drop this file as post-commit in /srv/svnrepts/YOURREPO/hooks and chmod a+x
 #
@@ -28,14 +28,15 @@ commit_message=`$svnlook log $repo`
 changed=`$svnlook changed $repo`
 
 # Chat id
-chat="9d2588e144cc0afb7678222facad7490"
+chat="YOUR-CHAT-ID-HERE"
 
 # Shared secret
-secret="390y672349"
+secret="YOUR-SHARED-SECRET-HERE"
 
-msg="★ $author - $commit message\n$changed"
+msg="★ $author - $commit_message
+$changed"
 
-msgaddress="http://guinness.twinapex.fi:5000/msg/"
+msgaddress="http://YOURSERVER.COM:5000/msg/"
 
 md5=`echo -n "$chat$msg$secret" | md5sum`
 

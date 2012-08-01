@@ -352,14 +352,7 @@ create a file ``/usr/local/share/zabbix/alertscripts/send.sh``::
 Subversion commit notifications
 =================================
 
-Short instructions::
-
-    sudo -i
-    wget -O sevabot.tar.gz --no-check-certificate https://github.com/opensourcehacker/sevabot/tarball/master
-
-More info
-
-* https://mikewest.org/2006/06/subversion-post-commit-hooks-101
+`Use the provided shell script example <https://github.com/opensourcehacker/sevabot/blob/master/examples/svn-post-commit.sh>`_.
 
 Testing HTTP interface
 ========================
