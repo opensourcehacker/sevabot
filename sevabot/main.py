@@ -150,11 +150,16 @@ def message():
 
                 mcheck = md5(chat + msg + settings.SHARED_SECRET).hexdigest()
                 if mcheck == m:
-                    return sevabot.sendMsg(chat, msg)
+                    sevabot.sendMsg(chat, msg)
+                    return "OK"
                 else:
+                    logger.warning("MD5 check failed")
+                    logger.warning(request.form)
                     return "No can do\n"
     except Exception as e:
-        return str(e)
+        logger.error(e)
+        logger.exception(e)
+        return unicode(e)
 
 
 @server.route("/github-post-commit/<string:chat_id>/<string:shared_secret>/", methods=['POST'])
