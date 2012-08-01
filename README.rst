@@ -413,6 +413,6 @@ Authors
 
 `Mikko Ohtamaa <https://twitter.com/moo9000>`_ - concept, documentation and packing
 
-Report issues on `Github <https://github.com/sevanteri/sevabot/issues>`_
+Report issues on `Github <https://github.com/opensourcehacker/sevabot/issues>`_
 
 Some documentation and scripts by `Marco Weber <http://www.qxs.ch/2011/01/07/skype-instant-messages-from-zabbix/>`_
