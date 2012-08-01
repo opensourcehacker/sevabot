@@ -44,4 +44,4 @@ for m in $md5; do
     break
 done
 
-curl $msgaddress --data-urlencode "chat=$chat&msg=$msg&md5=$m"
+curl $msgaddress --data-urlencode chat="$chat" --data-urlencode msg="$msg" --data-urlencode md5="$m"

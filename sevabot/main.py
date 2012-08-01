@@ -133,7 +133,13 @@ def chats(shared_secret):
 
 @server.route("/msg/", methods=['POST'])
 def message():
+    """
+    Receive a MD5 signed message into a chat.
 
+    All parameters must be UTF-8, URL encoded when sending.
+
+    MD5 is calculated for UTF-8 non-URL-encoded text.
+    """
     import settings
 
     sevabot = get_bot()
@@ -148,7 +154,10 @@ def message():
                 msg = request.form['msg']
                 m = request.form['md5']
 
-                mcheck = md5(chat + msg + settings.SHARED_SECRET).hexdigest()
+                chat_encoded = chat.encode("utf-8")
+                msg_encoded = msg.encode("utf-8")
+
+                mcheck = md5(chat_encoded + msg_encoded + settings.SHARED_SECRET).hexdigest()
                 if mcheck == m:
                     sevabot.sendMsg(chat, msg)
                     return "OK"
