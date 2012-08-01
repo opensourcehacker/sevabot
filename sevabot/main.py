@@ -156,6 +156,9 @@ def message():
                     logger.warning("MD5 check failed")
                     logger.warning(request.form)
                     return "No can do\n"
+            else:
+                return ("Missing POST parameters", 500, {"Content-type": "text/plain"})
+
     except Exception as e:
         logger.error(e)
         logger.exception(e)
