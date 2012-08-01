@@ -139,6 +139,7 @@ def message():
     All parameters must be UTF-8, URL encoded when sending.
 
     MD5 is calculated for UTF-8 non-URL-encoded text.
+
     """
     import settings
 
@@ -162,7 +163,7 @@ def message():
                     sevabot.sendMsg(chat, msg)
                     return "OK"
                 else:
-                    logger.warning("MD5 check failed")
+                    logger.warning("MD5 check failed %s vs %s" % (mcheck, m))
                     logger.warning(request.form)
                     return "No can do\n"
             else:
