@@ -180,9 +180,9 @@ def github_post_commit(chat_id, shared_secret):
     #print(request.form[":payload"])
     payload = json.loads(request.form["payload"])
 
-    msg = "〜 %s fresh commits: %s 〜\n" % (payload["repository"]["name"], payload["repository"]["url"])
+    msg = "★ %s fresh commits 〜 %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
     for c in payload["commits"]:
-        msg += "%s ★ %s: %s\n" % (c["author"]["name"], c["message"], c["url"])
+        msg += "★ %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
 
     sevabot.sendMsg(chat_id, msg)
 
