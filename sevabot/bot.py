@@ -70,6 +70,9 @@ class Sevabot:
         """
         Get list of id -> chat object of all chats which are open.
         """
+
+        # Make sure we get refresh chat list every time
+        self.cacheChats()
         for chat_id, chat in self.chats.items():
             yield chat_id, chat
 
