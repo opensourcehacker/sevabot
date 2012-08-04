@@ -213,14 +213,22 @@ def zapier(chat_id, shared_secret):
     settings = get_settings()
     sevabot = get_bot()
 
-    if shared_secret != settings.SHARED_SECRET:
-        return ("Bad shared secret", 403, {"Content-type": "text/plain"})
+    try:
 
-    msg = request.form["data"]
+        if shared_secret != settings.SHARED_SECRET:
+            return ("Bad shared secret", 403, {"Content-type": "text/plain"})
 
-    sevabot.sendMsg(chat_id, msg)
+        msg = request.form["data"]
 
-    return "OK"
+        sevabot.sendMsg(chat_id, msg)
+
+        return "OK"
+
+    except Exception as e:
+        logger.error(request.form)
+        logger.error(e)
+        logger.exception(e)
+        raise
 
 
 def entry_point():
