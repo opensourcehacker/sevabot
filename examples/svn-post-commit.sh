@@ -46,3 +46,5 @@ for m in $md5; do
 done
 
 curl $msgaddress --data-urlencode chat="$chat" --data-urlencode msg="$msg" --data-urlencode md5="$m"
+
+exit 0
