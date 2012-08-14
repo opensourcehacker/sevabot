@@ -72,7 +72,7 @@ Installing Skype and xvfb to your server. Under ``sudo -i``::
     apt-get install xvfb
     apt-get install fluxbox x11vnc
     apt-get install dbus
-    apt-get install libasound2 libqt4-dbus libqt4-network libqtcore4 libqtgui4 libxss1 libpython2.6 libqt4-xml libaudio2 libmng1 fontconfig liblcms1
+    apt-get install libasound2 libqt4-dbus libqt4-network libqtcore4 libqtgui4 libxss1 libpython2.7 libqt4-xml libaudio2 libmng1 fontconfig liblcms1
     apt-get install lib32stdc++6 lib32asound2 ia32-libs libc6-i386 lib32gcc1
     wget http://www.skype.com/go/getskype-linux-beta-ubuntu-64 -O skype-linux-beta.deb
     # if there are other unresolved dependencies install missing packages using apt-get install and then install the skype deb package again
@@ -85,7 +85,7 @@ Other packages and Python modules needed::
 Setting up Skype and Sevabot
 
     #. Login to your server with: **ssh -L 5900:localhost:5900 skype@yourserver.com**
-    #. Get Sevabot: **git clone git://github.com/sevanteri/sevabot.git**
+    #. Get Sevabot: **git clone git://github.com/opensourcehacker/sevabot.git**
     #. Start xvfb, fluxbox and Skype: **sevabot/scripts/start-server.sh start**
     #. Start vnc server: **sevabot/scripts/start-vcn.sh start**
     #. On your local computer start vnviewer: **vncviewer localhost**
@@ -97,7 +97,7 @@ Setting up Skype and Sevabot
 
 Install ``sevabot`` using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
-    git clone git://github.com/sevanteri/sevabot.git
+    git clone git://github.com/opensourcehacker/sevabot.git
     cd sevabot
     curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
     python virtualenv.py venv
@@ -116,7 +116,7 @@ using Apple's fat binary ``python`` command.
 
 Install ``sevabot`` using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
-    git clone git://github.com/sevanteri/sevabot.git
+    git clone git://github.com/opensourcehacker/sevabot.git
     cd sevabot
     curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
     arch -i386 python virtualenv.py venv
