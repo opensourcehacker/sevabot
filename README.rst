@@ -68,12 +68,8 @@ Ubuntu
 
 Installing Skype and xvfb to your server. Under ``sudo -i``::
 
-    useradd skype # We must run Skype under non-root user
-    apt-get install xvfb
-    apt-get install fluxbox x11vnc
-    apt-get install dbus
-    apt-get install libasound2 libqt4-dbus libqt4-network libqtcore4 libqtgui4 libxss1 libpython2.7 libqt4-xml libaudio2 libmng1 fontconfig liblcms1
-    apt-get install lib32stdc++6 lib32asound2 ia32-libs libc6-i386 lib32gcc1
+    adduser skype # We must run Skype under non-root user
+    apt-get install xvfb fluxbox x11vnc dbus libasound2 libqt4-dbus libqt4-network libqtcore4 libqtgui4 libxss1 libpython2.7 libqt4-xml libaudio2 libmng1 fontconfig liblcms1 lib32stdc++6 lib32asound2 ia32-libs libc6-i386 lib32gcc1
     wget http://www.skype.com/go/getskype-linux-beta-ubuntu-64 -O skype-linux-beta.deb
     # if there are other unresolved dependencies install missing packages using apt-get install and then install the skype deb package again
     dpkg -i skype-linux-beta.deb
