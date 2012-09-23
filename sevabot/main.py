@@ -36,6 +36,10 @@ A generic purpose hack together Skype bot at your service.
 For the chat list and other administrative HTTP interface functions
 please read the README above.
 </p>
+
+<p>
+<a href="http://%(host)s:%(port)d/chats/SECRET/">Get your chat ids here (replace SECRET with your config variable)
+</p>
 """
 
 
@@ -105,7 +109,8 @@ def hello():
     """
     A simple HTTP interface test callback.
     """
-    return INTRO
+    settings = get_settings()
+    return INTRO % dict(host=settings.HTTP_HOST, port=settings.HTTP_PORT)
 
 
 @server.route("/chats/<string:shared_secret>/")
