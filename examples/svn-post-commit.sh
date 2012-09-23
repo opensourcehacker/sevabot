@@ -2,7 +2,9 @@
 #
 # Subversion post commit hook example. Please change YOUR parts.
 #
-# Drop this file as post-commit in /srv/svnrepts/YOURREPO/hooks and chmod a+x
+# - Drop this file as post-commit in /srv/svnrepts/YOURREPO/hooks 
+# - chmod u+x
+# - Change owner to www-data:www-data if you are running Subversion under Apache: chown www-data:www-data post-commit
 #
 # http://www.jasongrimes.org/2011/07/automatically-announce-subversion-commits-on-yammer-with-svn2yammer/
 #
@@ -46,3 +48,5 @@ for m in $md5; do
 done
 
 curl $msgaddress --data-urlencode chat="$chat" --data-urlencode msg="$msg" --data-urlencode md5="$m"
+
+exit 0

@@ -274,12 +274,15 @@ This applies for
 
 * New Github comments
 
-Zapier Web hooks
-=====================
+Zapier Web hooks (raw HTTP POSTs)
+====================================
 
 `zapier.com <https://zapier.com/>`_ offers free mix-and-match
 different event sources to different triggers. The event sources
 includes popular services like Github, Dropbox, Salesforce, etc.
+
+Zapier hook reads HTTP POST ``data`` variable payload to chat message as is.
+It is useful for other integrations as well.
 
 * You need to register your *zap* in zapier.com
 
@@ -296,6 +299,14 @@ includes popular services like Github, Dropbox, Salesforce, etc.
 Example of Zapier *Data* field for Github issues::
 
     ಠ_ಠ New issue 〜 {{title}} 〜 by {{user__login}} - {{html_url}}
+
+Testing Zapier hook
++++++++++++++++++++++
+
+You can use ``curl`` to test the hook from your server, for firewall
+issues and such::
+
+    curl --data-binary "data=Your message" "http://server:5000/zapier/CHATID/YOURSECRET/"
 
 Zabbix monitoring alerts
 ===========================
