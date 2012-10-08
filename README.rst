@@ -182,6 +182,18 @@ You can also try stock ``!weather`` command::
 
     !weather helsinki
 
+Installing via Vagrant 
+====================================
+
+Here is deployment instructions for `Vagrant <http://vagrantup.com/>`_
+deployment and automatic virtual machine configuration::
+    
+    git clone git://github.com/sevanteri/sevabot.git
+    cd sevabot
+    vagrant box add base http://files.vagrantup.com/precise64.box
+    vagrant init
+    vagrant up
+
 Integration
 -------------
 
