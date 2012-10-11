@@ -74,37 +74,42 @@ node default {
    "lib32gcc1",
   ]
 
-  package { $packages: }
+  package { $packages:
+    require => Exec['apt_update'],
+  }
   
   user { "skype":
-   ensure => 'present',
-   managehome => true,
-   shell => "/bin/bash",
-   password => "'$'6'$'/kio47YP'$'St/on312sQm.AV4RVDYQVmrJ9gUkKUKcuYts.LMXbxVet.TSRsBuhkv9w1E8VuWu4Ze6RxASby9.CwlPQY7lQ.",
+    ensure => 'present',
+    managehome => true,
+    shell => "/bin/bash",
+    password => "'$'6'$'/kio47YP'$'St/on312sQm.AV4RVDYQVmrJ9gUkKUKcuYts.LMXbxVet.TSRsBuhkv9w1E8VuWu4Ze6RxASby9.CwlPQY7lQ.",
+    require => Package[$packages],
   }
   
   wget{"skype-deb": 
     source => "http://www.skype.com/go/getskype-linux-beta-ubuntu-64", 
-	destination => "/home/skype/skype-linux-beta.deb",
-	require => User['skype'],
+    destination => "/home/skype/skype-linux-beta.deb",
+    require => User['skype'],
   }
   
   package { "skype-package":
     provider => dpkg,
     ensure   => 'present',
     source   => "/home/skype/skype-linux-beta.deb",
-	require => Wget[skype-deb],
+    require => [ Wget[skype-deb], Package[$packages] ],
   }
   
   git_clone{"sevabot":
     source => "https://github.com/opensourcehacker/sevabot.git",
-	destination => "/home/skype/sevabot",
-	owner => "skype",
+    destination => "/home/skype/sevabot",
+    owner => "skype",
+    require => User['skype'],
   }
   
   exec { "virtualenv":
     command => "curl -L -o /home/skype/sevabot/virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py",
     creates => "/home/skype/sevabot/virtualenv.py",
+    require => Git_clone["sevabot"],
   }
   
 }
