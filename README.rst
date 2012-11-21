@@ -188,10 +188,9 @@ Installing via Vagrant
 Here is deployment instructions for `Vagrant <http://vagrantup.com/>`_
 deployment and automatic virtual machine configuration::
     
-    git clone git://github.com/sevanteri/sevabot.git
+    git clone https://github.com/opensourcehacker/sevabot.git
     cd sevabot
-    vagrant box add base http://files.vagrantup.com/precise64.box
-    vagrant init
+    vagrant box add precise64 http://files.vagrantup.com/precise64.box
     vagrant up
 
 Integration
