@@ -170,9 +170,9 @@ def message():
                 else:
                     logger.warning("MD5 check failed %s vs %s" % (mcheck, m))
                     logger.warning(request.form)
-                    return "No can do\n"
+                    return ("MD5 signature of the message did not match", 500, {"Content-type": "text/plain"})
             else:
-                return ("Missing POST parameters", 500, {"Content-type": "text/plain"})
+                return ("Sevabot did not get required HTTP POST parameters", 500, {"Content-type": "text/plain"})
 
     except Exception as e:
         logger.error(e)
