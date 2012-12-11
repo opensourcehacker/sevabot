@@ -193,6 +193,20 @@ deployment and automatic virtual machine configuration::
     vagrant box add precise64 http://files.vagrantup.com/precise64.box
     vagrant up
 
+Commands
+----------
+
+Currently supported out of box commands.
+You can type them into the sevabot group chat.
+
+* !reload: Reload current command scripts and print the list of available commands
+
+* !ping: Check the bot is alive
+
+* !weather: Get Google Weather of city (defunct)
+
+* !timeout: Test timeouting commands
+
 Integration
 -------------
 
