@@ -66,7 +66,7 @@ def get_settings():
     return settings
 
 
-@plac.annotations( \
+@plac.annotations(
     settings=("Settings file", 'option', 's', None, None, "settings.py"),
     verbose=("Verbose debug output", 'option', 'v', None, None),
     )
@@ -78,7 +78,7 @@ def main(settings="settings.py", verbose=False):
     # Expose settings global module
     try:
         settings = imp.load_source("settings", settings)
-    except:
+    except Exception:
         sys.exit("Could not load settings file: %s" % settings)
 
     # Config logging
@@ -123,7 +123,7 @@ def chats(shared_secret):
     settings = get_settings()
 
     if shared_secret != settings.SHARED_SECRET:
-        return ("Bad shared secret", 403, {"Content-type": "text/plain"})
+        return "Bad shared secret", 403, {"Content-type": "text/plain"}
 
     buffer = StringIO()
 
@@ -133,7 +133,7 @@ def chats(shared_secret):
     for chat_id, chat in chats:
         print("%s: %s" % (chat_id, chat.FriendlyName), file=buffer)
 
-    return (buffer.getvalue(), 200, {"Content-type": "text/plain; charset=utf-8"})
+    return buffer.getvalue(), 200, {"Content-type": "text/plain; charset=utf-8"}
 
 
 @server.route("/msg/", methods=['POST'])
@@ -170,9 +170,9 @@ def message():
                 else:
                     logger.warning("MD5 check failed %s vs %s" % (mcheck, m))
                     logger.warning(request.form)
-                    return ("MD5 signature of the message did not match", 500, {"Content-type": "text/plain"})
+                    return "MD5 signature of the message did not match", 500, {"Content-type": "text/plain"}
             else:
-                return ("Sevabot did not get required HTTP POST parameters", 500, {"Content-type": "text/plain"})
+                return "Sevabot did not get required HTTP POST parameters", 500, {"Content-type": "text/plain"}
 
     except Exception as e:
         logger.error(e)
@@ -192,7 +192,7 @@ def github_post_commit(chat_id, shared_secret):
     sevabot = get_bot()
 
     if shared_secret != settings.SHARED_SECRET:
-        return ("Bad shared secret", 403, {"Content-type": "text/plain"})
+        return "Bad shared secret", 403, {"Content-type": "text/plain"}
 
     #print(request.form.items())
     #print(request.form[":payload"])
@@ -221,7 +221,7 @@ def zapier(chat_id, shared_secret):
     try:
 
         if shared_secret != settings.SHARED_SECRET:
-            return ("Bad shared secret", 403, {"Content-type": "text/plain"})
+            return "Bad shared secret", 403, {"Content-type": "text/plain"}
 
         msg = request.form["data"]
 
