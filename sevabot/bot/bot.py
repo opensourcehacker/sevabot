@@ -116,14 +116,14 @@ class Sevabot:
             if msg.Body == "!loadModules":
                 msg.Chat.SendMessage("Loading modules...")
                 try:
-                    self.loadModules()
+                    modules.load_modules()
                 except Exception as e:
                     msg.Chat.SendMessage(str(e))
                     return
                 return
 
             elif msg.Body == "!loadChats":
-                self.getChats()
+                self.cacheChats()
                 return
 
     def runCmd(self, cmd):
