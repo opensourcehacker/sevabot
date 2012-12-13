@@ -128,7 +128,7 @@ def message():
     MD5 is calculated for UTF-8 non-URL-encoded text.
 
     """
-    import settings
+    settings = get_settings()
 
     sevabot = get_bot()
 
