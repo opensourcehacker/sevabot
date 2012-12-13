@@ -34,7 +34,7 @@ def get_bot():
     """
     global _sevabot
     if not _sevabot:
-        from sevabot.bot import Sevabot
+        from sevabot.bot.bot import Sevabot
         _sevabot = Sevabot()
 
     return _sevabot
@@ -72,7 +72,7 @@ def main(settings="settings.py", verbose=False):
         skype_logger = logging.getLogger(skype_logger_name)
         skype_logger.setLevel(logging.WARN)
 
-    from sevabot import modules
+    from sevabot.bot import modules
     modules.load_modules()
 
     sevabot = get_bot()

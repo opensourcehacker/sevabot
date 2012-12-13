@@ -10,7 +10,7 @@ import time
 from collections import OrderedDict
 import Skype4Py
 
-from sevabot import modules
+from sevabot.bot import modules
 
 logger = logging.getLogger("sevabot")
 
