@@ -13,7 +13,7 @@ from hashlib import md5
 import logging
 import json
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 import plac
 
 logger = logging.getLogger("sevabot")
@@ -24,24 +24,6 @@ LOG_FORMAT = "%(message)s"
 server = Flask(__name__)
 
 _sevabot = None
-
-INTRO = """<!doctype html>
-<h1><a href="https://github.com/sevanteri/sevabot">Sevabot</a></h1>
-
-<p>
-A generic purpose hack together Skype bot at your service.
-</p>
-
-<p>
-For the chat list and other administrative HTTP interface functions
-please read the README above.
-</p>
-
-<p>
-<a href="http://%(host)s:%(port)d/chats/SECRET/">Get your chat ids here (replace SECRET with your config variable)
-</p>
-"""
-
 
 def get_bot():
     """
@@ -105,12 +87,12 @@ def main(settings="settings.py", verbose=False):
 
 
 @server.route("/")
-def hello():
+def root():
     """
     A simple HTTP interface test callback.
     """
     settings = get_settings()
-    return INTRO % dict(host=settings.HTTP_HOST, port=settings.HTTP_PORT)
+    return render_template('index.html', host=settings.HTTP_HOST, port=settings.HTTP_PORT)
 
 
 @server.route("/chats/<string:shared_secret>/")
