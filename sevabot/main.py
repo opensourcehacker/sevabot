@@ -239,3 +239,7 @@ def zapier(chat_id, shared_secret):
 def entry_point():
     exit_code = plac.call(main)
     return exit_code
+
+
+if __name__ == '__main__':
+    entry_point()
