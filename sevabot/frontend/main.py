@@ -6,7 +6,6 @@
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from StringIO import StringIO
 import imp
 import sys
 from hashlib import md5
@@ -107,15 +106,7 @@ def chats(shared_secret):
     if shared_secret != settings.SHARED_SECRET:
         return "Bad shared secret", 403, {"Content-type": "text/plain"}
 
-    buffer = StringIO()
-
-    print("Chat id                           Title", file=buffer)
-    print("--------------------------------- -----------------------------", file=buffer)
-
-    for chat_id, chat in chats:
-        print("%s: %s" % (chat_id, chat.FriendlyName), file=buffer)
-
-    return buffer.getvalue(), 200, {"Content-type": "text/plain; charset=utf-8"}
+    return render_template('chats.html', chats=chats)
 
 
 @server.route("/msg/", methods=['POST'])
