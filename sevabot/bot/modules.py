@@ -40,7 +40,7 @@ def load_modules():
                 logger.info("Discovered module %s: %s" % (body, fpath))
                 _modules[body] = fpath
 
-    if len(_modules.keys()) == 0:
+    if not len(_modules.keys()):
         raise RuntimeError("No modules found in: %s" % settings.MODULE_PATHS)
 
     return _modules.keys()
