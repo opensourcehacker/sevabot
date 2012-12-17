@@ -8,12 +8,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import imp
 import sys
-from hashlib import md5
 import logging
-import json
 
-from flask import Flask, request, render_template
+from flask import Flask, render_template
 import plac
+
+from sevabot.frontend.api import SendMessage, SendMessageMD5, GitHubPostCommit
 
 logger = logging.getLogger("sevabot")
 
@@ -79,7 +79,10 @@ def main(settings="settings.py", verbose=False):
     logger.info("Skype API connection established")
 
     sevabot.start()
-    server.run(settings.HTTP_HOST, settings.HTTP_PORT)
+
+    configure_api(server)
+
+    server.run(settings.HTTP_HOST, settings.HTTP_PORT, debug=False)
 
     # Should be never reached
     return 0
@@ -109,104 +112,33 @@ def chats(shared_secret):
     return render_template('chats.html', chats=chats)
 
 
-@server.route("/msg/", methods=['POST'])
-def message():
-    """
-    Receive a MD5 signed message into a chat.
-
-    All parameters must be UTF-8, URL encoded when sending.
-
-    MD5 is calculated for UTF-8 non-URL-encoded text.
-
-    """
-    settings = get_settings()
+def configure_api(server):
 
     sevabot = get_bot()
-
-    try:
-        if request.method == 'POST':
-            if ('chat' in request.form and
-               'msg' in request.form and
-               'md5' in request.form):
-
-                chat = request.form['chat']
-                msg = request.form['msg']
-                m = request.form['md5']
-
-                chat_encoded = chat.encode("utf-8")
-                msg_encoded = msg.encode("utf-8")
-
-                mcheck = md5(chat_encoded + msg_encoded + settings.SHARED_SECRET).hexdigest()
-                if mcheck == m:
-                    sevabot.sendMsg(chat, msg)
-                    return "OK"
-                else:
-                    logger.warning("MD5 check failed %s vs %s" % (mcheck, m))
-                    logger.warning(request.form)
-                    return "MD5 signature of the message did not match", 500, {"Content-type": "text/plain"}
-            else:
-                return "Sevabot did not get required HTTP POST parameters", 500, {"Content-type": "text/plain"}
-
-    except Exception as e:
-        logger.error(e)
-        logger.exception(e)
-        return unicode(e)
-
-
-@server.route("/github-post-commit/<string:chat_id>/<string:shared_secret>/", methods=['POST'])
-def github_post_commit(chat_id, shared_secret):
-    """
-    Handle post-commit hook from Github.
-
-    https://help.github.com/articles/post-receive-hooks/
-    """
-
     settings = get_settings()
-    sevabot = get_bot()
 
-    if shared_secret != settings.SHARED_SECRET:
-        return "Bad shared secret", 403, {"Content-type": "text/plain"}
+    # this url rules for sending message. Parameters can be in url or in request
+    server.add_url_rule(
+        '/message/',
+        view_func=SendMessage.as_view(str("send_message"), sevabot=sevabot, shared_secret=settings.SHARED_SECRET)
+    )
 
-    #print(request.form.items())
-    #print(request.form[":payload"])
-    payload = json.loads(request.form["payload"])
+    server.add_url_rule(
+        '/message/<string:chat_id>/',
+        view_func=SendMessage.as_view(str("send_message_1"), sevabot=sevabot, shared_secret=settings.SHARED_SECRET)
+   )
 
-    msg = "★ %s fresh commits 〜 %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
-    for c in payload["commits"]:
-        msg += "★ %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
+    # rule for sending md5 signed message
+    server.add_url_rule(
+        '/msg2/',
+        view_func=SendMessageMD5.as_view(str("send_message_md5"), sevabot=sevabot, shared_secret=settings.SHARED_SECRET)
+    )
 
-    sevabot.sendMsg(chat_id, msg)
-
-    return "OK"
-
-
-@server.route("/zapier/<string:chat_id>/<string:shared_secret>/", methods=['POST'])
-def zapier(chat_id, shared_secret):
-    """
-    Process incoming Zapier Webhook pushes.
-
-    https://zapier.com/
-    """
-
-    settings = get_settings()
-    sevabot = get_bot()
-
-    try:
-
-        if shared_secret != settings.SHARED_SECRET:
-            return "Bad shared secret", 403, {"Content-type": "text/plain"}
-
-        msg = request.form["data"]
-
-        sevabot.sendMsg(chat_id, msg)
-
-        return "OK"
-
-    except Exception as e:
-        logger.error(request.form)
-        logger.error(e)
-        logger.exception(e)
-        raise
+    # rule for notifying on github commits
+    server.add_url_rule(
+        '/github-post-commit/<string:chat_id>/<string:shared_secret>/',
+        view_func=GitHubPostCommit.as_view(str("send_message_github"), sevabot=sevabot, shared_secret=settings.SHARED_SECRET)
+    )
 
 
 def entry_point():
