@@ -3,9 +3,13 @@
 <head>
     <title>Available chats</title>
     <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" />
+    <!--suppress HtmlUnknownTarget -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"/>
 </head>
 <body>
+
+<H2>Available chats</H2>
+
 <table class="table table-striped">
     <thead>
     <tr>
@@ -17,7 +21,8 @@
     <tbody>
     {% for chat_id, chat in chats %}
     <tr>
-        <td>{{chat_id}}</td>
+        <td><!--suppress HtmlUnknownTarget -->
+            <a href="/chat_message/{{shared_secret}}/{{chat_id}}/">{{chat_id}}</a></td>
         <td>{{chat.FriendlyName}}</td>
     </tr>
     {% endfor %}

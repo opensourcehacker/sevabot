@@ -109,7 +109,19 @@ def chats(shared_secret):
     if shared_secret != settings.SHARED_SECRET:
         return "Bad shared secret", 403, {"Content-type": "text/plain"}
 
-    return render_template('chats.html', chats=chats)
+    return render_template('chats.html', chats=chats, shared_secret=shared_secret)
+
+
+@server.route("/chat_message/<string:shared_secret>/<string:chat_id>/", methods=['GET'])
+def chat_message(shared_secret, chat_id):
+
+    settings = get_settings()
+
+    if shared_secret != settings.SHARED_SECRET:
+        return "Bad shared secret", 403, {"Content-type": "text/plain"}
+
+
+    return render_template('chat_message.html', chat_id=chat_id, shared_secret=shared_secret)
 
 
 def configure_api(server):

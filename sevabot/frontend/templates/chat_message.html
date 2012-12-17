@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send message to {{chat_id}}</title>
+    <!-- Bootstrap -->
+    <!--suppress HtmlUnknownTarget -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"/>
+</head>
+<body>
+
+<div class="container">
+    <form class="form-horizontal" action="/message/{{chat_id}}/" method="post">
+        <fieldset>
+            <legend>Send message to <strong>{{chat_id}}</strong></legend>
+            <div class="control-group">
+                <label class="control-label" for="message">Message text</label>
+
+                <div class="controls">
+                    <textarea name="message" id="message" rows="5" style="width:60%;"></textarea>
+                </div>
+
+                <div class="controls">
+                    <input type="hidden" name="shared_secret" value="{{shared_secret}}">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">Send</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+</body>
+</html>
