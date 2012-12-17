@@ -33,6 +33,6 @@ setup(name = "sevabot",
     include_package_data = True,
     entry_points="""
       [console_scripts]
-      sevabot = sevabot.main:entry_point
+      sevabot = sevabot.frontend.main:entry_point
       """,
 )
