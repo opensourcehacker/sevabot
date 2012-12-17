@@ -83,5 +83,15 @@ class GitHubPostCommit(SendMessage):
 
         return msg
 
+class TeamcityWebHook(SendMessage):
+
+    def compose(self):
+        payload = json.loads(request.data)
+        build = payload.get('build')
+
+        message = '%s\n%s' % (build.get('message'), build.get('buildStatusUrl'))
+
+        return message
+
 if __name__ == '__main__':
     pass

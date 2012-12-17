@@ -13,7 +13,7 @@ import logging
 from flask import Flask, render_template
 import plac
 
-from sevabot.frontend.api import SendMessage, SendMessageMD5, GitHubPostCommit
+from sevabot.frontend.api import SendMessage, SendMessageMD5, GitHubPostCommit, TeamcityWebHook
 
 logger = logging.getLogger("sevabot")
 
@@ -34,6 +34,7 @@ def get_bot():
     global _sevabot
     if not _sevabot:
         from sevabot.bot.bot import Sevabot
+
         _sevabot = Sevabot()
 
     return _sevabot
@@ -44,13 +45,14 @@ def get_settings():
     Lazy init wrapper around settings.
     """
     import settings
+
     return settings
 
 
 @plac.annotations(
     settings=("Settings file", 'option', 's', None, None, "settings.py"),
     verbose=("Verbose debug output", 'option', 'v', None, None),
-    )
+)
 def main(settings="settings.py", verbose=False):
     """
     Application entry point.
@@ -67,11 +69,13 @@ def main(settings="settings.py", verbose=False):
     logging.basicConfig(level=level, stream=sys.stdout, format=LOG_FORMAT)
     logger.info("Starting sevabot")
 
-    for skype_logger_name in ["Skype4Py.utils.EventHandlingBase", "Skype4Py.skype.Skype", "Skype4Py.api.darwin.SkypeAPI"]:
+    for skype_logger_name in ["Skype4Py.utils.EventHandlingBase", "Skype4Py.skype.Skype",
+                              "Skype4Py.api.darwin.SkypeAPI"]:
         skype_logger = logging.getLogger(skype_logger_name)
         skype_logger.setLevel(logging.WARN)
 
     from sevabot.bot import modules
+
     modules.load_modules()
 
     sevabot = get_bot()
@@ -114,18 +118,15 @@ def chats(shared_secret):
 
 @server.route("/chat_message/<string:shared_secret>/<string:chat_id>/", methods=['GET'])
 def chat_message(shared_secret, chat_id):
-
     settings = get_settings()
 
     if shared_secret != settings.SHARED_SECRET:
         return "Bad shared secret", 403, {"Content-type": "text/plain"}
 
-
     return render_template('chat_message.html', chat_id=chat_id, shared_secret=shared_secret)
 
 
 def configure_api(server):
-
     sevabot = get_bot()
     settings = get_settings()
 
@@ -138,7 +139,12 @@ def configure_api(server):
     server.add_url_rule(
         '/message/<string:chat_id>/',
         view_func=SendMessage.as_view(str("send_message_1"), sevabot=sevabot, shared_secret=settings.SHARED_SECRET)
-   )
+    )
+
+    server.add_url_rule(
+        '/message/<string:chat_id>/<string:shared_secret>/',
+        view_func=SendMessage.as_view(str("send_message_2"), sevabot=sevabot, shared_secret=settings.SHARED_SECRET)
+    )
 
     # rule for sending md5 signed message
     server.add_url_rule(
@@ -149,7 +155,14 @@ def configure_api(server):
     # rule for notifying on github commits
     server.add_url_rule(
         '/github-post-commit/<string:chat_id>/<string:shared_secret>/',
-        view_func=GitHubPostCommit.as_view(str("send_message_github"), sevabot=sevabot, shared_secret=settings.SHARED_SECRET)
+        view_func=GitHubPostCommit.as_view(str("send_message_github"), sevabot=sevabot,
+            shared_secret=settings.SHARED_SECRET)
+    )
+
+    server.add_url_rule(
+        '/teamcity/<string:chat_id>/<string:shared_secret>/',
+        view_func=TeamcityWebHook.as_view(str("send_message_teamcity"), sevabot=sevabot,
+            shared_secret=settings.SHARED_SECRET)
     )
 
 
