@@ -67,9 +67,9 @@ Example integrations
 
 Sevabot can
 
-# run any scripts and executable on the server.
+* run any UNIX scripts and executable on the server and output the result to Skype chat
 
-# delegate messages from external services to Skype chat over HTTP interface
+* delegate messages from external services to Skype chat over HTTP interface
 
 Here are some examples
 
