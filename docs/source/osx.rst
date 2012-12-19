@@ -27,9 +27,9 @@ Install ``sevabot`` using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`
     git clone git://github.com/opensourcehacker/sevabot.git
     cd sevabot
     curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
-    python virtualenv.py venv
+    arch -i386 python virtualenv.py venv
     source venv/bin/activate
-    python setup.py develop
+    arch -i386 python setup.py develop
 
 This will
 
@@ -50,7 +50,6 @@ Setup your Skype admin username and HTTP interface password by editing ``setting
 
 Running sevabot
 =================
-
 
 Type::
 
@@ -81,3 +80,17 @@ In Skype chat, type::
 Sevabot should respond to this message with Skype message::
 
     pong
+
+Testing HTTP interface
+========================
+
+Sevabot server interface is listening to port 5000.
+This interface offers
+
+* Chat list (you need to know group chat id before you can send message into it)
+
+* :doc:`Webhooks </webhooks>` for integrating external services
+
+Just access the Sevabot server by going with your web browser to::
+
+    http://localhost:5000

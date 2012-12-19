@@ -1,5 +1,5 @@
 ============================================================
-Installing and deploying using Vagrant
+Installing and running using Vagrant
 ============================================================
 
 .. contents:: :local:

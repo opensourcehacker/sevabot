@@ -1,26 +1,28 @@
-.. Sevabot - Skype robot documentation master file, created by
-   sphinx-quickstart on Wed Dec 19 16:28:28 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to Sevabot - Skype robot's documentation!
+Sevabot - Friend Skype robot documentation
 =================================================
+
+Sevabot is a generic purpose hack-it-together Skype bot
+
+* Has extensible command system based on UNIX scripts
+* Send chat message nofications from any system using HTTP requests
+* Bult-in support for Github commit notifications and other popular services
+
+It is based on `Skype4Py framework <https://github.com/awahlig/skype4py>`_
+
+The bot is written in Python 2.7.x programming language, but can be integrated with any programming languages over UNIX command piping and HTTP interface.
+
+The underlying Skype4Py API is free - you do not need to enlist and pay Skype development program fee.
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    ubuntu
    osx
+   vagrant
    commands
-   zabbix
+   webhooks
+   troubleshooting
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+See `Github <https://github.com/opensourcehacker/sevabot>`_ for more project information.

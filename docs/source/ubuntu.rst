@@ -135,6 +135,25 @@ Sevabot should respond to this message with Skype message::
 
     pong
 
+Testing HTTP interface
+========================
+
+Sevabot server interface is listening to port 5000.
+This interface offers
+
+* Chat list (you need to know group chat id before you can send message into it)
+
+* :doc:`Webhooks </webhooks>` for integrating external services
+
+Just access the Sevabot server by going with your web browser to::
+
+    http://example.com:5000
+
+If you run the bot on non-internet facing computer (desktop)
+you can tunnel HTTP interface to a public server::
+
+    ssh -gNR 5000:yourserver.com:5000 yourserver.com
+
 Reboot and detach proof sevabot
 ====================================
 
