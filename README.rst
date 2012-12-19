@@ -58,16 +58,31 @@ deployment actions like deploying the trunk on the production server
 Supported operating systems
 -----------------------------
 
-* Ubuntu Server (headless installation)
+* `Ubuntu Server (headless server installation) <https://sevabot-skype-bot.readthedocs.org/en/latest/ubuntu.html>`_
 
-* OSX
+* `OSX desktop <https://sevabot-skype-bot.readthedocs.org/en/latest/osx.html>`_
 
-* Vagrant virtual machien deployments
+* `Vagrant virtual machien deployments <https://sevabot-skype-bot.readthedocs.org/en/latest/vagrant.html>`_
+
+Windows installation works in theory, but currently no core developer run Windows.
+
+Example integrations
+-----------------------
+
+* `Bash shell script as a Skype group chat command <https://sevabot-skype-bot.readthedocs.org/en/latest/commands.html#creating-custom-commands>`_
+
+* `Bash shell script sending Skype chat messages from an external service <https://sevabot-skype-bot.readthedocs.org/en/latest/bash.html>`_
+
+* `Subversion commit notifications <https://sevabot-skype-bot.readthedocs.org/en/latest/subversion.html>`_
+
+* `Github issue and commit notifications <https://sevabot-skype-bot.readthedocs.org/en/latest/github.html>`_
+
+* `Zabbix monitoring alerts <https://sevabot-skype-bot.readthedocs.org/en/latest/zabbix.html>`_
 
 Documentation
 ----------------
 
-`Browser Sevabot documentation on readthedocs.org <>`_.
+`Browser Sevabot documentation on readthedocs.org <https://sevabot-skype-bot.readthedocs.org/en/latest/>`_.
 
 Issues and source
 ------------------
@@ -89,8 +104,5 @@ Authors
 `Grigory Chernyshev <https://github.com/grundic>`_ - Valgrind, other
 
 `Felix Mueller <https://github.com/lixef>`_ - scripts
-
-
-`
 
 Some documentation and scripts by `Marco Weber <http://www.qxs.ch/2011/01/07/skype-instant-messages-from-zabbix/>`_
