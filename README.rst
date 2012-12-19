@@ -1,8 +1,4 @@
-===================
-Sevabot for Skype
-===================
-
-.. contents:: local
+.. contents::
 
 Introduction
 -------------
@@ -68,6 +64,14 @@ Windows installation works in theory, but currently no core developer run Window
 
 Example integrations
 -----------------------
+
+Sevabot can
+
+# run any scripts and executable on the server.
+
+# delegate messages from external services to Skype chat over HTTP interface
+
+Here are some examples
 
 * `Bash shell script as a Skype group chat command <https://sevabot-skype-bot.readthedocs.org/en/latest/commands.html#creating-custom-commands>`_
 
