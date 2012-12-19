@@ -11,6 +11,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   ubuntu
+   osx
+   commands
+   zabbix
 
 
 Indices and tables
