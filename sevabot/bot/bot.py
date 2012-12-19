@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from glob import glob
-import imp
 import sys
 import logging
 import hashlib
@@ -10,7 +8,7 @@ import time
 from collections import OrderedDict
 import Skype4Py
 
-from sevabot import modules
+from sevabot.bot import modules
 
 logger = logging.getLogger("sevabot")
 
@@ -116,14 +114,14 @@ class Sevabot:
             if msg.Body == "!loadModules":
                 msg.Chat.SendMessage("Loading modules...")
                 try:
-                    self.loadModules()
+                    modules.load_modules()
                 except Exception as e:
                     msg.Chat.SendMessage(str(e))
                     return
                 return
 
             elif msg.Body == "!loadChats":
-                self.getChats()
+                self.cacheChats()
                 return
 
     def runCmd(self, cmd):
