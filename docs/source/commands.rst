@@ -1,5 +1,5 @@
 ============================================================
-Commands
+Chat commands
 ============================================================
 
 .. contents:: :local:
@@ -9,6 +9,9 @@ Introduction
 
 Sevabot supports commands you can type into group chat.
 All commands begin with !.
+
+You can create your own commands easily as Sevabot
+happily executes any UNIX executable script.
 
 Out of the box commands
 ==============================
