@@ -55,32 +55,42 @@ these can be follow up actions like see that back-ups are running and up-to-date
 deployment actions like deploying the trunk on the production server
 (As far as I know the latter use case is practiced Github internally).
 
-Installation
---------------
-
-* OSX
+Supported operating systems
+-----------------------------
 
 * Ubuntu Server (headless installation)
 
-* Vagrant
+* OSX
 
-License
---------
+* Vagrant virtual machien deployments
 
-BSD.
+Documentation
+----------------
+
+`Browser Sevabot documentation on readthedocs.org <>`_.
 
 Issues and source
 ------------------
 
 Report issues on `Github <https://github.com/opensourcehacker/sevabot/issues>`_
 
+License
+--------
+
+BSD.
+
 Authors
 ----------
 
-`Pete Sevander <https://twitter.com/sevanteri>`_ - coding
-
 `Mikko Ohtamaa <https://twitter.com/moo9000>`_ - concept, documentation and packing
 
+`Pete Sevander <https://twitter.com/sevanteri>`_ - initial implementation
 
+`Grigory Chernyshev <https://github.com/grundic>`_ - Valgrind, other
+
+`Felix Mueller <https://github.com/lixef>`_ - scripts
+
+
+`
 
 Some documentation and scripts by `Marco Weber <http://www.qxs.ch/2011/01/07/skype-instant-messages-from-zabbix/>`_
