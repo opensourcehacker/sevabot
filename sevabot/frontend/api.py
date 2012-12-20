@@ -83,6 +83,28 @@ class GitHubPostCommit(SendMessage):
 
         return msg
 
+class JenkinsNotifier(SendMessage):
+    """
+    Handle requests from Jenkins notifier plugin
+
+    https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin
+    """
+
+    def compose(self):
+
+        payload = json.loads(request.form.keys()[0])
+
+        # Filter out completed status, lots of unneeded noise
+        if ( payload["build"]["phase"]  != 'COMPLETED' ):
+            if ( payload["build"]["status"]  == 'SUCCESS' ):
+                msg = "Project: %s build #%d %s Status: %s - (sun) - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
+            elif ( payload["build"]["status"]  == 'FAILURE' ):
+                msg = "Project: %s build #%d %s Status: %s - (rain) - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
+            else:
+                msg = "Project: %s build #%d %s Status: %s - - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
+
+        return msg
+
 class TeamcityWebHook(SendMessage):
 
     def compose(self):
