@@ -149,10 +149,17 @@ Just access the Sevabot server by going with your web browser to::
 
     http://example.com:5000
 
+.. image:: /images/admin.png
+    :width: 500px
+
 If you run the bot on non-internet facing computer (desktop)
 you can tunnel HTTP interface to a public server::
 
     ssh -gNR 5000:yourserver.com:5000 yourserver.com
+
+And then access the tunneled port::
+
+    http://localhost:5000
 
 Reboot and detach proof sevabot
 ====================================

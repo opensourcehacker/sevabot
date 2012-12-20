@@ -94,3 +94,7 @@ This interface offers
 Just access the Sevabot server by going with your web browser to::
 
     http://localhost:5000
+
+
+.. image:: /images/admin.png
+    :width: 500px
