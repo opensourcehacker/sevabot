@@ -28,6 +28,8 @@ You can type them into the sevabot group chat.
 
 * !timeout: Test timeouting commands
 
+* !soundcloud: Get your soundclound playlist (edit soundcloud.rb to make it work)
+
 Creating custom commands
 ==============================
 
