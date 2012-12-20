@@ -20,7 +20,6 @@ class Sevabot:
 
     def __init__(self):
         self.cmds = {}
-        self.cron = []
         self.chats = {}
 
     def start(self):
@@ -135,33 +134,3 @@ class Sevabot:
         except KeyError:
             return "Chat not found\n"
 
-    def runCron(self, interval):
-        """
-        Run cron jobs defined by modules.
-        This function is called from the main script.
-        Interval is the same as the main loops time.sleep's interval.
-        """
-
-        for job in self.cron:
-            if 'timer' not in job:
-                job['timer'] = job['interval']
-
-            # get the chat objects for the cron job
-            chats = []
-            if type(job['chats'][0]) == str:
-                for chat in job['chats']:
-                    try:
-                        chat = self.chats[chat]
-                        chats.append(chat)
-                    except KeyError:
-                        pass
-                job['chats'] = chats
-
-            job['timer'] -= interval
-
-            if job['timer'] <= 0:
-                try:
-                    job['cmd'](chats=job['chats'])
-                except Exception as e:
-                    print("Error " + str(e))
-                job['timer'] = job['interval']
