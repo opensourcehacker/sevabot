@@ -49,7 +49,7 @@ To send messages throught the bot you need to know
 
 To get list of the chat ids visit in the Sevabot server hosted address::
 
-    http://localhost:5000/chats/YOURSHAREDSECRET/
+    http://localhost:5000/
 
 It will return a HTTP page containing a list of Sevabot internal chat ids.
 

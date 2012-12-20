@@ -1,17 +1,77 @@
 <!doctype html>
-<h1>
-    <a href="https://github.com/opensourcehacker/sevabot">Sevabot</a>
-</h1>
+<html>
+<head>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 
-<p>
-    A generic purpose hack together Skype bot at your service.
-</p>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='seva.css') }}"/>
 
-<p>
-    For the chat list and other administrative HTTP interface functions
-    please read the README above.
-</p>
+</head>
+<body>
 
-<p>
-    <a href="http://{{ host }}:{{ port }}/chats/SECRET/">Get your chat ids here (replace SECRET with your config variable)</a>
-</p>
+    <div class="container">
+
+        <div class="hero-unit">
+            <h1>
+                <a href="https://github.com/opensourcehacker/sevabot">Sevabot</a>
+            </h1>
+
+            <p>A generic purpose hack together Skype bot at your service.</p>
+
+        </div>
+
+        <h2>Status</h2>
+
+        <div class="alert alert-success">Sevabot is running</div>
+
+        <h2>Documentation</h2>
+
+        <p>
+            Please visit
+            <a href="https://github.com/opensourcehacker/sevabot">Sevabot</a>
+            project page for more information.
+        </p>
+
+        <h2>Admin</h2>
+
+        <h3>Chat list</h3>
+
+        <p>Enter shared settings from <i>settings.py</i> file to access the bot
+           chat list</p>
+
+        <form action="http://{{ host }}:{{ port }}/chats/" method="POST" class="form-horizontal">
+
+            <div class="control-group">
+                <label class="control-label" for="secret">Shared secret</label>
+                <div class="controls">
+                    <input type="text" name="secret" placeholder="Look into your settings.py"></div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">Show chat list</button>
+                </div>
+            </div>
+        </form>
+
+        <h3>Chat history</h3>
+
+        <p>Enter shared settings from <i>settings.py</i> file to access the bot
+           chat history</p>
+
+        <form action="http://{{ host }}:{{ port }}/chats/" method="POST" class="form-horizontal">
+
+            <div class="control-group">
+                <label class="control-label" for="secret">Shared secret</label>
+                <div class="controls">
+                    <input type="text" id="secret" placeholder="Look into your settings.py"></div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">Show history</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</body>

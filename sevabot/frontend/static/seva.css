@@ -1,0 +1,12 @@
+body {
+    background: #444;
+}
+
+.hero-unit {
+    background: white;
+}
+
+.container {
+    background: #eee;
+    padding: 20px;
+}

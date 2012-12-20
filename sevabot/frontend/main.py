@@ -10,7 +10,10 @@ import imp
 import sys
 import logging
 
-from flask import Flask, render_template
+from flask import Flask
+from flask import render_template
+from flask import request
+
 import plac
 
 from sevabot.frontend.api import SendMessage, SendMessageMD5, GitHubPostCommit, TeamcityWebHook
@@ -23,6 +26,7 @@ LOG_FORMAT = "%(message)s"
 server = Flask(__name__)
 
 _sevabot = None
+
 
 def get_bot():
     """
@@ -101,14 +105,16 @@ def root():
     return render_template('index.html', host=settings.HTTP_HOST, port=settings.HTTP_PORT)
 
 
-@server.route("/chats/<string:shared_secret>/")
-def chats(shared_secret):
+@server.route("/chats/", methods=["POST"])
+def chats_post():
     """
     Print out chats and their ids, so you can register external services against the chat ids.
     """
     sevabot = get_bot()
     chats = sevabot.getOpenChats()
     settings = get_settings()
+
+    shared_secret = request.form.get("secret")
 
     if shared_secret != settings.SHARED_SECRET:
         return "Bad shared secret", 403, {"Content-type": "text/plain"}

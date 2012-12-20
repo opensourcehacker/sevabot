@@ -9,7 +9,9 @@ from flask.views import View, request
 
 logger = logging.getLogger(__name__)
 
+
 class SendMessage(View):
+    """ A webhook endpoint which sends a message to a Skype chat """
 
     methods = ['POST']
 
@@ -83,6 +85,7 @@ class GitHubPostCommit(SendMessage):
 
         return msg
 
+
 class TeamcityWebHook(SendMessage):
 
     def compose(self):
@@ -92,6 +95,3 @@ class TeamcityWebHook(SendMessage):
         message = '%s\n%s' % (build.get('message'), build.get('buildStatusUrl'))
 
         return message
-
-if __name__ == '__main__':
-    pass

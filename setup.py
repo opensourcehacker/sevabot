@@ -18,11 +18,11 @@ README = open("README.rst", "rt").read() + "\n" + open("CHANGES.rst", "rt").read
 
 
 setup(name = "sevabot",
-    version = "0.1",
-    description = "A generic purpose hack-it-together Skype bot",
+    version = "1.0",
+    description = "A Skype bot supporting integration with external services",
     long_description = README,
-    author = "Pete Sevander, Mikko Ohtamaa",
-    author_email = "",
+    author = "Mikko Ohtamaa",
+    author_email = "mikko@opensourcehacker.com",
     url = "https://github.com/sevanteri/sevabot",
     install_requires = ["Flask", "Skype4Py", "plac"],
     packages = ['sevabot'],
