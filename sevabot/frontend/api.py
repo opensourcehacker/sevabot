@@ -77,9 +77,9 @@ class GitHubPostCommit(SendMessage):
 
         payload = json.loads(request.form["payload"])
 
-        msg = "★ %s fresh commits 〜 %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
+        msg = "(star) %s fresh commits ~ %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
         for c in payload["commits"]:
-            msg += "★ %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
+            msg += "- %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
 
         return msg
 
