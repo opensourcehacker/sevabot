@@ -53,25 +53,5 @@
             </div>
         </form>
 
-        <h3>Chat history</h3>
-
-        <p>Enter shared settings from <i>settings.py</i> file to access the bot
-           chat history</p>
-
-        <form action="http://{{ host }}:{{ port }}/chats/" method="POST" class="form-horizontal">
-
-            <div class="control-group">
-                <label class="control-label" for="secret">Shared secret</label>
-                <div class="controls">
-                    <input type="text" id="secret" placeholder="Look into your settings.py"></div>
-            </div>
-
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn">Show history</button>
-                </div>
-            </div>
-        </form>
-
     </div>
 </body>

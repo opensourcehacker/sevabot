@@ -123,7 +123,10 @@ def chats_post():
 
 
 @server.route("/chat_message/<string:shared_secret>/<string:chat_id>/", methods=['GET'])
-def chat_message(shared_secret, chat_id):
+def chat_messages(shared_secret, chat_id):
+    """
+    A view to send a test message to a chat.
+    """
     settings = get_settings()
 
     if shared_secret != settings.SHARED_SECRET:
