@@ -169,6 +169,12 @@ def configure_api(server):
     )
 
     server.add_url_rule(
+        '/jenkins-notifier/<string:chat_id>/<string:shared_secret>/',
+        view_func=JenkinsNotifier.as_view(str("send_message_jenkins"), sevabot=sevabot,
+            shared_secret=settings.SHARED_SECRET)
+    )
+
+    server.add_url_rule(
         '/teamcity/<string:chat_id>/<string:shared_secret>/',
         view_func=TeamcityWebHook.as_view(str("send_message_teamcity"), sevabot=sevabot,
             shared_secret=settings.SHARED_SECRET)

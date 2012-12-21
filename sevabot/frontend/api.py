@@ -1,5 +1,9 @@
-#!/usr/bin/env python
-# coding=utf-8
+# -*- coding: utf-8 -*-
+"""
+
+    Supported external web service hooks
+
+"""
 
 import json
 import logging
@@ -79,9 +83,33 @@ class GitHubPostCommit(SendMessage):
 
         payload = json.loads(request.form["payload"])
 
-        msg = "★ %s fresh commits 〜 %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
+        msg = u"★ %s fresh commits 〜 %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
         for c in payload["commits"]:
-            msg += "★ %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
+            msg += u"★ %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
+
+        return msg
+
+
+class JenkinsNotifier(SendMessage):
+
+    """
+    Handle requests from Jenkins notifier plugin
+
+    https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin
+    """
+
+    def compose(self):
+
+        payload = json.loads(request.form.keys()[0])
+
+        # Filter out completed status, lots of unneeded noise
+        if payload['build']['phase'] != 'COMPLETED':
+            if payload['build']['status'] == 'SUCCESS':
+                msg = u'Project: %s build #%d %s Status: %s - (sun) - %s\n' % (payload['name'], payload['build']['number'], payload['build']['phase'], payload['build']['status'], payload['build']['full_url'])
+            elif payload['build']['status'] == 'FAILURE':
+                msg = u'Project: %s build #%d %s Status: %s - (rain) - %s\n' % (payload['name'], payload['build']['number'], payload['build']['phase'], payload['build']['status'], payload['build']['full_url'])
+            else:
+                msg = u'Project: %s build #%d %s Status: %s - - %s\n' % (payload['name'], payload['build']['number'], payload['build']['phase'], payload['build']['status'], payload['build']['full_url'])
 
         return msg
 
