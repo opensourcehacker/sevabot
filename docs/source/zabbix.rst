@@ -1,5 +1,5 @@
 ============================================================
-Zabbix: alert messages from monitoring
+Zabbix alert messages from monitoring
 ============================================================
 
 .. contents:: :local:

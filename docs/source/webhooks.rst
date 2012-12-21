@@ -36,7 +36,9 @@ Here are some services and examples how to integrate Sevabot
    zapier
    github
    subversion
+   jenkings
    zabbix
+
 
 Getting chat list
 =======================

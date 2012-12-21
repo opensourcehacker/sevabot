@@ -1,5 +1,5 @@
 ============================================================
-Sending Skype messages from Subversion
+Subversion commit notifications
 ============================================================
 
 .. contents:: :local:

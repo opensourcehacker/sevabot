@@ -1,5 +1,5 @@
 ============================================================
-Jenkins: Send build Results using Jenkins Notifier Plugin
+Jenkins continuous integration notifications
 ============================================================
 
 .. contents:: :local:
