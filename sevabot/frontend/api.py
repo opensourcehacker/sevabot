@@ -123,3 +123,28 @@ class TeamcityWebHook(SendMessage):
         message = '%s\n%s' % (build.get('message'), build.get('buildStatusUrl'))
 
         return message
+
+
+def configure(sevabot, settings, server):
+    """
+    Install Flask webhook routing
+    """
+
+       # this url rules for sending message. Parameters can be in url or in request
+    server.add_url_rule('/message/', view_func=SendMessage.as_view(str('send_message'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    server.add_url_rule('/message/<string:chat_id>/', view_func=SendMessage.as_view(str('send_message_1'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    server.add_url_rule('/message/<string:chat_id>/<string:shared_secret>/', view_func=SendMessage.as_view(str('send_message_2'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    # rule for sending md5 signed message
+    server.add_url_rule('/msg2/', view_func=SendMessageMD5.as_view(str('send_message_md5'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    # rule for notifying on github commits
+    server.add_url_rule('/github-post-commit/<string:chat_id>/<string:shared_secret>/', view_func=GitHubPostCommit.as_view(str('send_message_github'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    server.add_url_rule('/jenkins-notifier/<string:chat_id>/<string:shared_secret>/', view_func=JenkinsNotifier.as_view(str('send_message_jenkins'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    server.add_url_rule('/teamcity/<string:chat_id>/<string:shared_secret>/', view_func=TeamcityWebHook.as_view(str('send_message_teamcity'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+

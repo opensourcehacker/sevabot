@@ -9,7 +9,7 @@
     Based on pyfibot IRC bot http://code.google.com/p/pyfibot/source/browse/trunk/pyfibot/modules/module_openweather.py
 
 """
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function
 
 import sys
 import json
