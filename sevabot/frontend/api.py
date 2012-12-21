@@ -77,9 +77,9 @@ class GitHubPostCommit(SendMessage):
 
         payload = json.loads(request.form["payload"])
 
-        msg = "(star) %s fresh commits ~ %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
+        msg = u"★ %s fresh commits 〜 %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
         for c in payload["commits"]:
-            msg += "- %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
+            msg += u"★ %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
 
         return msg
 
@@ -97,11 +97,11 @@ class JenkinsNotifier(SendMessage):
         # Filter out completed status, lots of unneeded noise
         if ( payload["build"]["phase"]  != 'COMPLETED' ):
             if ( payload["build"]["status"]  == 'SUCCESS' ):
-                msg = "Project: %s build #%d %s Status: %s - (sun) - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
+                msg = u"Project: %s build #%d %s Status: %s - (sun) - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
             elif ( payload["build"]["status"]  == 'FAILURE' ):
-                msg = "Project: %s build #%d %s Status: %s - (rain) - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
+                msg = u"Project: %s build #%d %s Status: %s - (rain) - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
             else:
-                msg = "Project: %s build #%d %s Status: %s - - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
+                msg = u"Project: %s build #%d %s Status: %s - - %s\n" % (payload["name"], payload["build"]["number"],payload["build"]["phase"],payload["build"]["status"],payload["build"]["full_url"])
 
         return msg
 
