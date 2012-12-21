@@ -24,7 +24,7 @@ You can type them into the sevabot group chat.
 
 * !ping: Check the bot is alive
 
-* !weather: Get Google Weather of city (defunct)
+* !weather: Get weather by a city from `openweathermap.org <http://openweathermap.org/>`_. Example: ``!weather Toholampi``
 
 * !timeout: Test timeouting commands
 
