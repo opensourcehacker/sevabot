@@ -36,7 +36,7 @@ Here are some services and examples how to integrate Sevabot
    zapier
    github
    subversion
-   jenkings
+   jenkins
    zabbix
 
 
