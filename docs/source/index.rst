@@ -1,4 +1,4 @@
-Sevabot - Friend Skype robot documentation
+Sevabot - Friendly Skype robot documentation
 =================================================
 
 Sevabot is a generic purpose hack-it-together Skype bot
