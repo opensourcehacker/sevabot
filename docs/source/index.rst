@@ -24,5 +24,6 @@ Contents:
    commands
    webhooks
    troubleshooting
+   development
 
 See `Github <https://github.com/opensourcehacker/sevabot>`_ for more project information.

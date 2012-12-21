@@ -1,0 +1,47 @@
+============================================================
+Community and development
+============================================================
+
+.. contents:: :local:
+
+Introduction
+===============
+
+How to participate to the spectacular future of Sevabot.
+You can make the life of Sevabot better - and yours too!
+
+IRC
+====
+
+For chatting
+
+/join #opensourcehacker @ irc.freenode.net
+
+Note: due to low activity of the channel prepare to idle there
+for 24 hours to wait for the answer.
+
+Support tickets and issues
+=============================
+
+`Use Github issue tracker <https://github.com/opensourcehacker/sevabot/issues>`_
+
+Installing development version
+==========================================================
+
+How to install and run the development version (trunk) of Sevabot::
+
+    git clone git://github.com/opensourcehacker/sevabot.git
+    cd sevabot
+    curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
+    python virtualenv.py venv # prefix with arch -i386  on OSX
+    source venv/bin/activate
+    python setup.py develop # prefix with arch -i386  on OSX
+
+Contributions
+==========================================================
+
+All contributions must come with accompaning documentation updates.
+
+All Python files must follow PEP-8 coding conventionas and be `flake8 valid <http://pypi.python.org/pypi/flake8/>`_.
+
+Submit pull request at Github.

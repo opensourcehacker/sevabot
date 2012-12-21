@@ -88,8 +88,8 @@ Documentation
 
 `Browser Sevabot documentation on readthedocs.org <https://sevabot-skype-bot.readthedocs.org/en/latest/>`_.
 
-Issues and source
-------------------
+Community, support and development
+------------------------------------
 
 Report issues on `Github <https://github.com/opensourcehacker/sevabot/issues>`_
 
