@@ -3,8 +3,10 @@
 <head>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 
+    <!--suppress HtmlUnknownTarget -->
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='seva.css') }}"/>
-
+    <!--suppress HtmlUnknownTarget -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
 
@@ -43,7 +45,7 @@
             <div class="control-group">
                 <label class="control-label" for="secret">Shared secret</label>
                 <div class="controls">
-                    <input type="text" name="secret" placeholder="Look into your settings.py"></div>
+                    <input type="password" name="secret" id="secret" placeholder="Look into your settings.py"></div>
             </div>
 
             <div class="control-group">
