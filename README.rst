@@ -83,6 +83,8 @@ Here are some examples
 
 * `Zabbix monitoring alerts <https://sevabot-skype-bot.readthedocs.org/en/latest/zabbix.html>`_
 
+* `Jenkins continuous integration status <https://sevabot-skype-bot.readthedocs.org/en/latest/jenkins.html>´_
+
 Documentation
 ----------------
 
@@ -91,7 +93,7 @@ Documentation
 Community, support and development
 ------------------------------------
 
-Report issues on `Github <https://github.com/opensourcehacker/sevabot/issues>`_
+`See community information <https://sevabot-skype-bot.readthedocs.org/en/latest/development.html>`_
 
 License
 --------
@@ -106,6 +108,8 @@ Authors
 `Pete Sevander <https://twitter.com/sevanteri>`_ - initial implementation
 
 `Grigory Chernyshev <https://github.com/grundic>`_ - Valgrind, other
+
+`Brian Johnson <https://github.com/b2jrock>`_ - Jenkins
 
 `Felix Mueller <https://github.com/lixef>`_ - scripts
 
