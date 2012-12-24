@@ -41,8 +41,14 @@ pkill -f "Sevabot screen"
 
 # Create a named screen instance which will leave the bot Python daemon running
 # You can later attach this with screen -x
-DISPLAY=:1 screen -t "Sevabot screen" sevabot
+# Note: If you are trying to start via sudo
+# you mught need to do this first to fix screen:
+# script /dev/null
+DISPLAY=:1 screen -dm -t "Sevabot screen" sevabot
 
+# Now type screen -x to see sevabot running in a screen
+#
+#
 
 
 
