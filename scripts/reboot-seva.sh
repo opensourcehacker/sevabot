@@ -13,7 +13,11 @@ cd ~/sevabot
 # Assume sevabot has been cloned under ~/sevabot
 
 # Restart Xvfb + Skype
-scripts/start-server.sh restart
+scripts/start-server.sh stop
+
+sleep 5 # Need some delay as xvfb dying might take a while
+
+scripts/start-server.sh start
 
 #
 # Comment SSH part out if your bot scripts don't use SSH
