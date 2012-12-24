@@ -1,6 +1,8 @@
 Sevabot - Friendly Skype robot documentation
 =================================================
 
+.. image:: /images/sevabot-256.png
+
 Sevabot is a generic purpose hack-it-together Skype bot
 
 * Has extensible command system based on UNIX scripts

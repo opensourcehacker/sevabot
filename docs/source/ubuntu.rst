@@ -49,7 +49,7 @@ Start xvfb, fluxbox and Skype::
 
 Start vnc server::
 
-    sevabot/scripts/start-vcn.sh start*
+    sevabot/scripts/start-vcn.sh start
 
 On your local computer start vnviewer (vncviewer is for Linux, for other OS
 use any VNC capable remote desktop viewing software)
@@ -61,6 +61,9 @@ the server so you can see the headless X desktop::
 You see the remote desktop. Login to Skype for the first time.
 Make Skype to save your username and password. Create Skype
 account in this point if you don't have one for sevabot.
+
+.. image:: /images/vnc.png
+    :width: 500px
 
 Got to Skype's settings and set the following
 
@@ -161,37 +164,36 @@ And then access the tunneled port::
 
     http://localhost:5000
 
-Reboot and detach proof sevabot
+Running sevabot as service
 ====================================
 
-To run sevabot from the server from reboot
+To run sevabot from the server from reboot or do a full bot
+restart there is an example script `reboot-seva.sh <https://github.com/opensourcehacker/sevabot/blob/master/scripts/reboot-seva.sh>`_ provided.
 
-* Make sure X (xvfb) server is running
+It also does optionally manual SSH key authorization so that
+the bot can execute remote commands over SSH.
 
-* Make sure Skype is running inside xvfb
+Setting avatar image
+=======================
 
-* Make sure Sevabot server (port 5000)
+Sevabot has a cute logo which you want to set as Sevabot's Skype avatar image.
 
-* To make sure Sevabot server does not die from the terminal detach,
-  use ``screen`` UNIX command
+Here are short instructions.
+
+Login as your sevabot user, tunnel VNC::
+
+    ssh -L 5900:localhost:5900 skype@example.com
+
+Start VNC::
+
+    sevabot/scripts/start-vnc.sh start
+
+On your local VNC client, connect to ``localhost:5900``.
+
+Set the avatar image through Skype UI.
+
+.. image:: /images/avatar.png
+    :width: 500px
 
 
-Assuming Sevabot is running under an UNIX user ``skype``.
-We also assume that this bot needs
-`SSH keys manually activated to execute certain scripts <http://opensourcehacker.com/2012/10/24/ssh-key-and-passwordless-login-basics-for-developers/>`_.
 
-Start headless X, skype
-::
-
-     sudo -i -u skype
-     sevabot/scripts/start-server.sh start
-     # Warnings
-
-Then start the bot script
-::
-
-    script /dev/null
-    screen -t sevabot
-    `eval ssh-agent` # Start SSH agent on ubuntu
-    ssh-add # Active SSH keys manually with passpharse
-    ../sevabot_venv/bin/sevabot # Run sevabot server
