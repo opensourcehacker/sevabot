@@ -10,7 +10,7 @@ Sevabot is a generic purpose hack-it-together Skype bot
 
 * Has extensible command system based on UNIX scripts
 
-* Send chat message nofications from any system using HTTP requests
+* Send chat messages from anywhere using HTTP requests and webhooks
 
 * Bult-in support for Github commit notifications and other popular services
 
