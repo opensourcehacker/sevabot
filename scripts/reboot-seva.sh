@@ -19,6 +19,9 @@ sleep 5 # Need some delay as xvfb dying might take a while
 
 scripts/start-server.sh start
 
+# Use Xvfb X display to run Skype
+export DISPLAY=:1
+
 #
 # Comment SSH part out if your bot scripts don't use SSH
 #
@@ -44,11 +47,12 @@ pkill -f "Sevabot screen"
 # Note: If you are trying to start via sudo
 # you mught need to do this first to fix screen:
 # script /dev/null
-DISPLAY=:1 screen -dm -t "Sevabot screen" sevabot
 
-# Now type screen -x to see sevabot running in a screen
-#
-#
+screen -dm -t "Sevabot screen" sevabot
+
+echo "Sevabot is now running in screen"
+echo "Type screen -x to attach and see the bot logs"
+
 
 
 
