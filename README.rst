@@ -54,8 +54,8 @@ these can be follow up actions like see that back-ups are running and up-to-date
 deployment actions like deploying the trunk on the production server
 (As far as I know the latter use case is practiced Github internally).
 
-Supported operating systems
------------------------------
+Installation and supported operating systems
+----------------------------------------------------------
 
 * `Ubuntu Server (headless server installation) <https://sevabot-skype-bot.readthedocs.org/en/latest/ubuntu.html>`_
 
