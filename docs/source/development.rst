@@ -45,3 +45,11 @@ All contributions must come with accompaning documentation updates.
 All Python files must follow PEP-8 coding conventionas and be `flake8 valid <http://pypi.python.org/pypi/flake8/>`_.
 
 Submit pull request at Github.
+
+For any changes update `CHANGES.rst <https://github.com/opensourcehacker/sevabot/blob/master/CHANGES.rst>`_.
+
+
+Releases
+=========
+
+`Use zest.releaser <http://opensourcehacker.com/2012/08/14/high-quality-automated-package-releases-for-python-with-zest-releaser/>`_
