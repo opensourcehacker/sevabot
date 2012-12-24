@@ -3,6 +3,9 @@
 Introduction
 -------------
 
+.. image:: https://sevabot-skype-bot.readthedocs.org/en/latest/_images/sevabot-64.png
+    :align: left
+
 Sevabot is a generic purpose hack-it-together Skype bot
 
 * Has extensible command system based on UNIX scripts
@@ -83,7 +86,7 @@ Here are some examples
 
 * `Zabbix monitoring alerts <https://sevabot-skype-bot.readthedocs.org/en/latest/zabbix.html>`_
 
-* `Jenkins continuous integration status <https://sevabot-skype-bot.readthedocs.org/en/latest/jenkins.html>´_
+* `Jenkins continuous integration status <https://sevabot-skype-bot.readthedocs.org/en/latest/jenkins.html>`_
 
 Documentation
 ----------------
