@@ -3,7 +3,8 @@
 Introduction
 -------------
 
-.. image:: https://sevabot-skype-bot.readthedocs.org/en/latest/_images/sevabot-64.png
+.. image:: https://github.com/opensourcehacker/sevabot/raw/master/docs/source/images/sevabot-64.png
+    :align: left
 
 Sevabot is a generic purpose hack-it-together Skype bot
 
