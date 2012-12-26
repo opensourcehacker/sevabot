@@ -17,7 +17,7 @@ scripts/start-server.sh stop
 
 sleep 5 # Need some delay as xvfb dying might take a while
 
-scripts/start-server.sh start
+scripts/start-server.sh start > /dev/null 2>&1
 
 # Use Xvfb X display to run Skype
 export DISPLAY=:1
@@ -25,6 +25,11 @@ export DISPLAY=:1
 #
 # Comment SSH part out if your bot scripts don't use SSH
 #
+
+if [ -n "$SSH_AUTH_SOCK" ] ; then
+    echo "Cannot add a local user SSH key when SSH agent forward is enabled"
+    exit 1
+fi
 
 # Restart sevabot in screen
 eval `ssh-agent`
