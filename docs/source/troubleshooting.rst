@@ -55,3 +55,25 @@ if you log several times in a row.
 Looks like it fixes itself if you just a wait a bit before sending
 messages to the chat.
 
+Crashing on a startup on Ubuntu server
+==================================================
+
+Segfault when starting up the bot::
+
+      File "build/bdist.linux-i686/egg/Skype4Py/skype.py", line 250, in __init__
+      File "build/bdist.linux-i686/egg/Skype4Py/api/posix.py", line 40, in SkypeAPI
+      File "build/bdist.linux-i686/egg/Skype4Py/api/posix_x11.py", line 254, in __in                                    it__
+    Skype4Py.errors.SkypeAPIError: Could not open XDisplay
+    Segmentation fault (core dumped)
+
+This usually means that your DISPLAY environment variable is wrong.
+
+Try::
+
+    export DISPLAY=:1
+
+or::
+
+    export DISPLAY=:0
+
+depending on your configuration before running Sevabot.
