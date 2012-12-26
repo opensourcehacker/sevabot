@@ -34,11 +34,13 @@ class SendMessage(View):
 
             if chat_id:
                 if not self.validate(kwargs):
+                    logger.error("Validation failed")
                     return "Validation failed!", 403, {"Content-type": "text/plain"}
                 else:
                     self.sevabot.sendMsg(chat_id, self.compose())
                     return "OK"
             else:
+                logger.error("Not enough parameters to send message (chat id missing)")
                 return "Not enough parameters to send message!", 500, {"Content-type": "text/plain"}
         except Exception as e:
             logger.error(e)
@@ -58,6 +60,7 @@ class SendMessage(View):
 
 
 class SendMessageMD5(SendMessage):
+
     def validate(self, kwargs):
 
         chat_id = self.get_parameter('chat_id')

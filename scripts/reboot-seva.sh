@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # A script to restart everything in Sevabot under skype UNIX user.
 # Assumes Ubunutu + headless Sevabot installation.
