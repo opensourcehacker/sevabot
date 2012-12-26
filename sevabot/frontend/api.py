@@ -66,12 +66,22 @@ class SendMessage(View):
 class SendMessageMD5(SendMessage):
     """
     Send a MD5 signed chat message.
+
+    HTTP POST parameters
+
+    :param chat: Chat id
+
+    :param msg: Message payload
+
+    :param md5: MD5 checksum
+
+    Make sure your client encodes message in UTF-8.
     """
     def validate(self, kwargs):
 
         # BBB: Use only "chat" in the future
         chat_id = self.get_parameter('chat_id') or self.get_parameter('chat')
-        message = self.get_parameter('message')
+        message = self.get_parameter('message') or self.get_parameter('msg')
         md5_value = self.get_parameter('md5')
 
         chat_encoded = chat_id.encode("utf-8")
