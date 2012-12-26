@@ -5,6 +5,15 @@
 #
 # Assumes sevabot is installed in ~/sevabot and virtualenv in ~/sevabot/venv
 #
+# Add the following entry in your SSH config:
+#
+# Host sevabot
+# User skype
+# Hostname example.com
+# ForwardAgent no
+#
+# More SSH info http://opensourcehacker.com/2012/10/24/ssh-key-and-passwordless-login-basics-for-developers/
+#
 cd ~/sevabot
 
 # Activate virtualenv
@@ -57,7 +66,7 @@ screen -dm -t "Sevabot screen" sevabot
 
 echo "Sevabot is now running in screen"
 echo "Type screen -x to attach and see the bot logs"
-
+echo "Use CTRL+A then d to detach from the running screen"
 
 
 

@@ -15,7 +15,10 @@ logger = logging.getLogger(__name__)
 
 
 class SendMessage(View):
-    """ A webhook endpoint which sends a message to a Skype chat """
+    """ A webhook endpoint which sends a message to a Skype chat.
+
+    A generic base class for other webhooks.
+    """
 
     methods = ['POST']
 
@@ -30,7 +33,8 @@ class SendMessage(View):
         self.kwargs = kwargs
 
         try:
-            chat_id = self.get_parameter('chat_id')
+            # BBB: Use only "chat" in the future
+            chat_id = self.get_parameter('chat_id') or self.get_parameter('chat')
 
             if chat_id:
                 if not self.validate(kwargs):
@@ -60,10 +64,13 @@ class SendMessage(View):
 
 
 class SendMessageMD5(SendMessage):
-
+    """
+    Send a MD5 signed chat message.
+    """
     def validate(self, kwargs):
 
-        chat_id = self.get_parameter('chat_id')
+        # BBB: Use only "chat" in the future
+        chat_id = self.get_parameter('chat_id') or self.get_parameter('chat')
         message = self.get_parameter('message')
         md5_value = self.get_parameter('md5')
 

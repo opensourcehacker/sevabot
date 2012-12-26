@@ -58,3 +58,58 @@ create a file ``/usr/local/share/zabbix/alertscripts/send.sh``::
 
     curl $msgaddress -d "chat=$chat&msg=$msg&md5=$m"
 
+Doing a agent alive check
+==============================
+
+Below is a sample Sevabot script which will
+do a Zabbix agent daemon check on all the servers.
+
+* Make a fake alert on all monitor servers, listed in ~/.ssh/config of Sevabot UNIX user
+
+* Zabbix alert script will report back this alert from all servers where Zabbix agent is correctly running
+
+``agents.sh``::
+
+    #!/bin/bash
+
+    # These might mess grep output below
+    export GREP_OPTIONS=
+    export GREP_COLOR=
+
+    # Get list of hosts from SSH config file
+    HOSTS=`grep "Host " ~/.ssh/config | awk '{print $2}'`
+
+    # If some hosts don't have zabbix agents running, there's no need to use this script for them.
+    # Add this line to ~/.ssh/config:
+    # #NoAgents host1 host2
+    NOAGENT=`grep "#NoAgents " ~/.ssh/config | cut -d' ' -f2- | tr ' ' '\n'`
+
+    if [ -n "$NOAGENT" ]; then
+        HOSTS=`echo -e "$HOSTS\n$NOAGENT" | sort | uniq -u`
+    fi
+
+    # Tell Sevabot what agents we are going to call
+    echo "Agents: $HOSTS" | tr '\n' ' '
+    echo
+
+    # On each server touch a file to change its timestamp
+    # Zabbix monitoring system will detect this and
+    # report the alert back to Skype chat via a hook
+    for h in $HOSTS; do
+       ssh $h "touch -m zabbix_test"
+    done
+
+    echo "Succesfully generated zabbix_test ping on all servers"
+
+
+
+
+Please note that you need to set up bot `SSH keys <http://opensourcehacker.com/2012/10/24/ssh-key-and-passwordless-login-basics-for-developers/>`_ for this.
+
+Diagnosing
+
+* If none of the agents is not replying your Zabbix host is probably messed up,
+  reboot it: ``/etc/init.d/zabbix-server restart``
+
+* If some of the agents are replying manually restart non-replying agents
+
