@@ -2,6 +2,8 @@
 Troubleshooting
 ======================
 
+.. contents:: :local:
+
 Segfaults
 ===========
 
@@ -36,4 +38,20 @@ To fix this do::
     git clone git://github.com/stigkj/Skype4Py.git
     cd Skype4Py
     arch -i386 python setup.py install
+
+Skype messages not coming through to bot interface
+==============================================================
+
+Symptons
+
+* Skype is running in Xvfb
+
+* Sevabot logs in screen don't see incoming chat messages
+
+Seems to happen if you reboot the bot in too fast cycle.
+Maybe Skype login has something which makes it not working
+if you log several times in a row.
+
+Looks like it fixes itself if you just a wait a bit before sending
+messages to the chat.
 

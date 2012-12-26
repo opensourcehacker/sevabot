@@ -18,6 +18,14 @@ class SendMessage(View):
     """ A webhook endpoint which sends a message to a Skype chat.
 
     A generic base class for other webhooks.
+
+    Use HTTP POST parameters
+
+    * msg
+
+    * chat
+
+    Other parameters are for compatibiltiy reasons only and will be removed in the future.
     """
 
     methods = ['POST']
@@ -60,7 +68,7 @@ class SendMessage(View):
         return shared_secret == self.shared_secret
 
     def compose(self):
-        return request.form.get('message', '')
+        return request.form.get('message', '') or request.form.get('msg', '')
 
 
 class SendMessageMD5(SendMessage):
