@@ -57,3 +57,34 @@ commands like ``ping``, but you can add your own custom commands by
 
 * Now you should see command ``!myscript`` in the command list
 
+Running commands on remote servers
+============================================================
+
+The best way to execute commands on remote servers
+on UNIX is over SSH.
+Please read first the
+`basics how to setup SSH keys for the bot <http://opensourcehacker.com/2012/10/24/ssh-key-and-passwordless-login-basics-for-developers/>´_.
+
+Below is an example ``backup.sh`` which checks
+
+* disk space usage
+
+* the timestamp
+
+of backup folders on a backup server over SSH.
+
+``backup.sh``::
+
+    #!/bin/sh
+
+    ssh root@example.com '
+    LOCATION="/srv/backup/backup/duply"
+    for l in $LOCATION/*; do
+        S=`du -sh $l`
+        TIME=`stat -c %y $l | cut -d " " -f1`
+        BPATH=`echo $S | cut -f2`
+        SIZE=`echo $S | cut -f1`
+
+        echo -e "$SIZE\t$TIME\t$BPATH"
+    done
+    '#
