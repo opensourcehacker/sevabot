@@ -35,19 +35,26 @@ export DISPLAY=:1
 # Comment SSH part out if your bot scripts don't use SSH
 #
 
-if [ -n "$SSH_AUTH_SOCK" ] ; then
-    echo "Cannot add a local user SSH key when SSH agent forward is enabled"
-    exit 1
+# Run ssh-add only if the terminal is in interactive mode
+# http://serverfault.com/questions/146745/how-can-i-check-in-bash-if-a-shell-is-running-in-interactive-mode
+if [[ $- == *i* ]]
+then
+
+    if [ -n "$SSH_AUTH_SOCK" ] ; then
+        echo "Cannot add a local user SSH key when SSH agent forward is enabled"
+        exit 1
+    fi
+
+    # Restart sevabot in screen
+    eval `ssh-agent`
+
+    # For the security reasons we do not store the
+    # SSH key on the server as bot scripts have root access to some systems
+    echo "Please give SSH key passphase needed by the sevabot scripts"
+
+    ssh-add
 fi
 
-# Restart sevabot in screen
-eval `ssh-agent`
-
-# For the security reasons we do not store the
-# SSH key on the server as bot scripts have root access to some systems
-echo "Please give SSH key passphase needed by the sevabot scripts"
-
-ssh-add
 
 #
 # ... and now continue with starting
