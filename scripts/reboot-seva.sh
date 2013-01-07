@@ -14,6 +14,11 @@
 #
 # More SSH info http://opensourcehacker.com/2012/10/24/ssh-key-and-passwordless-login-basics-for-developers/
 #
+# To make sevabot launch on the server reboot add the following line in /etc/rc.local
+#
+# sudo -i -u skype /home/skype/sevabot/scripts/reboot-seva.sh
+
+
 cd ~/sevabot
 
 # Activate virtualenv
@@ -37,9 +42,8 @@ export DISPLAY=:1
 
 # Run ssh-add only if the terminal is in interactive mode
 # http://serverfault.com/questions/146745/how-can-i-check-in-bash-if-a-shell-is-running-in-interactive-mode
-if [[ $- == *i* ]]
+if [[ ! -z $PS1 ]]
 then
-
     if [ -n "$SSH_AUTH_SOCK" ] ; then
         echo "Cannot add a local user SSH key when SSH agent forward is enabled"
         exit 1
