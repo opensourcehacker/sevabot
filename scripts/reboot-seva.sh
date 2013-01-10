@@ -42,7 +42,9 @@ export DISPLAY=:1
 
 # Run ssh-add only if the terminal is in interactive mode
 # http://serverfault.com/questions/146745/how-can-i-check-in-bash-if-a-shell-is-running-in-interactive-mode
-if [[ ! -z "$TERM" ]]
+# OK, this is really lame to assume xterm but could not find other reliable
+# way to detect run from /etc/rc.local (which sets terminal to linux)
+if [[ "$TERM" == "xterm" ]]
 then
     if [ -n "$SSH_AUTH_SOCK" ] ; then
         echo "Cannot add a local user SSH key when SSH agent forward is enabled"
