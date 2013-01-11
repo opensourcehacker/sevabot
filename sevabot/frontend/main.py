@@ -74,7 +74,7 @@ def main(settings="settings.py", verbose=False, daemon=False):
     logging.basicConfig(level=level, stream=sys.stdout, format=settings.LOG_FORMAT)
 
     # Setup logging file
-    if settings.LOG_FILE:
+    if getattr(settings, "LOG_FILE", None):
         if not settings.LOG_FILE.startswith("/"):
             log_path = settings.LOG_FILE
         else:
