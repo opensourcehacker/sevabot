@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Check that sevabot service is runnign correctly and
 # reboot it if necessary. Intended to be run as a cron job.
@@ -8,6 +8,7 @@
 # #!/bin/sh
 # sudo -i -u skype /home/skype/sevabot/scripts/check-service.sh
 #
+# chmod u+x /etc/cron.hourly/check-seva
 
 # http://stackoverflow.com/a/246128/315168
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
