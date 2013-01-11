@@ -9,6 +9,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import imp
 import sys
 import logging
+import logging.handlers
+import os
 
 from flask import Flask
 from flask import render_template
@@ -19,9 +21,6 @@ import plac
 from sevabot.frontend import api
 
 logger = logging.getLogger("sevabot")
-
-# http://docs.python.org/library/logging.html
-LOG_FORMAT = "%(message)s"
 
 server = Flask(__name__)
 
@@ -70,7 +69,26 @@ def main(settings="settings.py", verbose=False):
 
     # Config logging
     level = verbose if logging.DEBUG else logging.INFO
-    logging.basicConfig(level=level, stream=sys.stdout, format=LOG_FORMAT)
+    logging.basicConfig(level=level, stream=sys.stdout, format=settings.LOG_FORMAT)
+
+    # Setup logging file
+    if settings.LOG_FILE:
+        if not settings.LOG_FILE.startswith("/"):
+            log_path = settings.LOG_FILE
+        else:
+            log_path = os.path.join(os.path.dirname(settings.__file__), settings.LOG_FILE)
+
+        formatter = logging.Formatter(settings.LOG_FORMAT)
+
+        hdlr = logging.handlers.RotatingFileHandler(log_path,
+            encoding="utf-8",
+            maxBytes=settings.LOG_ROTATE_MAX_SIZE,
+            backupCount=settings.LOG_ROTATE_COUNT)
+
+        hdlr.setFormatter(formatter)
+
+        logger.addHandler(hdlr)
+
     logger.info("Starting sevabot")
 
     for skype_logger_name in ["Skype4Py.utils.EventHandlingBase", "Skype4Py.skype.Skype",

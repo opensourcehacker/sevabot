@@ -17,3 +17,15 @@ HTTP_HOST = "localhost"
 
 #: Which port we run our HTTP interface
 HTTP_PORT = 5000
+
+#: Setup Python logging for Sevabot
+#: Absolute path or relative to the settings file location
+LOG_FILE = "logs/sevabot.log"
+
+# http://docs.python.org/library/logging.html
+LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+#: Log rotation options
+LOG_ROTATE_COUNT = 10
+
+LOG_ROTATE_MAX_SIZE = 1024 * 1024
