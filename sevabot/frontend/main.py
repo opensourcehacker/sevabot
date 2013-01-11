@@ -19,7 +19,7 @@ from flask import request
 import plac
 
 from sevabot.frontend import api
-from daemon import create_daemon
+from sevabot.frontend.daemon import create_daemon
 
 logger = logging.getLogger("sevabot")
 
