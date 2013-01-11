@@ -19,7 +19,7 @@ from flask import request
 import plac
 
 from sevabot.frontend import api
-import daemon
+from daemon import create_daemon
 
 logger = logging.getLogger("sevabot")
 
@@ -100,7 +100,7 @@ def main(settings="settings.py", verbose=False, daemon=False):
 
     # Detach from the controlling terminal
     if daemon:
-        daemon.create_daemon()
+        create_daemon()
 
     from sevabot.bot import modules
 
