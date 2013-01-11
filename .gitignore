@@ -58,4 +58,6 @@ Skype4Py
 
 .vagrant
 .idea
+logs/*
+
 
