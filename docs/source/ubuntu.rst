@@ -47,7 +47,7 @@ Start xvfb, fluxbox and Skype::
 
     sevabot/scripts/start-server.sh start
 
-Start vnc server::
+Start VNC server::
 
     sevabot/scripts/start-vcn.sh start
 
@@ -166,6 +166,17 @@ And then access the tunneled port::
 
 Running sevabot as service
 ====================================
+
+Sevabot and all related services can be controller with ``scripts/start-server.sh``
+helper script::
+
+    scripts/start-server.sh stop
+    ...
+    scripts/start-server.sh start
+    ...
+    scripts/start-server.sh status
+
+
 
 To run sevabot from the server from reboot or do a full bot
 restart there is an example script `reboot-seva.sh <https://github.com/opensourcehacker/sevabot/blob/master/scripts/reboot-seva.sh>`_ provided.

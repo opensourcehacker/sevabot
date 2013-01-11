@@ -46,7 +46,7 @@ start() {
 		echo "skype already running"
 	fi
 
-    pgrep -f venv/bin/sevabot
+    pgrep -q -f venv/bin/sevabot
     if [[ $? == '0' ]] ; then
         echo "Sevabot already running"
     else
@@ -78,7 +78,7 @@ stop() {
 		killall Xvfb
 	fi
 
-    pgrep -f venv/bin/sevabot
+    pgrep -q -f venv/bin/sevabot
     if [[ $? != '0' ]] ; then
         echo "Sevabot not running"
     else
@@ -108,7 +108,7 @@ status() {
 		((i--))
 	fi
 
-    pgrep -f venv/bin/sevabot
+    pgrep -q -f venv/bin/sevabot
     if [[ $? == '0' ]] ; then
         echo "Sevabot running"
         ((i--))
