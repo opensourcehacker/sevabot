@@ -19,6 +19,7 @@ from flask import request
 import plac
 
 from sevabot.frontend import api
+import daemon
 
 logger = logging.getLogger("sevabot")
 
@@ -54,9 +55,10 @@ def get_settings():
 
 @plac.annotations(
     settings=("Settings file", 'option', 's', None, None, "settings.py"),
-    verbose=("Verbose debug output", 'option', 'v', None, None),
+    verbose=("Verbose debug output", 'flag', 'v', None, None),
+    daemon=("Start as a detached background process", 'flag', 'd', None, None),
 )
-def main(settings="settings.py", verbose=False):
+def main(settings="settings.py", verbose=False, daemon=False):
     """
     Application entry point.
     """
@@ -95,6 +97,10 @@ def main(settings="settings.py", verbose=False):
                               "Skype4Py.api.darwin.SkypeAPI"]:
         skype_logger = logging.getLogger(skype_logger_name)
         skype_logger.setLevel(logging.WARN)
+
+    # Detach from the controlling terminal
+    if daemon:
+        daemon.create_daemon()
 
     from sevabot.bot import modules
 

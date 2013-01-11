@@ -21,20 +21,12 @@
 
 cd ~/sevabot
 
-# Activate virtualenv
-. venv/bin/activate
-
 # Assume sevabot has been cloned under ~/sevabot
 
 # Restart Xvfb + Skype
 scripts/start-server.sh stop
 
 sleep 5 # Need some delay as xvfb dying might take a while
-
-scripts/start-server.sh start > /dev/null 2>&1
-
-# Use Xvfb X display to run Skype
-export DISPLAY=:1
 
 #
 # Comment SSH part out if your bot scripts don't use SSH
@@ -61,25 +53,4 @@ then
     ssh-add
 fi
 
-
-#
-# ... and now continue with starting
-#
-
-# KIll existing screen instances, kills also danling sevabot instances
-pkill -f "Sevabot screen"
-
-# Create a named screen instance which will leave the bot Python daemon running
-# You can later attach this with screen -x
-# Note: If you are trying to start via sudo
-# you mught need to do this first to fix screen:
-# script /dev/null
-
-screen -dm -t "Sevabot screen" sevabot
-
-echo "Sevabot is now running in screen"
-echo "Type screen -x to attach and see the bot logs"
-echo "Use CTRL+A then d to detach from the running screen"
-
-
-
+scripts/start-server.sh start > /dev/null 2>&1

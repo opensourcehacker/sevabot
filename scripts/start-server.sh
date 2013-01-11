@@ -1,18 +1,28 @@
 #!/bin/bash
+#
+# Control sevabot and related servvices.
+#
+# This script is not multi-user safe... use for single UNIX user "skype" server deployments only.
+#
+# The orignal script by mweber at http://www.qxs.ch/2011/01/07/skype-instant-messages-from-zabbix/
+#
 
-##
-# Script by mweber at http://www.qxs.ch/2011/01/07/skype-instant-messages-from-zabbix/
-##
-
-if [[ "$USER" != 'skype' ]]; then
-	echo "Please start this script as skype!"
-	exit 1
-fi
+#if [[ "$USER" != 'skype' ]]; then
+#	echo "Please run this script as skype UNIX user only"
+#	exit 1
+#fi
 
 export DISPLAY=:1
 
 dnb=`dirname "$0"`
 
+#: Sevabot script location
+seva=`dirname "$0"`/../venv/bin/sevabot
+
+# On OSX we need to force 32-bit compatiblity
+if [[ "$OSTYPE" == "darwin" ]] ; then
+    seva="arch -i386 $seva"
+fi
 
 start() {
 	if [[ `ps aux | grep skype | grep "Xvfb :1" | grep -v grep | wc -l` == '0' ]]; then
@@ -35,6 +45,13 @@ start() {
 	else
 		echo "skype already running"
 	fi
+
+    if [[ `pgrep sevabot` == '0' ]] ; then
+        echo "Sevabot already running"
+    else
+        $seva --daemon
+        echo "Started Sevabot web server process id $!"
+    fi
 }
 
 stop() {
@@ -59,13 +76,20 @@ stop() {
 		echo "Killing Xvfb"
 		killall Xvfb
 	fi
+
+    if [[ `pgrep sevabot` != '0' ]] ; then
+        echo "Sevabot not running"
+    else
+        pkill sevabot
+    fi
+
 }
 
 status() {
-	i='3'
+	i='4'
 	if [[ `ps aux | grep skype | grep "Xvfb :1" | grep -v grep | wc -l` == '0' ]]; then
 		echo "Xvfb is NOT running"
-	else	
+	else
 		echo "Xvfb is running"
 		((i--))
 	fi
@@ -81,13 +105,21 @@ status() {
 		echo "skype is running"
 		((i--))
 	fi
+
+    if [[ `pgrep sevabot` == '0' ]] ; then
+        echo "Sevabot running"
+        ((i--))
+    else
+        echo "Sevabot NOT running"
+    fi
+
 	if [[ "$i" == '0' ]]; then
 		echo "OVERALL STATUS: OK"
 		exit 0
 	fi
 	if [[ "$i" == '1' || "$i" == '2' ]]; then
 		echo "OVERALL STATUS: NOT RUNNING PROPERLY"
-		
+
 	else
 		echo "OVERALL STATUS: NOT RUNNING"
 	fi
