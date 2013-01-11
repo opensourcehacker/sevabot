@@ -12,6 +12,8 @@ Changelog for Sevabot
 
 - Updated launch scripts to be more robust and simple [miohtama]
 
+- Security fix to prevent arbitrary commands from being executed [b2jrock]
+
 1.0 (2012-12-24)
 ----------------
 
