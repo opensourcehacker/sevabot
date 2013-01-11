@@ -38,8 +38,9 @@ start() {
 	else
 		echo "fluxbox already running"
 	fi
-	if [[ `ps -eo pid,user,args | grep skype | awk '{ print $1 " " $3; }' | grep skype | wc -l` == '0' ]]; then
-		echo "starting skype"
+
+    pgrep skype > /dev/null
+    if [[ $? != '0' ]]; then
 		sleep 2
 		skype &
 	else
@@ -56,7 +57,9 @@ start() {
 }
 
 stop() {
-	if [[ `ps -eo pid,user,args | grep skype | awk '{ print $1 " " $3; }' | grep skype | wc -l` == '0' ]]; then
+
+    pgrep skype > /dev/null
+	if [[ $? != '0' ]]; then
 		echo "skype is NOT running"
 	else
 		echo "killing skype"
@@ -101,7 +104,10 @@ status() {
 		echo "fluxbox is running"
 		((i--))
 	fi
-	if [[ `ps -eo pid,user,args | grep skype | awk '{ print $1 " " $3; }' | grep skype | wc -l` == '0' ]]; then
+
+
+    pgrep skype > /dev/null
+    if [[ $? != '0' ]]; then
 		echo "skype is NOT running"
 	else
 		echo "skype is running"
