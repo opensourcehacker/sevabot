@@ -2,6 +2,10 @@
 
 import os
 
+# Default daemon parameters.
+# File mode creation mask of the daemon.
+UMASK = 0
+
 def create_daemon():
    """Detach a process from the controlling terminal and run it in the
    background as a daemon.
@@ -69,7 +73,7 @@ def create_daemon():
          # Since the current working directory may be a mounted filesystem, we
          # avoid the issue of not being able to unmount the filesystem at
          # shutdown time by changing it to the root directory.
-         os.chdir(WORKDIR)
+         # os.chdir(WORKDIR)
          # We probably don't want the file mode creation mask inherited from
          # the parent, so we give the child complete control over permissions.
          os.umask(UMASK)
