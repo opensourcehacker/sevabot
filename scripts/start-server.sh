@@ -46,7 +46,7 @@ start() {
 		echo "skype already running"
 	fi
 
-    if [[ `pgrep sevabot` == '0' ]] ; then
+    if [[ `pgrep -f venv/bin/sevabot` == '0' ]] ; then
         echo "Sevabot already running"
     else
         $seva --daemon
@@ -77,7 +77,7 @@ stop() {
 		killall Xvfb
 	fi
 
-    if [[ `pgrep sevabot` != '0' ]] ; then
+    if [[ `pgrep -f venv/bin/sevabot` != '0' ]] ; then
         echo "Sevabot not running"
     else
         pkill sevabot
@@ -106,7 +106,7 @@ status() {
 		((i--))
 	fi
 
-    if [[ `pgrep sevabot` == '0' ]] ; then
+    if [[ `pgrep -f venv/bin/sevabot` == '0' ]] ; then
         echo "Sevabot running"
         ((i--))
     else
