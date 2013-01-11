@@ -175,6 +175,11 @@ helper script::
     scripts/start-server.sh start
     ...
     scripts/start-server.sh status
+    Xvfb is running
+    fluxbox is running
+    skype is running
+    Sevabot running
+    OVERALL STATUS: OK
 
 
 
