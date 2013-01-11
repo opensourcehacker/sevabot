@@ -69,11 +69,11 @@ def run_module(name, args, callback):
         """
         Execute external command, capture output.
         """
-        cmdline = "%s %s" % (_modules[name], " ".join(args))
+        args.insert(0,unicode(_modules[name]))
 
-        logger.debug("Running command line: %s" % cmdline)
+        logger.debug("Running command line: %s" % " ".join(args))
 
-        process = subprocess.Popen(cmdline, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        process = subprocess.Popen(cmdline, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 
         # XXX: Support stderr interleaving
         out, err = process.communicate()
