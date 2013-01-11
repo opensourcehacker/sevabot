@@ -182,12 +182,13 @@ helper script::
     OVERALL STATUS: OK
 
 
-
 To run sevabot from the server from reboot or do a full bot
 restart there is an example script `reboot-seva.sh <https://github.com/opensourcehacker/sevabot/blob/master/scripts/reboot-seva.sh>`_ provided.
-
 It also does optionally manual SSH key authorization so that
 the bot can execute remote commands over SSH.
+
+To make your Sevabot bullet-proof add `a cron job to check <https://github.com/opensourcehacker/sevabot/blob/master/scripts/check-service.sh>`_
+that Sevabot is running correctly and reboot if necessary.
 
 Setting avatar image
 =======================
