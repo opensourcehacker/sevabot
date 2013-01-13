@@ -67,8 +67,10 @@ We provide
 
 * unsigned endpoint http://localhost:5000/zapier/YOURCHATIT/YOURSHAREDSECRET/ - takes in HTTP POST data parameter
 
+Timed messages
+=================
 
-
+Use external clocking service like `UNIX cron <https://help.ubuntu.com/community/CronHowto>`_ to send regular or timed messages to Sevabot Skype chat over HTTP webhooks interface.
 
 
 
