@@ -33,6 +33,7 @@ Here are some services and examples how to integrate Sevabot
    :maxdepth: 1
 
    bash
+   python
    zapier
    github
    subversion
