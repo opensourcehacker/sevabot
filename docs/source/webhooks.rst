@@ -56,6 +56,16 @@ To get list of the chat ids visit in the Sevabot server hosted address::
 
 It will return a HTTP page containing a list of Sevabot internal chat ids.
 
+Sending a message over HTTP interface
+==============================================
+
+One can send MD5 signed (safer) or unsigned messages (optional due to constrains in external services)
+
+We provide
+
+* signed endpoint http://localhost:5000/msg/YOURCHATIT/ - see Bash example for more info
+
+* unsigned endpoint http://localhost:5000/zapier/YOURCHATIT/YOURSHAREDSECRET/ - takes in HTTP POST data parameter
 
 
 

@@ -52,5 +52,5 @@ Example::
                 socket.setdefaulttimeout(orignal_timeout)
 
     message = "Hello world"
-    t = UrlThread("http://sevabot.something.example.com:5000/msg/", {'data': message})
+    t = UrlThread("http://sevabot.something.example.com:5000/zapier/YOURSECRET/YOURCHATID/", {'data': message})
 
