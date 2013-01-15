@@ -73,7 +73,7 @@ def run_module(name, args, callback):
 
         logger.debug("Running command line: %s" % " ".join(args))
 
-        process = subprocess.Popen(cmdline, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 
         # XXX: Support stderr interleaving
         out, err = process.communicate()
