@@ -49,7 +49,7 @@ Start xvfb, fluxbox and Skype::
 
 Start VNC server::
 
-    sevabot/scripts/start-vcn.sh start
+    sevabot/scripts/start-vnc.sh start
 
 On your local computer start vnviewer (vncviewer is for Linux, for other OS
 use any VNC capable remote desktop viewing software)
