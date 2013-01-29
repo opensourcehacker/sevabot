@@ -25,6 +25,9 @@ def load_modules():
     """
     Scan all modules folders for executable scripts.
     """
+
+    _modules.clear()
+
     for folder in settings.MODULE_PATHS:
 
         if not folder.startswith("/"):
