@@ -5,6 +5,10 @@ Changelog for Sevabot
 1.1 (unreleased)
 ----------------
 
+- Fixed
+
+- Moved chunk of troubleshooting stuff to Skype4Py itself [miohtama]
+
 - Made some backwards compatiblity adjustment in webhook parameters,
   so that all existing examples and demo scripts work [miohtama]
 

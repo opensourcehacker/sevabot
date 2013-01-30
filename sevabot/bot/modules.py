@@ -72,7 +72,7 @@ def run_module(name, args, callback):
         """
         Execute external command, capture output.
         """
-        args.insert(0,unicode(_modules[name]))
+        args.insert(0, unicode(_modules[name]))
 
         logger.debug("Running command line: %s" % " ".join(args))
 
