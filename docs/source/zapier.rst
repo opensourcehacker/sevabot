@@ -42,7 +42,7 @@ Testing Zapier hook
 You can use ``curl`` to test the hook from your server, for firewall
 issues and such::
 
-    curl --data-binary "message=Hello world" --data-binary "chat_id=9d2588e144cc0afb7678222facad7490" http://localhost:5000/message_unsigned/
+    curl --data-binary "msg=Hello world" --data-binary "chat=YOURCHATID" http://localhost:5000/message_unsigned/
 
 .. note::
 

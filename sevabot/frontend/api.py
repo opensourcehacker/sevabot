@@ -51,7 +51,9 @@ class SendMessage(View):
                     logger.error("Validation failed")
                     return "Validation failed!", 403, {"Content-type": "text/plain"}
                 else:
-                    self.sevabot.sendMsg(chat_id, self.compose())
+                    msg = self.compose()
+                    self.sevabot.sendMsg(chat_id, msg)
+                    logger.info("Succefully send message %s" % msg)
                     return "OK"
             else:
                 logger.error("Not enough parameters to send message (chat id missing)")
@@ -117,6 +119,8 @@ class SendMessageUnsigned(SendMessage):
     :param chat: Chat id
 
     :param msg: Message payload
+
+    All other HTTP POST parameters are ignored.
 
     Make sure your client encodes message in UTF-8.
     """
