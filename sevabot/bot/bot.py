@@ -7,6 +7,7 @@ import hashlib
 import time
 from collections import OrderedDict
 import Skype4Py
+import shlex
 
 from sevabot.bot import modules
 
@@ -81,9 +82,7 @@ class Sevabot:
             logger.debug("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
 
         if status in ["RECEIVED", "SENT"] and msg.Body:
-
-            words = msg.Body.split()
-
+            words = shlex.split(msg.Body, comments=False, posix=True)
             if len(words) < 0:
                 return
 
@@ -122,10 +121,6 @@ class Sevabot:
             elif msg.Body == "!loadChats":
                 self.cacheChats()
                 return
-
-    def runCmd(self, cmd):
-        args = cmd.split(" ")
-        return self.cmds["!" + args[0]](*args[1:], bot=self, skype=self.skype)
 
     def sendMsg(self, chat, msg):
         try:

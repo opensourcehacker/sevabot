@@ -29,10 +29,7 @@ def load_modules():
     _modules.clear()
 
     for folder in settings.MODULE_PATHS:
-
-        if not folder.startswith("/"):
-            folder = os.path.join(os.getcwd(), folder)
-
+        folder = os.path.abspath(folder)
         for f in os.listdir(folder):
             fpath = os.path.join(folder, f)
 
@@ -76,17 +73,12 @@ def run_module(name, args, callback):
 
         logger.debug("Running command line: %s" % " ".join(args))
 
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-
-        # XXX: Support stderr interleaving
-        out, err = process.communicate()
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
+        out = process.communicate()[0]
 
         # :E1103: *%s %r has no %r member (but some types could not be inferred)*
         # pylint: disable=E1103
-        out = out.decode("utf-8")
-        err = err.decode("utf-8")
-
-        return out + err
+        return out.decode("utf-8")
 
     thread = ExecutionManagedThread(run, default, settings.TIMEOUT, callback)
     thread.start()
