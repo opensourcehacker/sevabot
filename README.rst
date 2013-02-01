@@ -119,3 +119,10 @@ Authors
 `Felix Mueller <https://github.com/lixef>`_ - scripts
 
 Some documentation and scripts by `Marco Weber <http://www.qxs.ch/2011/01/07/skype-instant-messages-from-zabbix/>`_
+
+Trademark notice
+-----------------
+
+The Skype name, associated trade marks and logos and the "S" logo are trade marks of Skype or related entities. 
+Sevabot is an open source project and not associate of Microsoft Corporation or Skype.
+
