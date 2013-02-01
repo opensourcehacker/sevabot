@@ -114,7 +114,7 @@ Authors
 
 `Brian Johnson <https://github.com/b2jrock>`_ - Jenkins
 
-`Antti Haapala <https://github.com/ztane>` - Python best pratice fixes
+`Antti Haapala <https://github.com/ztane>`_ - Python best pratice fixes
 
 `Felix Mueller <https://github.com/lixef>`_ - scripts
 
