@@ -29,3 +29,10 @@ Contents:
    development
 
 See `Github <https://github.com/opensourcehacker/sevabot>`_ for more project information.
+
+Trademark notice
+-----------------
+
+The Skype name, associated trade marks and logos and the "S" logo are trade marks of Skype or related entities.
+Sevabot is an open source project and not associate of Microsoft Corporation or Skype.
+
