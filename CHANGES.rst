@@ -1,7 +1,7 @@
 Changelog for Sevabot
 -------------------------
 
-1.1 (unreleased)
+1.1 (2013-02-01)
 ----------------
 
 - Use shlex for command line parsing [ztane]
