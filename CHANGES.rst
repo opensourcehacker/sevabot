@@ -1,11 +1,12 @@
-
 Changelog for Sevabot
 -------------------------
 
 1.1 (unreleased)
 ----------------
 
-- Fixed
+- Use shlex for command line parsing [ztane]
+
+- Interleave stdout and stderr in output [ztane]
 
 - Moved chunk of troubleshooting stuff to Skype4Py itself [miohtama]
 
