@@ -23,7 +23,7 @@ It is useful for other integrations as well.
 
 * Create a zap in zapier.com. Register. Add Webhooks *URL* with your bot info::
 
-    http://yourserver.com:5000/send_message_unsigned/
+    http://yourserver.com:5000/message_unsigned/
 
 * Go to sevabot web interface and http://yourserver.com:5000/ get chat id from Skype
 
