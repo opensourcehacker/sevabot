@@ -114,6 +114,8 @@ Authors
 
 `Brian Johnson <https://github.com/b2jrock>`_ - Jenkins
 
+`Antti Haapala <https://github.com/ztane>` - Python best pratice fixes
+
 `Felix Mueller <https://github.com/lixef>`_ - scripts
 
 Some documentation and scripts by `Marco Weber <http://www.qxs.ch/2011/01/07/skype-instant-messages-from-zabbix/>`_
