@@ -65,7 +65,7 @@ We provide
 
 * signed endpoint http://localhost:5000/msg/YOURCHATIT/ - see Bash example for more info
 
-* unsigned endpoint http://localhost:5000/zapier/YOURCHATIT/YOURSHAREDSECRET/ - takes in HTTP POST data parameter
+* unsigned endpoint http://localhost:5000/message_unsigned/ - takes in HTTP POST data parameters *chat_id* and *message*
 
 Timed messages
 =================

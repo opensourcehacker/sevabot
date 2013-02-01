@@ -26,6 +26,8 @@ class SendMessage(View):
     * chat
 
     Other parameters are for compatibiltiy reasons only and will be removed in the future.
+
+    We validate only shared secret, not message signing.
     """
 
     methods = ['POST']
@@ -100,6 +102,28 @@ class SendMessageMD5(SendMessage):
         return md5_check == md5_value
 
 
+class SendMessageUnsigned(SendMessage):
+    """
+    HTTP endpoint to  send non-verified message to a chat.
+
+    Takes both *chat_id* and *message* parameters as HTTP POST payload.
+
+    .. warn::
+
+        Allows third party to flood the chat if he/she gets hold of a chat id.
+
+    HTTP POST parameters
+
+    :param chat: Chat id
+
+    :param msg: Message payload
+
+    Make sure your client encodes message in UTF-8.
+    """
+    def validate(self, kwargs):
+        return True
+
+
 class GitHubPostCommit(SendMessage):
     """
     Handle post-commit hook from Github.
@@ -161,9 +185,14 @@ def configure(sevabot, settings, server):
        # this url rules for sending message. Parameters can be in url or in request
     server.add_url_rule('/message/', view_func=SendMessage.as_view(str('send_message'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
 
+    server.add_url_rule('/message_unsigned/', view_func=SendMessageUnsigned.as_view(str('send_message_unsigned'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
     server.add_url_rule('/message/<string:chat_id>/', view_func=SendMessage.as_view(str('send_message_1'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
 
     server.add_url_rule('/message/<string:chat_id>/<string:shared_secret>/', view_func=SendMessage.as_view(str('send_message_2'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    # XXX: Remove
+    server.add_url_rule('/zapier/<string:chat_id>/<string:shared_secret>/', view_func=SendMessage.as_view(str('send_message_3'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
 
     # rule for sending md5 signed message
     server.add_url_rule('/msg/', view_func=SendMessageMD5.as_view(str('send_message_md5'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
@@ -174,5 +203,4 @@ def configure(sevabot, settings, server):
     server.add_url_rule('/jenkins-notifier/<string:chat_id>/<string:shared_secret>/', view_func=JenkinsNotifier.as_view(str('send_message_jenkins'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
 
     server.add_url_rule('/teamcity/<string:chat_id>/<string:shared_secret>/', view_func=TeamcityWebHook.as_view(str('send_message_teamcity'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
-
 

@@ -4,8 +4,7 @@ Changelog for Sevabot
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Reworking unsigned HTTP POST message hooks */zapier* and */message_unsigned* [miohtama]
 
 1.1 (2013-02-01)
 ----------------

@@ -29,6 +29,9 @@ Example::
     # Seconds of web service timeout
     WEBHOOK_HTTP_TIMEOUT = 30
 
+    # Get Skype chat id from Sevabot web inteface
+    CHAT_ID = "xxx"
+
     class UrlThread(threading.Thread):
         """
     A separate thread doing HTTP POST so we won't block when calling the webhook.
@@ -52,5 +55,5 @@ Example::
                 socket.setdefaulttimeout(orignal_timeout)
 
     message = "Hello world"
-    t = UrlThread("http://sevabot.something.example.com:5000/zapier/YOURSECRET/YOURCHATID/", {'data': message})
+    t = UrlThread("http://sevabot.something.example.com:5000/message_unsigned/", {'message': message, 'chat_id': CHAT_ID})
 

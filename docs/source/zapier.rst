@@ -19,19 +19,22 @@ It is useful for other integrations as well.
 
 * You need to register your *zap* in zapier.com
 
-* *Sevabot* offers support for Zapier web hook HTTP POST requests as JSON
+* *Sevabot* offers support for Zapier web hook HTTP POST requests
 
 * Create a zap in zapier.com. Register. Add Webhooks *URL* with your bot info::
 
-    http://yourserver.com:5000/zapier/CHATID/SHAREDSECRET/
+    http://yourserver.com:5000/send_message_unsigned/
+
+* Go to sevabot web interface and http://yourserver.com:5000/ get chat id from Skype
 
 * The followning Zapier settings must be used: *Send as JSON: no*
 
-* The Zapier data field is posted to the Skype chat as a message as is
+* You need fill in HTTP POST fields *message* and *chat_id*
 
 Example of Zapier *Data* field for Github issues::
 
-    New issue 〜 {{title}} 〜 by {{user__login}} - {{html_url}}
+    message|New issue 〜 {{title}} 〜 by {{user__login}} - {{html_url}}
+    chat_id|YOURCHATIDHERE
 
 Testing Zapier hook
 ---------------------
@@ -39,4 +42,8 @@ Testing Zapier hook
 You can use ``curl`` to test the hook from your server, for firewall
 issues and such::
 
-    curl --data-binary "data=Your message" "http://server:5000/zapier/CHATID/YOURSECRET/"
+    curl --data-binary "message=Hello world" --data-binary "chat_id=9d2588e144cc0afb7678222facad7490" http://localhost:5000/message_unsigned/
+
+.. note::
+
+    You need new enough curl version for --data-binary.
