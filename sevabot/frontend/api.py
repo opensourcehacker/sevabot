@@ -61,7 +61,7 @@ class SendMessage(View):
         except Exception as e:
             logger.error(e)
             logger.exception(e)
-            return unicode(e)
+            return (u"%s" % e).encode("utf-8"), 500, {"Content-type": "text/plain"}
 
     def get_parameter(self, key):
         """ Return parameter either from request or from url parameters """

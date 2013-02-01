@@ -6,6 +6,8 @@ Changelog for Sevabot
 
 - Reworking unsigned HTTP POST message hooks */zapier* and */message_unsigned* [miohtama]
 
+- Pass "no chat found" error to the HTTP client [miohtama]
+
 1.1 (2013-02-01)
 ----------------
 

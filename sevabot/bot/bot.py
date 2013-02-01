@@ -123,9 +123,15 @@ class Sevabot:
                 return
 
     def sendMsg(self, chat, msg):
+        """
+        Send a message to chat.
+
+        :param chat: Chat id as a string
+
+        :param msg: Message as UTF-8 encoded string
+        """
         try:
             self.chats[chat].SendMessage(msg)
             return "Message sent\n"
         except KeyError:
-            return "Chat not found\n"
-
+            raise RuntimeError("No chat %s" % chat)
