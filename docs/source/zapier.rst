@@ -36,6 +36,9 @@ Example of Zapier *Data* field for Github issues::
     message|New issue 〜 {{title}} 〜 by {{user__login}} - {{html_url}}
     chat_id|YOURCHATIDHERE
 
+.. image:: /images/zapier.png
+    :width: 500px
+
 Testing Zapier hook
 ---------------------
 
