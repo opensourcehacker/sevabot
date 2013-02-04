@@ -52,6 +52,10 @@ class SendMessage(View):
                     return "Validation failed!", 403, {"Content-type": "text/plain"}
                 else:
                     msg = self.compose()
+
+                    if not msg:
+                        return "Message payload missing", 500, {"Content-type": "text/plain"}
+
                     self.sevabot.sendMsg(chat_id, msg)
                     logger.info("Succefully send message %s" % msg)
                     return "OK"
@@ -72,7 +76,15 @@ class SendMessage(View):
         return shared_secret == self.shared_secret
 
     def compose(self):
-        return request.form.get('message', '') or request.form.get('msg', '')
+        """
+        Parse Skype chat message from the payload.
+
+        .. note ::
+
+            Use msg parameter. Others are provided for backward compatibility.
+
+        """
+        return request.form.get('message', '') or request.form.get('msg', '') or request.form.get('data', '')
 
 
 class SendMessageMD5(SendMessage):
