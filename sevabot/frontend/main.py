@@ -169,7 +169,7 @@ def log_request():
 
     settings = get_settings()
 
-    if settings.DEBUG_HTTP:
+    if getattr(settings, "DEBUG_HTTP", False):
         logger.debug("HTTP %s from %s" % (request.method, request.remote_addr))
         logger.debug("Headers ----")
         for key, value in request.headers.items():
