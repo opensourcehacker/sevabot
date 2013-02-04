@@ -4,6 +4,15 @@ Troubleshooting
 
 .. contents:: :local:
 
+Logging
+===========
+
+By default, Sevabot writes logging output to file ``logs/sevabot.log``.
+
+You can watch this log in real time with UNIX command::
+
+    tail -f logs/sevabot.log
+
 Segfaults
 ===========
 
