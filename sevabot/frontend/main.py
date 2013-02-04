@@ -159,6 +159,28 @@ def chat_messages(shared_secret, chat_id):
     return render_template('chat_message.html', chat_id=chat_id, shared_secret=shared_secret)
 
 
+@server.before_request
+def log_request():
+    """
+    HTTP debug logging.
+
+    http://stackoverflow.com/questions/14687468/dumping-http-requests-with-flask
+    """
+
+    settings = get_settings()
+
+    if settings.DEBUG_HTTP:
+        logger.debug("HTTP %s from %s" % (request.method, request.remote_addr))
+        logger.debug("Headers ----")
+        for key, value in request.headers.items():
+            logger.debug("%s: %s" % (key, value))
+        logger.debug("Payload ----")
+        for key, value in request.form.items():
+            if len(value) > 500:
+                value = value[0:500]
+            logger.debug("%s: %s" % (key, value))
+
+
 def entry_point():
     exit_code = plac.call(main)
     return exit_code

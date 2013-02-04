@@ -29,3 +29,6 @@ LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_ROTATE_COUNT = 10
 
 LOG_ROTATE_MAX_SIZE = 1024 * 1024
+
+#: Log all HTTP requests for debugging purposes
+DEBUG_HTTP = False

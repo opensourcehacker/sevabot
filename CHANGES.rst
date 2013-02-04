@@ -4,6 +4,8 @@ Changelog for Sevabot
 1.2 (unreleased)
 ----------------
 
+- Added DEBUG_HTTP setting [miohtama]
+
 - Reworking unsigned HTTP POST message hooks */zapier* and */message_unsigned* [miohtama]
 
 - Pass "no chat found" error to the HTTP client [miohtama]

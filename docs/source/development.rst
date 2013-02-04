@@ -37,6 +37,12 @@ How to install and run the development version (trunk) of Sevabot::
     source venv/bin/activate
     python setup.py develop # prefix with arch -i386  on OSX
 
+Debugging
+===========
+
+You might want to turn on ``DEBUG_HTTP`` setting to dump out incoming HTTP requests
+if you are testing / developing your own hooks.
+
 Contributions
 ==========================================================
 
