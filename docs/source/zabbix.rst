@@ -64,9 +64,35 @@ Doing a agent alive check
 Below is a sample Sevabot script which will
 do a Zabbix agent daemon check on all the servers.
 
+See :doc:`commands </commands>` for how to configure SSH access
+for Sevabot to perform this functionality.
+
 * Make a fake alert on all monitor servers, listed in ~/.ssh/config of Sevabot UNIX user
 
 * Zabbix alert script will report back this alert from all servers where Zabbix agent is correctly running
+
+* You need to add a special trigger in Zabbix which checks a timestamp of ``/home/zabbix/zabbix_test``
+  file, as touched by ``agents.sh`` run by Sevabot
+
+Example monitoring item which keeps track of the file::
+
+.. image:: /images/zabbix-item.png
+    :width: 500px
+
+.. note ::
+
+    Depending on the UNIX user home the touch file may be
+    /var/run/zabbix/zabbix_test or /home/zabbix/zabbix_test
+    You might need to manualy switch Item state to Enabled after fixing this.
+
+Example trigger:
+
+.. image:: /images/zabbix-trigger.png
+    :width: 500px
+
+Then the script we give to Sevabot to poke the file over SSH to generate Information notification
+in Zabbix and getting this notification back to our Zabbix monitoring Skype chat, confirming
+the agent is alive and well.
 
 ``agents.sh``::
 
@@ -100,8 +126,6 @@ do a Zabbix agent daemon check on all the servers.
     done
 
     echo "Succesfully generated zabbix_test ping on all servers"
-
-
 
 
 Please note that you need to set up bot `SSH keys <http://opensourcehacker.com/2012/10/24/ssh-key-and-passwordless-login-basics-for-developers/>`_ for this.

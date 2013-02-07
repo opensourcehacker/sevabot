@@ -88,3 +88,21 @@ of backup folders on a backup server over SSH.
         echo -e "$SIZE\t$TIME\t$BPATH"
     done
     '#
+
+
+You you need to install SSH keys on ``skype`` user to contact these servers::
+
+    ssh -a skype@sevabotserver.example.com
+
+    # Create key for the bot if one doesn't exist in .ssh/id_rsa
+    # Note: For safety reasons set passpharse. See reboot-seva script
+    # how passphrase enabled key is handled
+    ssh-keygen
+
+    # Copy the key to the remote server where you indent to run SSH commands
+    ssh-copy-id targetuser@targetserver.com
+
+
+
+
+
