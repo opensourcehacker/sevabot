@@ -86,3 +86,16 @@ or::
     export DISPLAY=:0
 
 depending on your configuration before running Sevabot.
+
+
+Sevabot ignores commands and logs hang in sevabot - DEBUG - Attaching to Skype
+====================================================================================================
+
+This concerns only Ubuntu headless server deployments.
+
+Your fluxbox might have hung. Kill it with fire::
+
+    killall -SIGKILL fluxbox
+
+Restart.
+

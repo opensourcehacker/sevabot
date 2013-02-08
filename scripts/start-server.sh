@@ -73,6 +73,8 @@ stop() {
 	else
 		echo "Killing fluxbox"
 		killall fluxbox
+        sleep 3
+        killall -SIGKILL fluxbox
 	fi
 	if [[ `ps aux | grep skype | grep "Xvfb :1" | grep -v grep | wc -l` == '0' ]]; then
 		echo "Xvfb is NOT running"

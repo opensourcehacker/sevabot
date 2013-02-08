@@ -14,6 +14,8 @@ Changelog for Sevabot
 
 - Sevabot replies when it receives an unknown command [miohtama]
 
+- Workaround hanging fluxbox problems [miohtama]
+
 1.1 (2013-02-01)
 ----------------
 
