@@ -43,7 +43,7 @@ class Sevabot:
         """
         Scan all chats on initial connect.
         """
-        logger.debug("getChats()")
+        logger.debug("Async cacheChats() -- this may take a while")
         self.chats = OrderedDict()
 
         # First get all fresh chats
@@ -82,7 +82,12 @@ class Sevabot:
             logger.debug("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
 
         if status in ["RECEIVED", "SENT"] and msg.Body:
-            words = shlex.split(msg.Body, comments=False, posix=True)
+
+            body = msg.Body.encode("utf-8")
+
+            # shlex dies on unicode on OSX with null bytes all over the string
+            words = shlex.split(body, comments=False, posix=True)
+
             if len(words) < 0:
                 return
 
@@ -95,6 +100,7 @@ class Sevabot:
 
             logger.debug("Trying to identify keyword: %s" % keyword)
 
+            # reload must be built in
             if keyword == "reload":
                 commands = modules.load_modules()
                 msg.Chat.SendMessage("Available commands: %s" % ", ".join(commands))
@@ -108,17 +114,11 @@ class Sevabot:
 
                 modules.run_module(keyword, words[1:], callback)
                 return
+            else:
+                msg.Chat.SendMessage("Don't know about command: !" + keyword)
 
-            if msg.Body == "!loadModules":
-                msg.Chat.SendMessage("Loading modules...")
-                try:
-                    modules.load_modules()
-                except Exception as e:
-                    msg.Chat.SendMessage(str(e))
-                    return
-                return
-
-            elif msg.Body == "!loadChats":
+            # XXX: Deprecated. See if we can rid of this
+            if body == "!loadChats":
                 self.cacheChats()
                 return
 
