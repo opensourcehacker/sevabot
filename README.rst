@@ -94,6 +94,7 @@ Testimonies
 Nate:
 
     We've been looking for a Campfire replacement for a while and we all already use Skype.
+    It was pretty easy to get going.
 
 Documentation
 ----------------
