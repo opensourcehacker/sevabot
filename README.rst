@@ -88,6 +88,13 @@ Here are some examples
 
 * `Jenkins continuous integration status <https://sevabot-skype-bot.readthedocs.org/en/latest/jenkins.html>`_
 
+Testimonies
+----------------
+
+Nate:
+
+    We've been looking for a Campfire replacement for a while and we all already use Skype.
+
 Documentation
 ----------------
 
@@ -123,6 +130,6 @@ Some documentation and scripts by `Marco Weber <http://www.qxs.ch/2011/01/07/sky
 Trademark notice
 -----------------
 
-The Skype name, associated trade marks and logos and the "S" logo are trade marks of Skype or related entities. 
+The Skype name, associated trade marks and logos and the "S" logo are trade marks of Skype or related entities.
 Sevabot is an open source project and not associate of Microsoft Corporation or Skype.
 

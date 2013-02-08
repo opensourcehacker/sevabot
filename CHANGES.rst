@@ -10,6 +10,10 @@ Changelog for Sevabot
 
 - Pass "no chat found" error to the HTTP client [miohtama]
 
+- Fixed Skype message unicode handling on OSX - caused Sevabot to ignore commands [miohtama]
+
+- Sevabot replies when it receives an unknown command [miohtama]
+
 1.1 (2013-02-01)
 ----------------
 
