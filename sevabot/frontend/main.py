@@ -70,7 +70,7 @@ def main(settings="settings.py", verbose=False, daemon=False):
         sys.exit("Could not load settings file: %s" % settings)
 
     # Config logging
-    level = verbose if logging.DEBUG else logging.INFO
+    level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=level, stream=sys.stdout, format=settings.LOG_FORMAT)
 
     # Setup logging file
