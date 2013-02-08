@@ -106,6 +106,11 @@ Community, support and development
 
 `See community information <https://sevabot-skype-bot.readthedocs.org/en/latest/development.html>`_
 
+Commercial support
+------------------------------------
+
+`Hire the developers <http://redinnovation.com/>`_
+
 License
 --------
 
