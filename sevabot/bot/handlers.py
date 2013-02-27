@@ -15,6 +15,7 @@ from __future__ import absolute_import, division, unicode_literals
 import re
 import logging
 import Skype4Py
+import shlex
 from inspect import getmembers, ismethod
 
 from sevabot.bot import modules
@@ -66,10 +67,11 @@ class CommandHandler:
         """Handle command messages.
         """
 
-        if not self.builtins:
-            self.cache_builtins()
+        body = msg.Body.encode("utf-8")
 
-        words = re.split('\s+', msg.Body)
+        # shlex dies on unicode on OSX with null bytes all over the string
+        words = shlex.split(body, comments=False, posix=True)
+        words = [ word.decode("utf-8") for word in words]
 
         if len(words) < 1:
             return
@@ -77,7 +79,7 @@ class CommandHandler:
         command_name = words[0]
         command_args = words[1:]
 
-        if not command_name.startswith('!'):
+        if not command_name.startswith("!"):
             return
 
         command_name = command_name[1:]
@@ -197,7 +199,7 @@ class CommandHandler:
                     self.calls[chat_name] = call
                     self.skype.OnCallStatus = old_callback
 
-            call_command = self.skype.Command('CALL {}'.format(chat_name))
+            call_command = self.skype.Command("CALL {}".format(chat_name))
             self.skype.SendCommand(call_command)
             self.skype.OnCallStatus = callback
 
@@ -206,14 +208,14 @@ class CommandHandler:
         command = args[0]
         command_args = args[1:]
 
-        if command == 'end':
+        if command == "end":
 
             if self.is_call_active(chat_name):
                 self.finish_calls(chat_name)
             else:
                 msg.Chat.SendMessage("No calls to finish.")
 
-        elif command == 'add':
+        elif command == "add":
 
             if not self.is_call_active(chat_name):
                 msg.Chat.SendMessage("Try !call first.")
