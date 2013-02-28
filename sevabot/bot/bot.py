@@ -11,6 +11,10 @@ from inspect import getmembers, isclass, ismethod
 
 from sevabot.bot import modules
 from sevabot.bot import handlers
+try:
+    from sevabot.bot import custom_handlers
+except ImportError:
+    custom_handlers = None
 
 logger = logging.getLogger("sevabot")
 
@@ -71,12 +75,22 @@ class Sevabot:
         Scan all defined handlers.
         """
 
-        def wanted(member):
-            return isclass(member) and member.__name__.endswith('Handler')
+        def collect_handlers(module):
 
-        self.handlers = {}
-        for member in getmembers(handlers, wanted):
-            self.handlers[member[0]] = member[1]().init(self.skype)
+            def wanted(member):
+                return (isclass(member) and
+                        issubclass(member, handlers.HandlerBase) and
+                        member.__name__.endswith('Handler'))
+
+            m = {}
+            for name, obj in getmembers(module, wanted):
+                m[name] = obj(self.skype)
+                m[name].init()
+            return m
+
+        self.handlers = collect_handlers(handlers)
+        if custom_handlers:
+            self.handlers.update(collect_handlers(custom_handlers))
 
     def getOpenChats(self):
         """

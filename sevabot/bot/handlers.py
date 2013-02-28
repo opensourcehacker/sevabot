@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-A collection of message handlers.
+Message handler base class and a built-in command handler.
 
-Each class whose name ends with 'Handler' is instantiated and used
-as a message handler automatically.
+Each subclass of `HandlerBase` whose name ends with `Handler` is
+instantiated and used as a message handler automatically.
 
-Handler classes must implement two methods:
-    - init(self, skype)
+To add a custom handler, put a definition of a class which inherits
+`HandlerBase` in `custom_handlers.py`.
+You can override these two methods to customize a handler:
+    - init(self)
     - handle(self, msg, status)
 """
 
@@ -22,22 +24,36 @@ from sevabot.bot import modules
 
 logger = logging.getLogger("sevabot")
 
-class CommandHandler:
-    """A handler for processing built-in or non built-in commands.
+class HandlerBase:
+    """The base class for all handler classes.
     """
 
-    def init(self, skype):
-        """Initialize a handler instance.
-
-        This method must be invoked first.
+    def __init__(self, skype):
+        """Use `init` method to initialize a handler.
         """
 
         self.skype = skype
+
+    def init(self):
+        """Override this method to initialize a handler.
+        """
+
+        pass
+
+    def handle(self, msg, status):
+        """Override this method to customize a handler.
+        """
+
+        pass
+
+class CommandHandler(HandlerBase):
+    """A handler for processing built-in or non built-in commands.
+    """
+
+    def init(self):
         self.calls = {}
         self.cache_builtins()
         self.set_event_handlers()
-
-        return self
 
     def cache_builtins(self):
         """Scan all built-in commands defined in this handler.
