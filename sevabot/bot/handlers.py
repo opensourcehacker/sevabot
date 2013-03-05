@@ -50,7 +50,6 @@ class HandlerBase:
 
 
 class CommandHandler(HandlerBase):
-
     """A handler for processing built-in or non built-in commands.
     """
 

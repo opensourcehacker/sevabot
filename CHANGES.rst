@@ -4,6 +4,14 @@ Changelog for Sevabot
 1.2 (unreleased)
 ----------------
 
+- Added Dice example module [builtinnya]
+
+- Addeds Tasks example module [miohtama]
+
+- Added class-based command handlers [builtinnya]
+
+- Added log levels [builtinnya]
+
 - Added DEBUG_HTTP setting [miohtama]
 
 - Reworking unsigned HTTP POST message hooks */zapier* and */message_unsigned* [miohtama]
