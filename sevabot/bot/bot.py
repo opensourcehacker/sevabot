@@ -7,12 +7,16 @@ import hashlib
 import time
 from collections import OrderedDict
 import Skype4Py
-import shlex
+from inspect import getmembers, isclass, ismethod
 
 from sevabot.bot import modules
+from sevabot.bot import handlers
+try:
+    from sevabot.bot import custom_handlers
+except ImportError:
+    custom_handlers = None
 
 logger = logging.getLogger("sevabot")
-
 
 class Sevabot:
     """
@@ -22,6 +26,7 @@ class Sevabot:
     def __init__(self):
         self.cmds = {}
         self.chats = {}
+        self.handlers = {}
 
     def start(self):
 
@@ -38,6 +43,7 @@ class Sevabot:
         self.skype.OnMessageStatus = self.handleMessages
 
         self.cacheChats()
+        self.cacheHandlers()
 
     def cacheChats(self):
         """
@@ -64,6 +70,28 @@ class Sevabot:
             m.update(chat.Name)
             self.chats[m.hexdigest()] = chat
 
+    def cacheHandlers(self):
+        """
+        Scan all defined handlers.
+        """
+
+        def collect_handlers(module):
+
+            def wanted(member):
+                return (isclass(member) and
+                        issubclass(member, handlers.HandlerBase) and
+                        member.__name__.endswith('Handler'))
+
+            m = {}
+            for name, obj in getmembers(module, wanted):
+                m[name] = obj(self.skype)
+                m[name].init()
+            return m
+
+        self.handlers = collect_handlers(handlers)
+        if custom_handlers:
+            self.handlers.update(collect_handlers(custom_handlers))
+
     def getOpenChats(self):
         """
         Get list of id -> chat object of all chats which are open.
@@ -76,51 +104,15 @@ class Sevabot:
 
     def handleMessages(self, msg, status):
         """
-        Handle incoming messages
+        Handle incoming messages.
         """
-        if status == "RECEIVED" or status == "SENT":
-            logger.debug("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName, msg.FromHandle, msg.Body))
+
+        logger.debug("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName,
+                                           msg.FromHandle, msg.Body))
 
         if status in ["RECEIVED", "SENT"] and msg.Body:
-
-            body = msg.Body.encode("utf-8")
-
-            # shlex dies on unicode on OSX with null bytes all over the string
-            words = shlex.split(body, comments=False, posix=True)
-
-            if len(words) < 0:
-                return
-
-            keyword = words[0]
-
-            if not keyword.startswith("!"):
-                return
-
-            keyword = keyword[1:]
-
-            logger.debug("Trying to identify keyword: %s" % keyword)
-
-            # reload must be built in
-            if keyword == "reload":
-                commands = modules.load_modules()
-                msg.Chat.SendMessage("Available commands: %s" % ", ".join(commands))
-                return
-
-            if modules.is_module(keyword):
-                # Execute module asynchronously
-
-                def callback(output):
-                    msg.Chat.SendMessage(output)
-
-                modules.run_module(keyword, words[1:], callback)
-                return
-            else:
-                msg.Chat.SendMessage("Don't know about command: !" + keyword)
-
-            # XXX: Deprecated. See if we can rid of this
-            if body == "!loadChats":
-                self.cacheChats()
-                return
+            for handler in self.handlers.values():
+                handler.handle(msg, status)
 
     def sendMsg(self, chat, msg):
         """

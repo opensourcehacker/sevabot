@@ -18,6 +18,10 @@ HTTP_HOST = "localhost"
 #: Which port we run our HTTP interface
 HTTP_PORT = 5000
 
+#: Set logging level (INFO or DEBUG)
+#: This setting overrides --verbose option
+#: LOG_LEVEL = "INFO"
+
 #: Setup Python logging for Sevabot
 #: Absolute path or relative to the settings file location
 LOG_FILE = "logs/sevabot.log"
