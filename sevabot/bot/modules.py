@@ -16,26 +16,12 @@ import imp
 
 import settings
 
+from sevabot.utils import fail_safe
+
 logger = logging.getLogger("sevabot")
 
 #: Module name -> executable mappings
 _modules = {}
-
-
-def fail_safe(func):
-    """
-    Python decorator to make sure we don't let exceptions slip through.
-
-    We log all exceptions to logging output.
-    """
-
-    def closure(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except Exception as e:
-            logger.exception(e)
-
-    return closure
 
 
 class UNIXScriptModule:
@@ -98,13 +84,14 @@ class StatefulModule:
     @staticmethod
     def is_valid(path):
         """ Is this a module we are looking for """
+
         if not path.endswith(".py"):
             return False
 
         f = open(path, "rb")
         data = f.read(16)
         f.close()
-        if data.startswith("#/sevabot"):
+        if data.startswith("#!/sevabot"):
             return True
 
         return False
@@ -133,7 +120,7 @@ class StatefulModule:
 
     @fail_safe
     def handle(self, msg, status):
-        self.handler.handle_message(msg, status)
+        return self.handler.handle_message(msg, status)
 
 
 def load_module(skype, name, path):

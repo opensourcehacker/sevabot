@@ -21,6 +21,8 @@ class StatefulHandler:
 
     def handle_message(self, msg, status):
         """Override this method to have a customized handler for each Skype message.
+
+        :return: True if the message was handled and should not be further processed
         """
 
     def shutdown():

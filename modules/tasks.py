@@ -7,17 +7,43 @@
 
 """
 
+from __future__ import unicode_literals
+
+from datetime import datetime
 import os
 import logging
-import tempfile
 import pickle
 from collections import OrderedDict
 
 from sevabot.bot.stateful import StatefulHandler
+from sevabot.utils import ensure_unicode
 
 logger = logging.getLogger("Tasks")
 
-logger.debug("Tasks body level reload")
+logger.debug("Tasks module level load import")
+
+MAX_TASK_DURATION = 24*60*60
+
+HELP_TEXT = """Simple Skype task manager allows you to leave notes to team members on which tasks you are working on.
+
+Commands:
+
+!tasks: This help text
+
+tasks-start: Start working on a task. When you started is recorded. Example:
+
+    tasks-start I am now working on new Sevabot module interface
+
+tasks-stop: Stop working on the current task. Example:
+
+    tasks-stop
+
+tasks-list: List all tasks an people working on them. Example:
+
+    tasks-list
+
+Sevabot will report and auto-close any tasks lasting more than 24 hours.
+"""
 
 
 class TasksHandler(StatefulHandler):
@@ -38,8 +64,44 @@ class TasksHandler(StatefulHandler):
         """
         logger.debug("Tasks init")
         self.skype = skype
-        self.status_file = os.path.join(tempfile.gettempdir(), "sevabot-tasks.pickle")
-        self.status = Status.load(self.status_file)
+        self.status_file = os.path.join(os.path.dirname(__file__), "sevabot-tasks.tmp")
+        self.status = Status.read(self.status_file)
+
+        self.commands = {
+            "!tasks": self.help,
+            "tasks-start": self.start_task,
+            "tasks-list": self.list_tasks,
+            "tasks-stop": self.stop_task,
+        }
+
+    def handle_message(self, msg, status):
+        """Override this method to customize a handler.
+        """
+
+        # Skype API may give different encodings
+        # on different platforms
+        body = ensure_unicode(msg.Body)
+
+        logger.debug("Tasks handler got: %s" % body)
+
+        words = body.split(" ")
+
+        if len(words) == 0:
+            return False
+
+        desc = " ".join(words[1:])
+
+        for name, cmd in self.commands.items():
+            if name == words[0]:
+                cmd(msg, status, desc)
+                return True
+
+        return False
+
+    def shutdown():
+        """ Called when the module is reloaded.
+        """
+        logger.debug("Tasks handler shutdown")
 
     def save(self):
         """
@@ -47,19 +109,46 @@ class TasksHandler(StatefulHandler):
         """
         Status.write(self.status_file, self.status)
 
-    def handle_message(self, msg, status):
-        """Override this method to customize a handler.
+    def help(self, msg, status, desc):
         """
-        logger.debug("Tasks handler got:" % msg.encode("utf-8"))
-
-    def shutdown():
-        """ Called when the module is reloaded.
-
-        ..note ::
-
-             We do *not* guaranteed to be call when Sevabot process shutdowns.
         """
-    logger.debug("Tasks handler shutdown")
+        msg.Chat.SendMessage(HELP_TEXT)
+
+    def start_task(self, msg, status, desc):
+        """
+        """
+
+        if desc.strip() == "":
+            msg.Chat.SendMessage("Please give task description also")
+            return
+
+        job = Job(msg.Sender.FullName, datetime.now(), desc)
+        self.status.tasks[msg.Sender.Handle] = job
+        self.save()
+        msg.Chat.SendMessage("%s started working on %s at %s" % (job.real_name, job.desc, job.started))
+
+    def list_tasks(self, msg, status, desc):
+        """
+        """
+
+        jobs = self.status.tasks.values()
+        if len(jobs) == 0:
+            msg.Chat.SendMessage("No active tasks for anybody")
+
+        for job in jobs:
+            msg.Chat.SendMessage("%s started working on %s, %s" % (job.real_name, job.desc, pretty_time_delta(job.started)))
+
+    def stop_task(self, msg, status, desc):
+        """
+        """
+        if msg.Sender.Handle in self.status.tasks:
+            job = self.status.tasks[msg.Sender.Handle]
+            del self.status.tasks[msg.Sender.Handle]
+            msg.Chat.SendMessage("%s finished" % job.desc)
+        else:
+            msg.Chat.SendMessage("%s had no active task" % msg.Sender.FullName)
+
+        self.save()
 
 
 class Status:
@@ -107,13 +196,85 @@ class Job:
     Tracks who is doing what
     """
 
-    def __init__(self, real_name, started, task):
+    def __init__(self, real_name, started, desc):
         """
         :param started: datetime when the job was started
         """
         self.started = started
-        self.task = task
+        self.desc = desc
         self.real_name = real_name
+
+
+# The following has been
+# ripped off from https://github.com/imtapps/django-pretty-times/blob/master/pretty_times/pretty.py
+
+_ = lambda x: x
+
+
+def pretty_time_delta(time):
+
+    now = datetime.now(time.tzinfo)
+
+    if time > now:
+        past = False
+        diff = time - now
+    else:
+        past = True
+        diff = now - time
+
+    days = diff.days
+
+    if days is 0:
+        return get_small_increments(diff.seconds, past)
+    else:
+        return get_large_increments(days, past)
+
+
+def get_small_increments(seconds, past):
+    if seconds < 10:
+        result = _('just now')
+    elif seconds < 60:
+        result = _pretty_format(seconds, 1, _('seconds'), past)
+    elif seconds < 120:
+        result = past and _('a minute ago') or _('in a minute')
+    elif seconds < 3600:
+        result = _pretty_format(seconds, 60, _('minutes'), past)
+    elif seconds < 7200:
+        result = past and _('an hour ago') or _('in an hour')
+    else:
+        result = _pretty_format(seconds, 3600, _('hours'), past)
+    return result
+
+
+def get_large_increments(days, past):
+    if days == 1:
+        result = past and _('yesterday') or _('tomorrow')
+    elif days < 7:
+        result = _pretty_format(days, 1, _('days'), past)
+    elif days < 14:
+        result = past and _('last week') or _('next week')
+    elif days < 31:
+        result = _pretty_format(days, 7, _('weeks'), past)
+    elif days < 61:
+        result = past and _('last month') or _('next month')
+    elif days < 365:
+        result = _pretty_format(days, 30, _('months'), past)
+    elif days < 730:
+        result = past and _('last year') or _('next year')
+    else:
+        result = _pretty_format(days, 365, _('years'), past)
+    return result
+
+
+def _pretty_format(diff_amount, units, text, past):
+    pretty_time = (diff_amount + units / 2) / units
+
+    if past:
+        base = "%(amount)d %(quantity)s ago"
+    else:
+        base = "%(amount)d %(quantity)s"
+
+    return base % dict(amount=pretty_time, quantity=text)
 
 
 # Export the instance to Sevabot

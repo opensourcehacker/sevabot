@@ -84,10 +84,24 @@ class CommandHandler(HandlerBase):
         """Handle command messages.
         """
 
+        # Check all stateful handlers
+        for handler in modules.get_message_handlers():
+            processed = handler(msg, status)
+            if processed:
+                # Handler processed the message
+                return
+
         body = msg.Body.encode('utf-8')
 
+        logger.debug("Processing message, body %s" % body)
+
         # shlex dies on unicode on OSX with null bytes all over the string
-        words = shlex.split(body, comments=False, posix=True)
+        try:
+            words = shlex.split(body, comments=False, posix=True)
+        except ValueError:
+            # ValueError: No closing quotation
+            return
+
         words = [word.decode('utf-8') for word in words]
 
         if len(words) < 1:
@@ -95,10 +109,6 @@ class CommandHandler(HandlerBase):
 
         command_name = words[0]
         command_args = words[1:]
-
-        # Check all stateful handlers
-        for handler in modules.get_message_handlers():
-            handler(msg, status)
 
         # Beyond this point we process script commands only
         if not command_name.startswith('!'):
@@ -126,7 +136,7 @@ class CommandHandler(HandlerBase):
         """Reload command modules.
         """
 
-        commands = modules.load_modules()
+        commands = modules.load_modules(self)
         msg.Chat.SendMessage('Available commands: %s' % ', '.join(commands))
 
     def is_call_active(self, chat_name=None):
