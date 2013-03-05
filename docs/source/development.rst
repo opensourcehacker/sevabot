@@ -28,10 +28,13 @@ Support tickets and issues
 Installing development version
 ==========================================================
 
+All development happens in ``dev`` branch.
+
 How to install and run the development version (trunk) of Sevabot::
 
     git clone git://github.com/opensourcehacker/sevabot.git
     cd sevabot
+    git checkout dev
     curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
     python virtualenv.py venv # prefix with arch -i386  on OSX
     source venv/bin/activate
