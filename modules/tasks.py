@@ -125,7 +125,7 @@ class TasksHandler(StatefulHandler):
         job = Job(msg.Sender.FullName, datetime.now(), desc)
         self.status.tasks[msg.Sender.Handle] = job
         self.save()
-        msg.Chat.SendMessage("%s started working on %s at %s" % (job.real_name, job.desc, job.started))
+        msg.Chat.SendMessage("%s started working on %s at" % (job.real_name, job.desc))
 
     def list_tasks(self, msg, status, desc):
         """

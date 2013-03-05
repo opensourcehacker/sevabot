@@ -16,7 +16,7 @@ import imp
 
 import settings
 
-from sevabot.utils import fail_safe
+from sevabot.utils import fail_safe, ensure_unicode
 
 logger = logging.getLogger("sevabot")
 
@@ -39,7 +39,7 @@ class UNIXScriptModule:
         """ Is this a module we are looking for """
         return os.access(path, os.X_OK)
 
-    def run_module(self, args, callback):
+    def run(self, msg, args, callback):
         """
         Run an external script asynchronously.
 
@@ -47,13 +47,21 @@ class UNIXScriptModule:
         """
         logger.debug("Executing module %s: %s" % (self.name, args))
 
+        # Not sure if this unicode on all platforms by default
+        username = ensure_unicode(msg.Sender.Handle)
+        full_name = ensure_unicode(msg.Sender.FullName)
+
         #timeout(execute_module, name, args, callback, default=)
-        def run():
-            args.insert(0, unicode(self.name))
+        def threaded_run():
+            args.insert(0, unicode(self.path))
 
             logger.debug("Running command line: %s" % " ".join(args))
 
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
+            env = os.environ.copy()
+            env["SKYPE_USERNAME"] = username.encode("utf-8")
+            env["SKYPE_FULLNAME"] = full_name.encode("utf-8")
+
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, env=env)
             out = process.communicate()[0]
 
             # :E1103: *%s %r has no %r member (but some types could not be inferred)*
@@ -62,7 +70,7 @@ class UNIXScriptModule:
 
         default = "Module %s timeouted in %d seconds" % (self.name, settings.TIMEOUT)
 
-        thread = ExecutionManagedThread(run, default, settings.TIMEOUT, callback)
+        thread = ExecutionManagedThread(threaded_run, default, settings.TIMEOUT, callback)
         thread.start()
 
 

@@ -21,6 +21,7 @@ import shlex
 from inspect import getmembers, ismethod
 
 from sevabot.bot import modules
+from sevabot.utils import ensure_unicode
 
 logger = logging.getLogger('sevabot')
 
@@ -91,9 +92,10 @@ class CommandHandler(HandlerBase):
                 # Handler processed the message
                 return
 
-        body = msg.Body.encode('utf-8')
+        # We need utf-8 for shlex
+        body = ensure_unicode(msg.Body).encode('utf-8')
 
-        logger.debug("Processing message, body %s" % body)
+        logger.debug(u"Processing message, body %s" % body)
 
         # shlex dies on unicode on OSX with null bytes all over the string
         try:
@@ -128,7 +130,7 @@ class CommandHandler(HandlerBase):
             def callback(output):
                 msg.Chat.SendMessage(output)
 
-            script_module.run(command_name, command_args, callback)
+            script_module.run(msg, command_args, callback)
         else:
             msg.Chat.SendMessage("Don't know about command: !" + command_name)
 

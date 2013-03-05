@@ -2,6 +2,15 @@
 
     Stateful module base class and interface description.
 
+    All stateful Python modules
+
+    - Have .py extension and be valid Python 2.7 modules
+
+    - Have #!/sevabot magic string at the head of the file
+
+    - Exports Python attribute *sevabot_handler* which is an instance of the class
+      as described below
+
 """
 
 
@@ -21,6 +30,10 @@ class StatefulHandler:
 
     def handle_message(self, msg, status):
         """Override this method to have a customized handler for each Skype message.
+
+        :param msg: ChatMessage instance https://github.com/awahlig/skype4py/blob/master/Skype4Py/chat.py#L409
+
+        :param status: -
 
         :return: True if the message was handled and should not be further processed
         """

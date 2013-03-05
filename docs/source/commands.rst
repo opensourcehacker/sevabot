@@ -30,6 +30,10 @@ You can type them into the sevabot group chat.
 
 * !soundcloud: Get your soundclound playlist (edit soundcloud.rb to make it work)
 
+* !dice: Throw a dice
+
+* !tasks: A simple ah-hoc group task manager for virtual team sprints
+
 Creating custom commands
 ==============================
 
@@ -56,6 +60,20 @@ commands like ``ping``, but you can add your own custom commands by
 * In Sevabot chat, type command  ``!reload`` to re-read ``scripts`` folder
 
 * Now you should see command ``!myscript`` in the command list
+
+* The following environment variables are exposed to scripts ``SKYPE_USERNAME``, ``SKYPE_FULLNAME``
+  from the person who executed the command
+
+Stateful modules
+============================================================
+
+You can have Python modules which maintain their state and have
+full access to Skype4Py instance. These modules can e.g.
+perform timed background tasks with Skype.
+
+- `Stateful module interface is described here <https://github.com/opensourcehacker/sevabot/blob/dev/sevabot/bot/stateful.py>`_
+
+- `Example task manager module is here <https://github.com/opensourcehacker/sevabot/blob/dev/modules/tasks.py>`_
 
 Running commands on remote servers
 ============================================================
