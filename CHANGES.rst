@@ -4,9 +4,11 @@ Changelog for Sevabot
 1.2 (unreleased)
 ----------------
 
-- Added Dice example module [builtinnya]
-
 - Addeds Tasks example module [miohtama]
+
+- Addeds stateful module support [miohtama]
+
+- Added Dice example module [builtinnya]
 
 - Added class-based command handlers [builtinnya]
 

@@ -95,7 +95,7 @@ class CommandHandler(HandlerBase):
         # We need utf-8 for shlex
         body = ensure_unicode(msg.Body).encode('utf-8')
 
-        logger.debug(u"Processing message, body %s" % body)
+        logger.debug(u"Processing message, body %s" % msg.Body)
 
         # shlex dies on unicode on OSX with null bytes all over the string
         try:
