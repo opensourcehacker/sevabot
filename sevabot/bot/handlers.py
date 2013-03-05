@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 """
 Message handler base class and a built-in command handler.
 
@@ -11,7 +12,6 @@ You can override these two methods to customize a handler:
     - init(self)
     - handle(self, msg, status)
 """
-
 from __future__ import absolute_import, division, unicode_literals
 
 import re
@@ -22,9 +22,11 @@ from inspect import getmembers, ismethod
 
 from sevabot.bot import modules
 
-logger = logging.getLogger("sevabot")
+logger = logging.getLogger('sevabot')
+
 
 class HandlerBase:
+
     """The base class for all handler classes.
     """
 
@@ -46,7 +48,9 @@ class HandlerBase:
 
         pass
 
+
 class CommandHandler(HandlerBase):
+
     """A handler for processing built-in or non built-in commands.
     """
 
@@ -66,16 +70,14 @@ class CommandHandler(HandlerBase):
         for member in getmembers(self, wanted):
             command_name = re.split('^builtin_', member[0])[1]
             self.builtins[command_name] = member[1]
-            logger.info("Built-in command {} is available.".format(
-                command_name))
+            logger.info('Built-in command {} is available.'.format(command_name))
 
     def set_event_handlers(self):
         """Set Skype event handlers.
         """
 
         def callstatus_handler(call, status):
-            logger.debug("Call status changed: {} - {} - {}".format(
-                call.Id, call.Status, call.PartnerHandle))
+            logger.debug('Call status changed: {} - {} - {}'.format(call.Id, call.Status, call.PartnerHandle))
 
         self.skype.OnCallStatus = callstatus_handler
 
@@ -83,11 +85,11 @@ class CommandHandler(HandlerBase):
         """Handle command messages.
         """
 
-        body = msg.Body.encode("utf-8")
+        body = msg.Body.encode('utf-8')
 
         # shlex dies on unicode on OSX with null bytes all over the string
         words = shlex.split(body, comments=False, posix=True)
-        words = [ word.decode("utf-8") for word in words]
+        words = [word.decode('utf-8') for word in words]
 
         if len(words) < 1:
             return
@@ -95,26 +97,25 @@ class CommandHandler(HandlerBase):
         command_name = words[0]
         command_args = words[1:]
 
-        if not command_name.startswith("!"):
+        if not command_name.startswith('!'):
             return
 
         command_name = command_name[1:]
 
         if command_name in self.builtins:
             # Execute a built-in command
-            logger.debug("Executing built-in command {}: {}".format(
-                command_name, command_args))
+            logger.debug('Executing built-in command {}: {}'.format(command_name, command_args))
             self.builtins[command_name](command_args, msg, status)
-
         elif modules.is_module(command_name):
+
             # Execute a module asynchronously
 
             def callback(output):
                 msg.Chat.SendMessage(output)
 
             modules.run_module(command_name, command_args, callback)
-
         else:
+
             msg.Chat.SendMessage("Don't know about command: !" + command_name)
 
     def builtin_reload(self, args, msg, status):
@@ -122,9 +123,9 @@ class CommandHandler(HandlerBase):
         """
 
         commands = modules.load_modules()
-        msg.Chat.SendMessage("Available commands: %s" % ", ".join(commands))
+        msg.Chat.SendMessage('Available commands: %s' % ', '.join(commands))
 
-    def is_call_active(self, chat_name = None):
+    def is_call_active(self, chat_name=None):
         """Return if a call from the chat is active.
         """
 
@@ -138,14 +139,11 @@ class CommandHandler(HandlerBase):
                 conf = self.skype.Conference(conf_id)
                 return len(conf.ActiveCalls) > 0
             else:
-                return (call.Status == Skype4Py.clsOnHold or
-                        call.Status == Skype4Py.clsLocalHold or
-                        call.Status == Skype4Py.clsRemoteHold or
-                        call.Status == Skype4Py.clsInProgress)
+                return call.Status == Skype4Py.clsOnHold or call.Status == Skype4Py.clsLocalHold or call.Status == Skype4Py.clsRemoteHold or call.Status == Skype4Py.clsInProgress
         else:
             return False
 
-    def finish_calls(self, chat_name = None):
+    def finish_calls(self, chat_name=None):
         """Finish all active calls from the chat.
         """
 
@@ -162,7 +160,7 @@ class CommandHandler(HandlerBase):
             else:
                 call.Finish()
 
-    def hold_calls(self, chat_name = None):
+    def hold_calls(self, chat_name=None):
         """Hold all active calls from the chat.
         """
 
@@ -200,22 +198,19 @@ class CommandHandler(HandlerBase):
 
             if self.is_call_active():
                 if not self.is_call_active(chat_name):
-                    msg.Chat.SendMessage(
-                        "Sorry, I'm talking with someone else...")
+                    msg.Chat.SendMessage("Sorry, I'm talking with someone else...")
                 return
 
             old_callback = self.skype.OnCallStatus
 
             def callback(call, status):
-                logger.debug("Call status changed (wait): {} - {} - {}".format(
-                    call.Id, call.Status, call.PartnerHandle))
+                logger.debug('Call status changed (wait): {} - {} - {}'.format(call.Id, call.Status, call.PartnerHandle))
 
-                if (status == Skype4Py.clsRinging or
-                    status == Skype4Py.clsInProgress):
+                if status == Skype4Py.clsRinging or status == Skype4Py.clsInProgress:
                     self.calls[chat_name] = call
                     self.skype.OnCallStatus = old_callback
 
-            call_command = self.skype.Command("CALL {}".format(chat_name))
+            call_command = self.skype.Command('CALL {}'.format(chat_name))
             self.skype.SendCommand(call_command)
             self.skype.OnCallStatus = callback
 
@@ -224,24 +219,24 @@ class CommandHandler(HandlerBase):
         command = args[0]
         command_args = args[1:]
 
-        if command == "end":
+        if command == 'end':
 
             if self.is_call_active(chat_name):
                 self.finish_calls(chat_name)
             else:
-                msg.Chat.SendMessage("No calls to finish.")
-
-        elif command == "add":
+                msg.Chat.SendMessage('No calls to finish.')
+        elif command == 'add':
 
             if not self.is_call_active(chat_name):
-                msg.Chat.SendMessage("Try !call first.")
+                msg.Chat.SendMessage('Try !call first.')
                 return
 
             if len(command_args) < 1:
                 msg.Chat.SendMessage("I don't know who you want to add.")
                 return
 
-            msg.Chat.SendMessage("Hey, Skype! Tell me how to do this!")
+            msg.Chat.SendMessage('Hey, Skype! Tell me how to do this!')
+        else:
 
             # Workaround:
             #  Hold an existing call and call a user to add, then
@@ -256,5 +251,4 @@ class CommandHandler(HandlerBase):
             # msg.Chat.SendMessage("Joining calls...")
             # temp_call.Join(self.calls[chat_name])
 
-        else:
             msg.Chat.SendMessage("Don't know command of call: " + command)

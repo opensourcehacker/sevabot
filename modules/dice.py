@@ -1,13 +1,13 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
 A dice roll module
 """
-
 import sys
 import random
 
 progname = 'dice'
+
 
 def to_int(s):
     """Convert string to integer safely."""
@@ -20,6 +20,7 @@ def to_int(s):
 
     return v
 
+
 def to_float(s):
     """Convert string to float safely."""
 
@@ -30,6 +31,7 @@ def to_float(s):
         sys.exit(1)
 
     return v
+
 
 def main(args):
     """The program entry point."""
@@ -50,12 +52,12 @@ def main(args):
         print '       !dice uniform [min] [max]'
         print '       !dice gauss [mu] [sigma]'
         return
-
     elif cmd == 'uniform':
+
         # Roll a uniform-random-floating-point-numbered dice
 
         if len(args) <= 1:
-            min_val, max_val = (0.0, 1.0)
+            min_val, max_val = 0.0, 1.0
         elif len(args) == 2:
             min_val = 0.0
             max_val = to_float(args[1])
@@ -66,12 +68,12 @@ def main(args):
         print '{:.4f}'.format(random.uniform(min_val, max_val))
 
         return
-
     elif cmd == 'gauss':
+
         # Roll a Gaussian-distributed dice
 
         if len(args) <= 1:
-            mu, sigma = (0.0, 1.0)
+            mu, sigma = 0.0, 1.0
         elif len(args) == 2:
             mu = 0.0
             sigma = to_float(args[1])
@@ -82,7 +84,6 @@ def main(args):
         print '{:.4f}'.format(random.gauss(mu, sigma))
 
         return
-
     else:
 
         if len(args) <= 1:
@@ -94,8 +95,8 @@ def main(args):
 
             print random.randint(1, sides)
             return
-
         else:
+
             # Roll an integer dice
             min_val = to_int(args[0])
             max_val = to_int(args[1])
@@ -106,6 +107,7 @@ def main(args):
 
             print random.randint(min_val, max_val)
             return
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
