@@ -83,9 +83,9 @@ def main(settings="settings.py", verbose=False, daemon=False):
         formatter = logging.Formatter(settings.LOG_FORMAT)
 
         hdlr = logging.handlers.RotatingFileHandler(log_path,
-            encoding="utf-8",
-            maxBytes=settings.LOG_ROTATE_MAX_SIZE,
-            backupCount=settings.LOG_ROTATE_COUNT)
+                                                    encoding="utf-8",
+                                                    maxBytes=settings.LOG_ROTATE_MAX_SIZE,
+                                                    backupCount=settings.LOG_ROTATE_COUNT)
 
         hdlr.setFormatter(formatter)
 

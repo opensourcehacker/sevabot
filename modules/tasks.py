@@ -13,28 +13,31 @@ import tempfile
 import pickle
 from collections import OrderedDict
 
-from sevabot.handlers import HandlerBase
+from sevabot.bot.stateful import StatefulHandler
 
 logger = logging.getLogger("Tasks")
 
 logger.debug("Tasks body level reload")
 
 
-class TasksHandler(HandlerBase):
+class TasksHandler(StatefulHandler):
     """
+    Skype message handler class for the task manager.
     """
 
-    def __init__(self, skype):
+    def __init__(self):
         """Use `init` method to initialize a handler.
         """
-        self.skype = skype
         logger.debug("Tasks constructed")
 
-    def init(self):
+    def init(self, skype):
         """
         Set-up our state. This is called
+
+        :param skype: Handle to Skype4Py instance
         """
         logger.debug("Tasks init")
+        self.skype = skype
         self.status_file = os.path.join(tempfile.gettempdir(), "sevabot-tasks.pickle")
         self.status = Status.load(self.status_file)
 
@@ -44,15 +47,19 @@ class TasksHandler(HandlerBase):
         """
         Status.write(self.status_file, self.status)
 
-    def handle(self, msg, status):
+    def handle_message(self, msg, status):
         """Override this method to customize a handler.
         """
+        logger.debug("Tasks handler got:" % msg.encode("utf-8"))
 
     def shutdown():
         """ Called when the module is reloaded.
 
-        Note: We are *not* guaranteed to be called when Sevabot process shutdowns.
+        ..note ::
+
+             We do *not* guaranteed to be call when Sevabot process shutdowns.
         """
+    logger.debug("Tasks handler shutdown")
 
 
 class Status:

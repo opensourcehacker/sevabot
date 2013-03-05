@@ -96,25 +96,30 @@ class CommandHandler(HandlerBase):
         command_name = words[0]
         command_args = words[1:]
 
+        # Check all stateful handlers
+        for handler in modules.get_message_handlers():
+            handler(msg, status)
+
+        # Beyond this point we process script commands only
         if not command_name.startswith('!'):
             return
 
         command_name = command_name[1:]
 
+        script_module = modules.get_script_module(command_name)
+
         if command_name in self.builtins:
             # Execute a built-in command
             logger.debug('Executing built-in command {}: {}'.format(command_name, command_args))
             self.builtins[command_name](command_args, msg, status)
-        elif modules.is_module(command_name):
+        elif script_module:
 
             # Execute a module asynchronously
-
             def callback(output):
                 msg.Chat.SendMessage(output)
 
-            modules.run_module(command_name, command_args, callback)
+            script_module.run(command_name, command_args, callback)
         else:
-
             msg.Chat.SendMessage("Don't know about command: !" + command_name)
 
     def builtin_reload(self, args, msg, status):
