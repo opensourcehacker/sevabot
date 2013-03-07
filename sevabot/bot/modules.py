@@ -146,11 +146,11 @@ def load_module(skype, name, path):
         return None
 
 
-def load_modules(skype):
+def load_modules(sevabot):
     """
     Scan all modules folders for executable scripts.
 
-    :param: Skype4Py instance
+    :param: Sevabot instance
     """
     for folder in settings.MODULE_PATHS:
         folder = os.path.abspath(folder)
@@ -160,7 +160,7 @@ def load_modules(skype):
             # Remove file extension
             body, ext = os.path.splitext(f)
 
-            module = load_module(skype, body, fpath)
+            module = load_module(sevabot.skype, body, fpath)
             if module:
                 logger.info("Discovered module %s: %s" % (body, fpath))
                 _modules[body] = module
