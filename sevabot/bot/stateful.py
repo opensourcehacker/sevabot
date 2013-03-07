@@ -13,7 +13,6 @@
 
 """
 
-
 class StatefulHandler:
     """
     Base class for stateful handlers.
@@ -47,3 +46,37 @@ class StatefulHandler:
              the process may terminate with SIGKILL.
 
         """
+
+    def register_callback(self, skype, event, callback):
+        """
+        Register any callable as a callback for a skype event.
+
+        Thin wrapper for RegisterEventHandler https://github.com/awahlig/skype4py/blob/master/Skype4Py/utils.py
+
+        :param skype: Skype4Py instance
+
+        :param event: Same as Event
+
+        :param callback: Same as Target
+
+        :return: Same as RegisterEventHandler
+        """
+
+        return skype.RegisterEventHandler(event, callback)
+
+    def unregister_callback(self, skype, event, callback):
+        """
+        Unregister a callback previously registered with register_callback.
+
+        Thin wrapper for UnregisterEventHandler https://github.com/awahlig/skype4py/blob/master/Skype4Py/utils.py
+
+        :param skype: Skype4Py instance
+
+        :param event: Same as Event
+
+        :param callback: Same as Target
+
+        :return: Same as UnregisterEventHandler
+        """
+
+        return skype.UnregisterEventHandler(event, callback)
