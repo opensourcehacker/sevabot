@@ -48,18 +48,18 @@ The bot can use any UNIX executables printing to stdout as commands
 All commands must be in one of *modules* folders of the bot. The bot comes with some built-in
 commands like ``ping``, but you can add your own custom commands by
 
-* Creating a new modules folder for your internal purposes - the name doesn't matter
+* There is a ``custom/`` folder where you can place your own modules
 
-* Put this folder to ``MODULES_PATHS`` in settings.py
+* Enable ``custom`` folder in settings.py
 
-* Create a a script in this folder. Example ``myscript.sh``::
+* Create a a script in ``custom`` folder. Example ``myscript.sh``::
 
     #!/bin/sh
     echo "Hello world from my sevabot command"
 
 * Add UNIX execution bit on the script using ``chmod u+x myscript.sh``
 
-* In Sevabot chat, type command  ``!reload`` to re-read ``scripts`` folder
+* In Sevabot chat, type command  ``!reload`` to relaod all scripts
 
 * Now you should see command ``!myscript`` in the command list
 
