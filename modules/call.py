@@ -15,6 +15,8 @@ from sevabot.utils import ensure_unicode
 
 logger = logging.getLogger('Call')
 
+logger.setLevel(logging.DEBUG)
+
 logger.debug('Call module level load import')
 
 HELP_TEXT = """Simple conference call hosting allows you to have bot host a conference call from the chat.
@@ -103,8 +105,7 @@ class CallHandler(StatefulSkypeHandler):
         """
         Show help message to the sender.
         """
-        sender = msg.Sender.Handle
-        self.skype.SendMessage(sender, HELP_TEXT)
+        msg.Chat.SendMessage(HELP_TEXT)
 
     def is_call_active(self, chat_name=None):
         """

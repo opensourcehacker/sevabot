@@ -34,6 +34,8 @@ You can type them into the sevabot group chat.
 
 * !tasks: A simple ah-hoc group task manager for virtual team sprints
 
+* !call: Conference call manager. Type ``!call help`` for more info.
+
 Creating custom commands
 ==============================
 
@@ -69,7 +71,12 @@ Stateful modules
 
 You can have Python modules which maintain their state and have
 full access to Skype4Py instance. These modules can e.g.
-perform timed background tasks with Skype.
+
+* Perform timed background tasks with Skype
+
+* Parse full Skype chat text, not just !commands
+
+Further info
 
 - `Stateful module interface is described here <https://github.com/opensourcehacker/sevabot/blob/dev/sevabot/bot/stateful.py>`_
 
