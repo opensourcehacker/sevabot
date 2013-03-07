@@ -70,7 +70,7 @@ def main(settings="settings.py", verbose=False, daemon=False):
         sys.exit("Could not load settings file: %s" % settings)
 
     # Config logging
-    level = getattr(logging, settings.LOG_LEVEL, "INFO")
+    level = getattr(logging, getattr(settings, "LOG_LEVEL", "INFO"), "INFO")
     logging.basicConfig(level=level, stream=sys.stdout, format=settings.LOG_FORMAT)
 
     # Setup logging file
