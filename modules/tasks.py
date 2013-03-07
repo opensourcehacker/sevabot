@@ -9,6 +9,8 @@
 
 from __future__ import unicode_literals
 
+import threading
+import time
 from datetime import datetime
 import os
 import logging
@@ -20,8 +22,12 @@ from sevabot.utils import ensure_unicode, get_chat_id
 
 logger = logging.getLogger("Tasks")
 
+# Set to debug only during dev
+logger.setLevel(logging.INFO)
+
 logger.debug("Tasks module level load import")
 
+# How long one can work on a task before we give a warning
 MAX_TASK_DURATION = 24*60*60
 
 HELP_TEXT = """!tasks is a noteboard where virtual team members can share info which tasks they are currently working on.
@@ -57,6 +63,7 @@ class TasksHandler(StatefulSkypeHandler):
         """Use `init` method to initialize a handler.
         """
         logger.debug("Tasks constructed")
+        self.timeout_notifier = JobTimeoutNotifier(self)
 
     def init(self, skype):
         """
@@ -75,6 +82,8 @@ class TasksHandler(StatefulSkypeHandler):
             "list tasks": self.list_tasks,
             "stop task": self.stop_task,
         }
+
+        self.start_timeout_notifier()
 
     def handle_message(self, msg, status):
         """Override this method to customize a handler.
@@ -107,16 +116,27 @@ class TasksHandler(StatefulSkypeHandler):
 
         return False
 
-    def shutdown():
+    def shutdown(self):
         """ Called when the module is reloaded.
         """
         logger.debug("Tasks handler shutdown")
+        self.stop_timeout_notifier()
 
     def save(self):
         """
         Persistent our state.
         """
         Status.write(self.status_file, self.status)
+
+    def start_timeout_notifier(self):
+        """
+        """
+        #self.notifier.start()
+
+    def stop_timeout_notifier(self):
+        """
+        """
+        #self.notifier.stop()
 
     def help(self, msg, status, desc, chat_id):
         """
@@ -171,6 +191,25 @@ class TasksHandler(StatefulSkypeHandler):
         self.save()
 
 
+class JobTimeoutNotifier(threading.Thread):
+
+    def __init__(self, tasks_handler):
+        self.running = False
+        self.tasks_handler = tasks_handler
+
+    def run(self):
+        """
+        """
+        while self.running:
+            time.sleep(3*60)
+            self.check_tasks()
+
+    def shutdown(self):
+        """
+        """
+        self.running = False
+
+
 class Status:
     """
     Stored pickled state of the tasks.
@@ -212,7 +251,7 @@ class Status:
 
     def get_tasks(self, chat_id):
         """
-        Get Chats of a particular job.
+        Get jobs of a particular chat.
         """
         if not chat_id in self.chats:
             # Skype username -> Task instance mappings
@@ -233,7 +272,8 @@ class Job:
         self.started = started
         self.desc = desc
         self.real_name = real_name
-
+        # Have we given timeout warning for this job
+        self.warned = False
 
 # The following has been
 # ripped off from https://github.com/imtapps/django-pretty-times/blob/master/pretty_times/pretty.py
