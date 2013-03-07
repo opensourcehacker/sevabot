@@ -29,8 +29,8 @@ class CommandHandler:
     """A handler for processing built-in commands and delegating messages to reloadable modules.
     """
 
-    def __init__(self, skype):
-        self.skype = skype
+    def __init__(self, sevabot):
+        self.sevabot = sevabot
         self.calls = {}
         self.cache_builtins()
 
@@ -50,6 +50,11 @@ class CommandHandler:
     def handle(self, msg, status):
         """Handle command messages.
         """
+
+        # If you are talking to yourself when testing
+        # Ignore non-sent messages (you get both SENDING and SENT events)
+        if status == "SENDING":
+            return
 
         # Check all stateful handlers
         for handler in modules.get_message_handlers():
@@ -103,5 +108,5 @@ class CommandHandler:
     def builtin_reload(self, args, msg, status):
         """Reload command modules.
         """
-        commands = modules.load_modules(self)
+        commands = modules.load_modules(self.sevabot)
         msg.Chat.SendMessage('Available commands: %s' % ', '.join(commands))

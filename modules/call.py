@@ -44,7 +44,7 @@ class CallHandler(StatefulSkypeHandler):
 
         logger.debug('Call handler constructed')
 
-    def init(self, skype):
+    def init(self, sevabot):
         """
         Set-up our state. This is called every time module is (re)loaded.
 
@@ -53,7 +53,7 @@ class CallHandler(StatefulSkypeHandler):
 
         logger.debug('Call handler init')
 
-        self.skype = skype
+        self.skype = sevabot.getSkype()
         self.calls = {}
 
         self.commands = {'help': self.help, 'start': self.start_call, 'end': self.end_call}
@@ -95,14 +95,12 @@ class CallHandler(StatefulSkypeHandler):
         """
         Called when the module is reloaded.
         """
-
         logger.debug('Call handler shutdown')
 
     def help(self, msg, status, args):
         """
         Show help message to the sender.
         """
-
         sender = msg.Sender.Handle
         self.skype.SendMessage(sender, HELP_TEXT)
 

@@ -44,7 +44,14 @@ class Sevabot:
         self.cacheChats()
 
         # XXX: Might need refactoring logic here how master handler is registered
-        self.handler = handlers.CommandHandler(self.skype)
+        self.handler = handlers.CommandHandler(self)
+
+    def getSkype(self):
+        """ Expose Skype to stateful modules.
+
+        :return: Active Skype4Py instance
+        """
+        return self.skype
 
     def cacheChats(self):
         """
@@ -90,7 +97,7 @@ class Sevabot:
 
         self.handler.handle(msg, status)
 
-    def sendMsg(self, chat, msg):
+    def sendMessage(self, chat, msg):
         """
         Send a message to chat.
 

@@ -29,11 +29,13 @@ class StatefulSkypeHandler:
     All exceptions slip through are caught and logged.
     """
 
-    def init(self, skype):
+    def init(self, sevabot):
         """
         Set-up our state. This is called every time module is (re)loaded.
 
-        :param skype: Handle to Skype4Py instance
+        You can get Skype4Py instance via ``sevabot.getSkype()``.
+
+        :param sevabot: Handle to Sevabot instance
         """
 
     def handle_message(self, msg, status):

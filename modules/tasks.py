@@ -9,8 +9,7 @@
 
 from __future__ import unicode_literals
 
-import threading
-import time
+from threading import Timer
 from datetime import datetime
 import os
 import logging
@@ -63,16 +62,15 @@ class TasksHandler(StatefulSkypeHandler):
         """Use `init` method to initialize a handler.
         """
         logger.debug("Tasks constructed")
-        self.timeout_notifier = JobTimeoutNotifier(self)
 
-    def init(self, skype):
+    def init(self, sevabot):
         """
         Set-up our state. This is called
 
         :param skype: Handle to Skype4Py instance
         """
         logger.debug("Tasks init")
-        self.skype = skype
+        self.sevabot = sevabot
         self.status_file = os.path.join(os.path.dirname(__file__), "sevabot-tasks.tmp")
         self.status = Status.read(self.status_file)
 
@@ -83,7 +81,7 @@ class TasksHandler(StatefulSkypeHandler):
             "stop task": self.stop_task,
         }
 
-        self.start_timeout_notifier()
+        self.reset_timeout_notifier()
 
     def handle_message(self, msg, status):
         """Override this method to customize a handler.
@@ -95,6 +93,7 @@ class TasksHandler(StatefulSkypeHandler):
 
         logger.debug("Tasks handler got: %s" % body)
 
+        # Parse the chat message to commanding part and arguments
         words = body.split(" ")
         lower = body.lower()
 
@@ -109,6 +108,7 @@ class TasksHandler(StatefulSkypeHandler):
 
         chat_id = get_chat_id(msg.Chat)
 
+        # Check if we match any of our commands
         for name, cmd in self.commands.items():
             if lower.startswith(name):
                 cmd(msg, status, desc, chat_id)
@@ -119,7 +119,7 @@ class TasksHandler(StatefulSkypeHandler):
     def shutdown(self):
         """ Called when the module is reloaded.
         """
-        logger.debug("Tasks handler shutdown")
+        logger.debug("Tasks shutdown")
         self.stop_timeout_notifier()
 
     def save(self):
@@ -128,26 +128,64 @@ class TasksHandler(StatefulSkypeHandler):
         """
         Status.write(self.status_file, self.status)
 
-    def start_timeout_notifier(self):
+    def reset_timeout_notifier(self):
         """
+        Check every minute if there are overdue jobs
         """
-        #self.notifier.start()
+        self.notifier = Timer(60.0, self.check_overdue_jobs)
+        self.notifier.daemon = True  # Make sure CTRL+C works and does not leave timer blocking it
+        self.notifier.start()
 
     def stop_timeout_notifier(self):
         """
         """
-        #self.notifier.stop()
+        self.notifier.cancel()
 
     def help(self, msg, status, desc, chat_id):
         """
+        Print help text to chat.
         """
 
         # Make sure we don't trigger ourselves with the help text
         if not desc:
             msg.Chat.SendMessage(HELP_TEXT)
 
+    def warn_overdue(self, chat_id, job):
+        """
+        Generate overdue warning.
+        """
+        self.sevabot.sendMessage(chat_id, "Task hanging: %s started working on %s, %s" % (job.real_name, job.desc, pretty_time_delta(job.started)))
+        job.warned = True
+
+    def check_overdue_jobs(self):
+        """
+        Timer callback to go through jobs which might be not going forward.
+        """
+
+        found = False
+
+        logger.debug("Running overdue check")
+
+        now = datetime.now()
+
+        for chat_id, chat in self.status.chats.items():
+            for job in chat.values():
+                if (now - job.started).total_seconds() > MAX_TASK_DURATION and not job.warned:
+                    found = True
+                    self.warn_overdue(chat_id, job)
+
+        if found:
+            logger.debug("Found overdue jobs")
+            self.save()
+        else:
+            logger.debug("Did not found overdue jobs")
+
+        # http://www.youtube.com/watch?v=ZEQydmaPjF0
+        self.reset_timeout_notifier()
+
     def start_task(self, msg, status, desc, chat_id):
         """
+        Command handler.
         """
 
         if desc.strip() == "":
@@ -167,6 +205,7 @@ class TasksHandler(StatefulSkypeHandler):
 
     def list_tasks(self, msg, status, desc, chat_id):
         """
+        Command handler.
         """
 
         jobs = self.status.get_tasks(chat_id).values()
@@ -179,6 +218,7 @@ class TasksHandler(StatefulSkypeHandler):
 
     def stop_task(self, msg, status, desc, chat_id):
         """
+        Command handler.
         """
         tasks = self.status.get_tasks(chat_id)
         if msg.Sender.Handle in tasks:
@@ -189,25 +229,6 @@ class TasksHandler(StatefulSkypeHandler):
             msg.Chat.SendMessage("%s had no active task" % msg.Sender.FullName)
 
         self.save()
-
-
-class JobTimeoutNotifier(threading.Thread):
-
-    def __init__(self, tasks_handler):
-        self.running = False
-        self.tasks_handler = tasks_handler
-
-    def run(self):
-        """
-        """
-        while self.running:
-            time.sleep(3*60)
-            self.check_tasks()
-
-    def shutdown(self):
-        """
-        """
-        self.running = False
 
 
 class Status:

@@ -57,3 +57,4 @@ def get_chat_id(chat):
     m = hashlib.md5()
     m.update(chat.Name)
     return m.hexdigest()
+

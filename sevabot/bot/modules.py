@@ -131,7 +131,7 @@ class StatefulModule:
         return self.handler.handle_message(msg, status)
 
 
-def load_module(skype, name, path):
+def load_module(sevabot, name, path):
     """
     Load a module by name.
 
@@ -139,7 +139,7 @@ def load_module(skype, name, path):
     """
 
     if StatefulModule.is_valid(path):
-        return StatefulModule(skype, name, path)
+        return StatefulModule(sevabot, name, path)
     elif UNIXScriptModule.is_valid(path):
         return UNIXScriptModule(name, path)
     else:
@@ -152,6 +152,9 @@ def load_modules(sevabot):
 
     :param: Sevabot instance
     """
+
+    unload_modules()
+
     for folder in settings.MODULE_PATHS:
         folder = os.path.abspath(folder)
         for f in os.listdir(folder):
@@ -160,7 +163,7 @@ def load_modules(sevabot):
             # Remove file extension
             body, ext = os.path.splitext(f)
 
-            module = load_module(sevabot.skype, body, fpath)
+            module = load_module(sevabot, body, fpath)
             if module:
                 logger.info("Discovered module %s: %s" % (body, fpath))
                 _modules[body] = module
