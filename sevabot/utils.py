@@ -3,6 +3,8 @@
     Helper functions
 
 """
+
+import hashlib
 import logging
 
 logger = logging.getLogger("sevabot")
@@ -40,3 +42,18 @@ def fail_safe(func):
             return False
 
     return closure
+
+
+def get_chat_id(chat):
+    """
+    Get unique internal persistent id of the chat object.
+
+    All ids are URL safe.
+
+    This is the same id as in the web interface.
+
+    :param chat: Skype4Py.chat.Chat instance
+    """
+    m = hashlib.md5()
+    m.update(chat.Name)
+    return m.hexdigest()

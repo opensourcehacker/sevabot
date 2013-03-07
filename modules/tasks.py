@@ -15,8 +15,8 @@ import logging
 import pickle
 from collections import OrderedDict
 
-from sevabot.bot.stateful import StatefulHandler
-from sevabot.utils import ensure_unicode
+from sevabot.bot.stateful import StatefulSkypeHandler
+from sevabot.utils import ensure_unicode, get_chat_id
 
 logger = logging.getLogger("Tasks")
 
@@ -24,29 +24,31 @@ logger.debug("Tasks module level load import")
 
 MAX_TASK_DURATION = 24*60*60
 
-HELP_TEXT = """Simple Skype task manager allows you to leave notes to team members on which tasks you are working on.
+HELP_TEXT = """!tasks is a noteboard where virtual team members can share info which tasks they are currently working on.
 
-Commands:
+Commands
+------------------------------
 
 !tasks: This help text
 
-tasks-start: Start working on a task. When you started is recorded. Example:
+Start task: You start working on a task. When you started is recorded. Example:
 
-    tasks-start I am now working on new Sevabot module interface
+    start task I am now working on new Sevabot module interface
 
-tasks-stop: Stop working on the current task. Example:
+Stop task: Stop working on the current task. Example:
 
-    tasks-stop
+    stop task
 
-tasks-list: List all tasks an people working on them. Example:
+List tasks: List all tasks an people working on them. Example:
 
-    tasks-list
+    list tasks
 
-Sevabot will report and auto-close any tasks lasting more than 24 hours.
+Task lists are chat specific and the list is secure to the members of the chat.
+All commands are case-insensitive.
 """
 
 
-class TasksHandler(StatefulHandler):
+class TasksHandler(StatefulSkypeHandler):
     """
     Skype message handler class for the task manager.
     """
@@ -69,9 +71,9 @@ class TasksHandler(StatefulHandler):
 
         self.commands = {
             "!tasks": self.help,
-            "tasks-start": self.start_task,
-            "tasks-list": self.list_tasks,
-            "tasks-stop": self.stop_task,
+            "start task": self.start_task,
+            "list tasks": self.list_tasks,
+            "stop task": self.stop_task,
         }
 
     def handle_message(self, msg, status):
@@ -85,15 +87,22 @@ class TasksHandler(StatefulHandler):
         logger.debug("Tasks handler got: %s" % body)
 
         words = body.split(" ")
+        lower = body.lower()
 
         if len(words) == 0:
             return False
 
-        desc = " ".join(words[1:])
+        # Parse argument for two part command names
+        if len(words) >= 2:
+            desc = " ".join(words[2:])
+        else:
+            desc = None
+
+        chat_id = get_chat_id(msg.Chat)
 
         for name, cmd in self.commands.items():
-            if name == words[0]:
-                cmd(msg, status, desc)
+            if lower.startswith(name):
+                cmd(msg, status, desc, chat_id)
                 return True
 
         return False
@@ -109,12 +118,15 @@ class TasksHandler(StatefulHandler):
         """
         Status.write(self.status_file, self.status)
 
-    def help(self, msg, status, desc):
+    def help(self, msg, status, desc, chat_id):
         """
         """
-        msg.Chat.SendMessage(HELP_TEXT)
 
-    def start_task(self, msg, status, desc):
+        # Make sure we don't trigger ourselves with the help text
+        if not desc:
+            msg.Chat.SendMessage(HELP_TEXT)
+
+    def start_task(self, msg, status, desc, chat_id):
         """
         """
 
@@ -122,28 +134,36 @@ class TasksHandler(StatefulHandler):
             msg.Chat.SendMessage("Please give task description also")
             return
 
+        tasks = self.status.get_tasks(chat_id)
+        existing_job = tasks.get(msg.Sender.Handle, None)
+        if existing_job:
+            msg.Chat.SendMessage("Stopped existing task %s" % existing_job.desc)
+
         job = Job(msg.Sender.FullName, datetime.now(), desc)
-        self.status.tasks[msg.Sender.Handle] = job
+        tasks = self.status.get_tasks(chat_id)
+        tasks[msg.Sender.Handle] = job
         self.save()
-        msg.Chat.SendMessage("%s started working on %s at" % (job.real_name, job.desc))
+        msg.Chat.SendMessage("%s started working on %s." % (job.real_name, job.desc))
 
-    def list_tasks(self, msg, status, desc):
+    def list_tasks(self, msg, status, desc, chat_id):
         """
         """
 
-        jobs = self.status.tasks.values()
+        jobs = self.status.get_tasks(chat_id).values()
+
         if len(jobs) == 0:
             msg.Chat.SendMessage("No active tasks for anybody")
 
         for job in jobs:
             msg.Chat.SendMessage("%s started working on %s, %s" % (job.real_name, job.desc, pretty_time_delta(job.started)))
 
-    def stop_task(self, msg, status, desc):
+    def stop_task(self, msg, status, desc, chat_id):
         """
         """
-        if msg.Sender.Handle in self.status.tasks:
-            job = self.status.tasks[msg.Sender.Handle]
-            del self.status.tasks[msg.Sender.Handle]
+        tasks = self.status.get_tasks(chat_id)
+        if msg.Sender.Handle in tasks:
+            job = tasks[msg.Sender.Handle]
+            del tasks[msg.Sender.Handle]
             msg.Chat.SendMessage("%s finished" % job.desc)
         else:
             msg.Chat.SendMessage("%s had no active task" % msg.Sender.FullName)
@@ -159,8 +179,8 @@ class Status:
     """
 
     def __init__(self):
-        # Skype username -> Task instance mappings
-        self.tasks = OrderedDict()
+        # Chat id -> OrderedDict() of jobs mappings
+        self.chats = dict()
 
     @classmethod
     def read(cls, path):
@@ -189,6 +209,16 @@ class Status:
         f = open(path, "wb")
         pickle.dump(status, f)
         f.close()
+
+    def get_tasks(self, chat_id):
+        """
+        Get Chats of a particular job.
+        """
+        if not chat_id in self.chats:
+            # Skype username -> Task instance mappings
+            self.chats[chat_id] = OrderedDict()
+
+        return self.chats[chat_id]
 
 
 class Job:

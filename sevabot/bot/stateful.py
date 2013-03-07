@@ -4,6 +4,11 @@
 
     All stateful Python modules
 
+    - Get Skype4Py SKype instance on init - have full control over Skype and
+      thus are not limited to !command handlers
+
+    - Reside in the some modules/ folder as UNIX script modules
+
     - Have .py extension and be valid Python 2.7 modules
 
     - Have #!/sevabot magic string at the head of the file
@@ -11,10 +16,13 @@
     - Exports Python attribute *sevabot_handler* which is an instance of the class
       as described below
 
+    Please note that in the future we might have different chat backends (GTalk)
+    and thus have a same-same-but-different stateful handlers.
+
 """
 
 
-class StatefulHandler:
+class StatefulSkypeHandler:
     """
     Base class for stateful handlers.
 
@@ -40,6 +48,12 @@ class StatefulHandler:
 
     def shutdown():
         """ Called when the module is reloaded.
+
+        In ``shutdown()`` you must
+
+        * Stop all created threads
+
+        * Unregister all event handlers
 
         ..note ::
 

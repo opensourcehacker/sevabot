@@ -6,17 +6,16 @@ import logging
 import hashlib
 import time
 from collections import OrderedDict
-import Skype4Py
-from inspect import getmembers, isclass, ismethod
+from inspect import getmembers, isclass
 
-from sevabot.bot import modules
+import Skype4Py
+
 from sevabot.bot import handlers
-try:
-    from sevabot.bot import custom_handlers
-except ImportError:
-    custom_handlers = None
+from sevabot.utils import get_chat_id
+
 
 logger = logging.getLogger("sevabot")
+
 
 class Sevabot:
     """
@@ -43,7 +42,9 @@ class Sevabot:
         self.skype.OnMessageStatus = self.handleMessages
 
         self.cacheChats()
-        self.cacheHandlers()
+
+        # XXX: Might need refactoring logic here how master handler is registered
+        self.handler = handlers.CommandHandler(self.skype)
 
     def cacheChats(self):
         """
@@ -66,31 +67,8 @@ class Sevabot:
 
         for chat in chats:
             # Encode ids in b64 so they are easier to pass in URLs
-            m = hashlib.md5()
-            m.update(chat.Name)
-            self.chats[m.hexdigest()] = chat
-
-    def cacheHandlers(self):
-        """
-        Scan all defined handlers.
-        """
-
-        def collect_handlers(module):
-
-            def wanted(member):
-                return (isclass(member) and
-                        issubclass(member, handlers.HandlerBase) and
-                        member.__name__.endswith('Handler'))
-
-            m = {}
-            for name, obj in getmembers(module, wanted):
-                m[name] = obj(self.skype)
-                m[name].init()
-            return m
-
-        self.handlers = collect_handlers(handlers)
-        if custom_handlers:
-            self.handlers.update(collect_handlers(custom_handlers))
+            chat_id = get_chat_id(chat)
+            self.chats[chat_id] = chat
 
     def getOpenChats(self):
         """
@@ -107,12 +85,10 @@ class Sevabot:
         Handle incoming messages.
         """
 
-        logger.debug("%s - %s - %s: %s" % (status, msg.Chat.FriendlyName,
-                                           msg.FromHandle, msg.Body))
+        logger.debug("Incoming %s - %s - %s: %s" % (status, msg.Chat.FriendlyName,
+                                                    msg.FromHandle, msg.Body))
 
-        if status in ["RECEIVED", "SENT"] and msg.Body:
-            for handler in self.handlers.values():
-                handler.handle(msg, status)
+        self.handler.handle(msg, status)
 
     def sendMsg(self, chat, msg):
         """
