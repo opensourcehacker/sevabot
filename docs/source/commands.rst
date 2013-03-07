@@ -76,11 +76,18 @@ full access to Skype4Py instance. These modules can e.g.
 
 * Parse full Skype chat text, not just !commands
 
+* Reach to calls, initiate calls
+
+* Send SMS, etc.
+
 Further info
 
 - `Stateful module interface is described here <https://github.com/opensourcehacker/sevabot/blob/dev/sevabot/bot/stateful.py>`_
 
 - `Example task manager module is here <https://github.com/opensourcehacker/sevabot/blob/dev/modules/tasks.py>`_
+
+- `Example conference call module is here <https://github.com/opensourcehacker/sevabot/blob/dev/modules/call.py>`_
+
 
 Running commands on remote servers
 ============================================================
