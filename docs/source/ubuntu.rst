@@ -247,6 +247,12 @@ Install Sevabot::
     . venv/bin/activate
     python setup.py develop
 
+Customize Sevabot settings::
+
+    cp settings.py.example settings.py
+
+Use your text editor to open ``settings.py`` and set your own password there.
+
 Start sevabot::
 
     . venv/bin/activate
