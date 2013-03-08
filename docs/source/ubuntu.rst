@@ -224,7 +224,10 @@ These instructions were written for Ubuntu 12.04 64-bit.
 
 .. note ::
 
-    Skype client application is 32-bit binary, thus we need to install ia32-libs.
+    These instructions were written for running 32-bit Skype client application in 64-bit Ubuntu.
+    Since writing the instructions the situation have changed and Skype has 64-bit application too.
+    If you have insight of how to install these packages correctly please open an issue on Github
+    and submit an updated recipe.
 
 Install requirements and Skype::
 
