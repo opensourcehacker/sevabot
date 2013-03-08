@@ -1,5 +1,5 @@
 ============================================================
-Installing and running on Ubuntu Server
+Installing and running on Ubuntu
 ============================================================
 
 .. contents:: :local:
@@ -9,6 +9,10 @@ Introduction
 
 There instructions are for setting up a headless (no monitor attached) Sevabot running in Skype
 on Ubuntu Server.
+
+.. note ::
+
+    For desktop installation instructions see below.
 
 Installing Skype and xvfb
 =============================
@@ -212,5 +216,48 @@ Set the avatar image through Skype UI.
 .. image:: /images/avatar.png
     :width: 500px
 
+Installing on Ubuntu desktop
+===============================
+
+You don't need Xvfb, VNC or fluxbox.
+These instructions were written for Ubuntu 12.04.
+
+Install requirements and Skype::
+
+    sudo -i
+
+    apt-get install xvfb fluxbox x11vnc dbus libasound2 libqt4-dbus libqt4-network libqtcore4 libqtgui4 libxss1 libpython2.7 libqt4-xml libaudio2 libmng1 fontconfig liblcms1 lib32stdc++6 lib32asound2 ia32-libs libc6-i386 lib32gcc1
+
+    apt-get install python-gobject-2 curl git
+
+    wget http://www.skype.com/go/getskype-linux-beta-ubuntu-64 -O skype-linux-beta.deb
+    # if there are other unresolved dependencies install missing packages using apt-get install and then install the skype deb package again
+    dpkg -i skype-linux-beta.deb
+
+    exit
+
+Start Skype normally, register a new user or you can also use your own Skype account for testing..
+
+Install Sevabot::
+
+    git clone git://github.com/opensourcehacker/sevabot.git
+    cd sevabot
+    curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
+    python virtualenv.py venv
+    . venv/bin/activate
+    python setup.py develop
+
+Start sevabot::
+
+    . venv/bin/activate
+    sevabot
+
+You should now see in your terminal::
+
+    Skype API connection established
+    getChats()
+     * Running on http://localhost:5000/
+
+Now enter with your browser to: `http://localhost:5000/ <http://localhost:5000/>`_.
 
 
