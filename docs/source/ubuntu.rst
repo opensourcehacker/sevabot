@@ -220,7 +220,11 @@ Installing on Ubuntu desktop
 ===============================
 
 You don't need Xvfb, VNC or fluxbox.
-These instructions were written for Ubuntu 12.04.
+These instructions were written for Ubuntu 12.04 64-bit.
+
+.. note ::
+
+    Skype client application is 32-bit binary, thus we need to install ia32-libs.
 
 Install requirements and Skype::
 
