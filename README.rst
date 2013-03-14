@@ -109,7 +109,7 @@ Community, support and development
 Commercial support
 ------------------------------------
 
-`Hire the developers <http://redinnovation.com/>`_
+Please feel free to sask commercial support from the `authors of the software <http://redinnovation.com/>`_
 
 License
 --------
@@ -119,7 +119,7 @@ BSD.
 Authors
 ----------
 
-`Mikko Ohtamaa <https://twitter.com/moo9000>`_ - concept, documentation and packing
+`Mikko Ohtamaa <https://twitter.com/moo9000>`_ - concept, documentation and maintainer
 
 `Pete Sevander <https://twitter.com/sevanteri>`_ - initial implementation
 
@@ -128,6 +128,8 @@ Authors
 `Brian Johnson <https://github.com/b2jrock>`_ - Jenkins
 
 `Antti Haapala <https://github.com/ztane>`_ - Python best pratice fixes
+
+`Naoto Yokoyama <https://github.com/builtinnya>`_ - message handler classfication, clean up
 
 `Felix Mueller <https://github.com/lixef>`_ - scripts
 

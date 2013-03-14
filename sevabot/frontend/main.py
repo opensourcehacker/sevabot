@@ -70,7 +70,9 @@ def main(settings="settings.py", verbose=False, daemon=False):
         sys.exit("Could not load settings file: %s" % settings)
 
     # Config logging
+
     level = getattr(logging, getattr(settings, "LOG_LEVEL", "INFO"), "INFO")
+
     logging.basicConfig(level=level, stream=sys.stdout, format=settings.LOG_FORMAT)
 
     # Setup logging file
@@ -83,9 +85,9 @@ def main(settings="settings.py", verbose=False, daemon=False):
         formatter = logging.Formatter(settings.LOG_FORMAT)
 
         hdlr = logging.handlers.RotatingFileHandler(log_path,
-            encoding="utf-8",
-            maxBytes=settings.LOG_ROTATE_MAX_SIZE,
-            backupCount=settings.LOG_ROTATE_COUNT)
+                                                    encoding="utf-8",
+                                                    maxBytes=settings.LOG_ROTATE_MAX_SIZE,
+                                                    backupCount=settings.LOG_ROTATE_COUNT)
 
         hdlr.setFormatter(formatter)
 
@@ -104,13 +106,13 @@ def main(settings="settings.py", verbose=False, daemon=False):
 
     from sevabot.bot import modules
 
-    modules.load_modules()
-
     sevabot = get_bot()
 
     logger.info("Skype API connection established")
 
     sevabot.start()
+
+    modules.load_modules(sevabot)
 
     api.configure(sevabot, settings, server)
 

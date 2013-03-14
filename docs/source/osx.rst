@@ -37,6 +37,11 @@ This will
 
 - Create a scripts under ``venv/bin/`` to run Sevabot
 
+.. note ::
+
+    If you want to live dangerously you can use git dev branch where
+    all the development happen.
+
 Set password and other settings
 ======================================
 

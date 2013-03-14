@@ -47,6 +47,11 @@ Get Sevabot::
 
     git clone git://github.com/opensourcehacker/sevabot.git
 
+.. note ::
+
+    If you want to live dangerously you can use git dev branch where
+    all the development happen.
+
 Start xvfb, fluxbox and Skype::
 
     sevabot/scripts/start-server.sh start

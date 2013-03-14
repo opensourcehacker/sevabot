@@ -3,5 +3,6 @@
 """
 A simple sample module with Skype smileys
 """
+import os
 
-print "Sevabot loves you (hug)"
+print "Sevabot loves %s (hug)" % os.environ["SKYPE_FULLNAME"]

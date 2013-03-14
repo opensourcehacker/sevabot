@@ -24,11 +24,19 @@ You can type them into the sevabot group chat.
 
 * !ping: Check the bot is alive
 
+* !sad: No woman, no cry
+
 * !weather: Get weather by a city from `openweathermap.org <http://openweathermap.org/>`_. Example: ``!weather Toholampi``
 
 * !timeout: Test timeouting commands
 
 * !soundcloud: Get your soundclound playlist (edit soundcloud.rb to make it work)
+
+* !dice: Throw a dice
+
+* !tasks: A simple ah-hoc group task manager for virtual team sprints
+
+* !call: Conference call manager. Type ``!call help`` for more info.
 
 Creating custom commands
 ==============================
@@ -42,20 +50,46 @@ The bot can use any UNIX executables printing to stdout as commands
 All commands must be in one of *modules* folders of the bot. The bot comes with some built-in
 commands like ``ping``, but you can add your own custom commands by
 
-* Creating a new modules folder for your internal purposes - the name doesn't matter
+* There is a ``custom/`` folder where you can place your own modules
 
-* Put this folder to ``MODULES_PATHS`` in settings.py
+* Enable ``custom`` folder in settings.py
 
-* Create a a script in this folder. Example ``myscript.sh``::
+* Create a a script in ``custom`` folder. Example ``myscript.sh``::
 
     #!/bin/sh
     echo "Hello world from my sevabot command"
 
 * Add UNIX execution bit on the script using ``chmod u+x myscript.sh``
 
-* In Sevabot chat, type command  ``!reload`` to re-read ``scripts`` folder
+* In Sevabot chat, type command  ``!reload`` to relaod all scripts
 
 * Now you should see command ``!myscript`` in the command list
+
+* The following environment variables are exposed to scripts ``SKYPE_USERNAME``, ``SKYPE_FULLNAME``
+  from the person who executed the command
+
+Stateful modules
+============================================================
+
+You can have Python modules which maintain their state and have
+full access to Skype4Py instance. These modules can e.g.
+
+* Perform timed background tasks with Skype
+
+* Parse full Skype chat text, not just !commands
+
+* Reach to calls, initiate calls
+
+* Send SMS, etc.
+
+Further info
+
+- `Stateful module interface is described here <https://github.com/opensourcehacker/sevabot/blob/dev/sevabot/bot/stateful.py>`_
+
+- `Example task manager module is here <https://github.com/opensourcehacker/sevabot/blob/dev/modules/tasks.py>`_
+
+- `Example conference call module is here <https://github.com/opensourcehacker/sevabot/blob/dev/modules/call.py>`_
+
 
 Running commands on remote servers
 ============================================================

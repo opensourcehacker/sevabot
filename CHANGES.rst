@@ -4,15 +4,17 @@ Changelog for Sevabot
 1.2 (unreleased)
 ----------------
 
-- Added DEBUG_HTTP setting [miohtama]
+- Addeds !tasks, !call and !dice example module [miohtama, builtinnya]
+
+- Added stateful, class-based, command handlers [miohtama, builtinnya]
+
+- Added more options to increase log level and DEBUG_HTTP setting [miohtama]
 
 - Reworking unsigned HTTP POST message hooks */zapier* and */message_unsigned* [miohtama]
 
-- Pass "no chat found" error to the HTTP client [miohtama]
-
 - Fixed Skype message unicode handling on OSX - caused Sevabot to ignore commands [miohtama]
 
-- Sevabot replies when it receives an unknown command [miohtama]
+- More robust error messages with webhooks and commands [miohtama]
 
 - Workaround hanging fluxbox problems [miohtama]
 

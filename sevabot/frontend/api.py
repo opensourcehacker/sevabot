@@ -7,7 +7,6 @@
 
 import json
 import logging
-from hashlib import md5
 
 from flask.views import View, request
 
@@ -56,7 +55,7 @@ class SendMessage(View):
                     if not msg:
                         return "Message payload missing", 500, {"Content-type": "text/plain"}
 
-                    self.sevabot.sendMsg(chat_id, msg)
+                    self.sevabot.sendMessage(chat_id, msg)
                     logger.info("Succefully send message %s" % msg)
                     return "OK"
             else:
