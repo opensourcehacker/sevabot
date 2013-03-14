@@ -1,7 +1,7 @@
 Changelog for Sevabot
 -------------------------
 
-1.2 (unreleased)
+1.2 (2013-03-14)
 ----------------
 
 - Addeds !tasks, !call and !dice example module [miohtama, builtinnya]
@@ -16,7 +16,7 @@ Changelog for Sevabot
 
 - More robust error messages with webhooks and commands [miohtama]
 
-- Workaround hanging fluxbox problems [miohtama]
+- Workaround hanging fluxbox problems in the startup script example [miohtama]
 
 1.1 (2013-02-01)
 ----------------
