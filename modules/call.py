@@ -15,7 +15,8 @@ from sevabot.utils import ensure_unicode
 
 logger = logging.getLogger('Call')
 
-logger.setLevel(logging.DEBUG)
+# Set to debug only during dev
+logger.setLevel(logging.INFO)
 
 logger.debug('Call module level load import')
 
