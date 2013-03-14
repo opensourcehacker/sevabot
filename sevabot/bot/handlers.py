@@ -1,16 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Message handler base class and a built-in command handler.
-
-Each subclass of `HandlerBase` whose name ends with `Handler` is
-instantiated and used as a message handler automatically.
-
-To add a custom handler, put a definition of a class which inherits
-`HandlerBase` in `custom_handlers.py`.
-You can override these two methods to customize a handler:
-    - init(self)
-    - handle(self, msg, status)
+Handler class for processing built-in commands and delegating messages.
 """
 from __future__ import absolute_import, division, unicode_literals
 
