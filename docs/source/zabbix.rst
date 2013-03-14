@@ -97,10 +97,15 @@ the agent is alive and well.
 ``agents.sh``::
 
     #!/bin/bash
+    #
 
-    # These might mess grep output below
-    export GREP_OPTIONS=
-    export GREP_COLOR=
+    # Detect if we have a public key available
+    ssh-add -L > /dev/null
+
+    if [[ $? != "0" ]] ; then
+        echo "Log-in as sevabot UNIX user and authorize SSH key"
+        exit 1
+    fi
 
     # Get list of hosts from SSH config file
     HOSTS=`grep "Host " ~/.ssh/config | awk '{print $2}'`
@@ -118,15 +123,33 @@ the agent is alive and well.
     echo "Agents: $HOSTS" | tr '\n' ' '
     echo
 
+
+    errors=0
+
     # On each server touch a file to change its timestamp
     # Zabbix monitoring system will detect this and
     # report the alert back to Skype chat via a hook
     for h in $HOSTS; do
-       ssh $h "touch -m zabbix_test"
+       ssh -o "PasswordAuthentication no" $h "touch -m zabbix_test"
+       if [[ $? != "0" ]] ; then
+        echo "Failed to SSH to $h as sevabot UNIX user"
+            errors=1
+       fi
     done
 
-    echo "Succesfully generated zabbix_test ping on all servers"
+    if [[ $errors == "0" ]] ; then
+        echo "Succesfully generated zabbix_test ping on all servers"
+    fi
 
+Example ``~/.ssh/config``::
+
+    Host xxx
+    User zabbix
+    Hostname xxx.twinapex.fi
+
+    Host yyy
+    User zabbix
+    Hostname yyy.twinapex.fi
 
 Please note that you need to set up bot `SSH keys <http://opensourcehacker.com/2012/10/24/ssh-key-and-passwordless-login-basics-for-developers/>`_ for this.
 

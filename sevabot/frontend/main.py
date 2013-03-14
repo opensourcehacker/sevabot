@@ -71,7 +71,7 @@ def main(settings="settings.py", verbose=False, daemon=False):
 
     # Config logging
 
-    level = getattr(logging, getattr(settings, "LOG_LEVEL", "INFO"), "INFO")
+    level = getattr(logging, getattr(settings, "LOG_LEVEL", "INFO").upper(), "INFO")
 
     logging.basicConfig(level=level, stream=sys.stdout, format=settings.LOG_FORMAT)
 

@@ -4,13 +4,9 @@ Changelog for Sevabot
 1.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fixed MD5 checksum check in triggers [miohtama]
 
-
-1.2.1 (2013-03-14)
-------------------
-
-- Nothing changed yet.
+- Allow write log level name in lowercase in settings.py [miohtama]
 
 
 1.2 (2013-03-14)
