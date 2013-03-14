@@ -4,7 +4,7 @@
 
     All stateful Python modules
 
-    - Get Skype4Py SKype instance on init - have full control over Skype and
+    - Get Skype4Py Skype instance on init - have full control over Skype and
       thus are not limited to !command handlers
 
     - Reside in the some modules/ folder as UNIX script modules
