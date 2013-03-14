@@ -8,6 +8,8 @@
 import json
 import logging
 
+from hashlib import md5
+
 from flask.views import View, request
 
 logger = logging.getLogger(__name__)
