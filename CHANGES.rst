@@ -1,8 +1,8 @@
 Changelog for Sevabot
 -------------------------
 
-1.3 (unreleased)
-----------------
+1.2.2 (2013-03-14)
+------------------
 
 - Fixed MD5 checksum check in triggers [miohtama]
 
