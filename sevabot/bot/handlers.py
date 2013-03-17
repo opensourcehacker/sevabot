@@ -47,6 +47,14 @@ class CommandHandler:
         if status == "SENDING":
             return
 
+        # Some Skype clients (iPad?)
+        # double reply to the chat messages with some sort of ACK by
+        # echoing them back
+        # and we need to ignore them as they are not real chat messages
+        # and not even displayed in chat UI
+        if status == "READ":
+            return
+
         # Check all stateful handlers
         for handler in modules.get_message_handlers():
             processed = handler(msg, status)
