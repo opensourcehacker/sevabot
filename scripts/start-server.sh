@@ -79,7 +79,7 @@ start() {
         else
             # this sleep prevents skype.Attach() from failing
             sleep 3
-            $seva --daemon
+            $seva --daemon > /dev/null
             echo "Started Sevabot web server process id $!"
         fi
     fi
