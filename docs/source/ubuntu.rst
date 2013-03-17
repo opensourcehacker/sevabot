@@ -156,6 +156,15 @@ Make sure Xvfb, Fluxbox, Skype and VNC is running as instructed above. Do::
     # Start Sevabot and make initial connect attempt to Skype
     SERVICES=sevabot ~/sevabot/scripts/start-server.sh start
 
+You may get some excessive terminal output from Xvfb and Fluxbox like::
+
+    Failed to read: session.screen0.titlebar.left
+    Setting default value
+    Failed to read: session.screen0.titlebar.right
+    Setting default value
+
+It's harmless. Please ignore it.
+
 Authorize the connection and tick *Remember* in VNC session
 
 .. image:: /images/authorize.png
@@ -220,7 +229,16 @@ Just access the Sevabot server by going with your web browser to::
 .. image:: /images/admin.png
     :width: 500px
 
-Running sevabot as service
+Restarting Sevabot
+====================================
+
+This should restart the full stack::
+
+    ssh skype@yourserver.example.com
+    cd sevabot
+    scripts/start-server.sh restart
+
+Running Sevabot as service
 ====================================
 
 Sevabot and all related services can be controller with ``scripts/start-server.sh``
