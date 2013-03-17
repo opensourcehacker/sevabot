@@ -220,6 +220,11 @@ Just access the Sevabot server by going with your web browser to::
 .. image:: /images/admin.png
     :width: 500px
 
+Troubleshooting
+====================================
+
+If you have problems see :doc:`Troubleshooting section for more information how to resolve them </troubleshooting>`.
+
 Running sevabot as service
 ====================================
 
