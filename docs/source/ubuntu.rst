@@ -8,7 +8,8 @@ Introduction
 ===============
 
 There instructions are for setting up a headless (no monitor attached) Sevabot running in Skype
-on Ubuntu Server.
+on Ubuntu Server. The instructions have tested on Ubuntu Version **12.04.1** unless mentioned
+otherwise.
 
 .. note ::
 
@@ -19,29 +20,43 @@ Installing Skype and xvfb
 
 Install Ubuntu dependencies needed to run headless Skype.
 
-We create UNIX user ``skype`` for running Sevabot.
+SSH into your server as a root or do ``sudo -i``.
 
-Under ``sudo -i``::
+Then install necessary software::
 
-    adduser skype # We must run Skype under non-root user
-    apt-get install xvfb fluxbox x11vnc dbus libasound2 libqt4-dbus libqt4-network libqtcore4 libqtgui4 libxss1 libpython2.7 libqt4-xml libaudio2 libmng1 fontconfig liblcms1 lib32stdc++6 lib32asound2 ia32-libs libc6-i386 lib32gcc1
+    apt-get update
+    apt-get install -y xvfb fluxbox x11vnc dbus libasound2 libqt4-dbus libqt4-network libqtcore4 libqtgui4 libxss1 libpython2.7 libqt4-xml libaudio2 libmng1 fontconfig liblcms1 lib32stdc++6 lib32asound2 ia32-libs libc6-i386 lib32gcc1 nano
     wget http://www.skype.com/go/getskype-linux-beta-ubuntu-64 -O skype-linux-beta.deb
     # if there are other unresolved dependencies install missing packages using apt-get install and then install the skype deb package again
     dpkg -i skype-linux-beta.deb
 
-Other packages and Python modules needed
-=============================================
+More packages and Python modules needed to::
 
-Under ``sudo -i``::
-
-    apt-get install python-gobject-2 curl git
+    apt-get install -y python-gobject-2
+    apt-get install -y curl git
 
 Setting up Skype and remote VNC
 ================================
 
-Login to your server, opening tunnel to VNC port (see below)::
+Now we will create the UNIX user ``skype`` running Sevabot and Skype the client application.
 
-    ssh -L 5900:localhost:5900 skype@yourserver.com
+.. note ::
+
+    In this phase of installation you will need a VNC remote desktop viewer software
+    on your local computer. On Linux you have XVNCViewer, on OSX you have Chicken of VNC
+    and on Windows you have TinyVNC.
+
+Under ``sudo -i``::
+
+    # Create a random password
+    openssl rand -base64 32  # Copy this output, write down and use in the input of the following command
+    adduser skype # We must run Skype under non-root user
+
+Exit from the current (root) terminal sessoin.
+
+Login to your server::
+
+    ssh skype@yourserver.example.com
 
 Get Sevabot::
 
@@ -50,94 +65,130 @@ Get Sevabot::
 .. note ::
 
     If you want to live dangerously you can use git dev branch where
-    all the development happen.
+    all the development happen. You can switch to this branch with "git checkout dev"
+    command in the sevabot folder.
 
 Start xvfb, fluxbox and Skype::
 
-    sevabot/scripts/start-server.sh start
+    # This will output some Xvfb warnings to the terminal for a while
+    SERVICES="xvfb fluxbox skype" ~/sevabot/scripts/start-server.sh start
 
 Start VNC server::
 
-    sevabot/scripts/start-vnc.sh start
+    # This will ask you for the password of VNC remote desktop session.
+    # Give a password and let it write the password file.
+    # Delete file ~/.x11vnc/password to reset the password
+    ~/sevabot/scripts/start-vnc.sh start
 
-On your local computer start vnviewer (vncviewer is for Linux, for other OS
-use any VNC capable remote desktop viewing software)
-This will connect VNC viewrer to tunneled 5900 port on
-the server so you can see the headless X desktop::
+On your **local computer** start the VNC viewing softare and connect the server::
 
-    vncviewer localhost
+    vncviewer yourserver.example.com  # Password as you give it above
 
 You see the remote desktop. Login to Skype for the first time.
 Make Skype to save your username and password. Create Skype
 account in this point if you don't have one for sevabot.
 
-.. image:: /images/vnc.png
+.. image:: /images/login.png
     :width: 500px
 
-Got to Skype's settings and set the following
+Now, in your **local** Skype, invite the bot as your friend. Then accept the friend request.
 
-- no chat history
-- only people on my list can write me
-- only people on my list can call me
+.. image:: /images/invite.png
+    :width: 500px
 
-Installing sevabot
+.. note ::
+
+    It is important to add one Skype buddy for your Sevabot instance in this point,
+    so don't forget to do this step.
+
+Nowm, in Sevabot go to Skype's settings and set the following
+
+- No chat history
+
+- Only people on my list can write me
+
+- Only people on my list can call me
+
+.. image:: /images/settings.png
+    :width: 500px
+
+Installing Sevabot
 ===================
+
+When Skype is up and running on your server, you can attach Sevabot into it.
 
 Sevabot is deployed as `Python virtualenv installation <http://opensourcehacker.com/2012/09/16/recommended-way-for-sudo-free-installation-of-python-software-with-virtualenv/>`_.
 
-Install ``sevabot`` using `virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
+Login to your server as ``skype`` user over SSH::
+
+    ssh skype@yourserver.example.com
+
+Deploy ``sevabot``, as checked out from Github earlier, using `Python virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
     cd sevabot
     curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
     python virtualenv.py venv
-    source venv/bin/activate
+    . venv/bin/activate
     python setup.py develop
 
 This will
 
-- Pull all Python package dependencies from *pypi.python.org*
+- Pull all Python package dependencies from `pypi.python.org <http://pypi.python.org>`_ package service
 
-- Create a scripts under ``venv/bin/`` to run Sevabot
+- Create Sevabot launch scripts under ``~/sevabot/venv/bin/``
 
-Set password and other settings
-======================================
-
-Customize Sevabot settings::
+Set password and customize other Sevabot settings by creating and editing editing ``settings.py``::
 
     # Create a copy of settings.py
     cd ~/sevabot
     cp settings.py.example settings.py
+    nano settings.py
 
-Setup your Skype admin username and HTTP interface password by editing ``settings.py``.
+In ``settings.py`` set
+
+- ``SHARED_SECRET``: web interface password
+
+- ``HTTP_HOST``: Public IP address you want Sevabot's web interface listen to (on Ubuntu you can figure this out using ``ipconfig command)
+
+We need one more thing and that's accepting Skype dialog for Sevabot control in VNC session.
+Make sure Xvfb, Fluxbox, Skype and VNC is running as instructed above. Do::
+
+    # Start Sevabot and make initial connect attempt to Skype
+    SERVICES=sevabot ~/sevabot/scripts/start-server.sh start
+
+Authorize the connection and tick *Remember* in VNC session
+
+.. image:: /images/authorize.png
+    :width: 500px
 
 Running sevabot
 =================
 
-Make sure headless Skype is running on the computer using the bot username (see above).
+To start the Sevabot do::
 
-Create a group chat where you indent to use Sevabot.
+    # Following will restart Xvnx, Fluxbox, Skype and Sevabot
+    ~/sevabot/scripts/start-server.sh restart
 
-Invite the Skype user to the Skype chat where you indent to run the bot.
+The last line you see should be something like::
 
-Skype desktop app (in VNC) will now ask if Skype4Py should be allowed. **Click on Remember and Allow.**
+    2013-03-17 18:45:16,270 - werkzeug - INFO -  * Running on http://123.123.123.123:5000/
 
-Activate Python virtualenv proviving ``sevabot`` command::
+.. note ::
 
-    cd ~/sevabot
-    . venv/bin/activate
+    Make sure your IP address is right in above
 
-To start the sevabot server in port 5000 type::
+From the log files see that Sevabot starts up::
 
-  sevabot
+    tail -f ~/sevabot/logs/sevabot.log
 
-You should now see in your terminal::
+It should end up reading like this::
 
-    Skype API connection established
-    getChats()
-     * Running on http://localhost:5000/
+    2013-03-17 18:45:16,262 - sevabot - INFO - Discovered module weather: /home/skype/sevabot/modules/weather.py
 
 Test it
 ========
+
+Start chatting with your Sevabot instance with your *local* Skype.
 
 In Skype chat, type::
 
@@ -146,6 +197,11 @@ In Skype chat, type::
 Sevabot should respond to this message with Skype message::
 
     pong
+
+.. note ::
+
+    Sometimes Skype starts up slowly on the server and the initial messages are eaten by something.
+    If you don't get instant reply, wait one minute and type !ping again.
 
 Testing HTTP interface
 ========================
@@ -159,25 +215,26 @@ This interface offers
 
 Just access the Sevabot server by going with your web browser to::
 
-    http://example.com:5000
+    http://yourserver.example.com:5000
 
 .. image:: /images/admin.png
     :width: 500px
-
-If you run the bot on non-internet facing computer (desktop)
-you can tunnel HTTP interface to a public server::
-
-    ssh -gNR 5000:yourserver.com:5000 yourserver.com
-
-And then access the tunneled port::
-
-    http://localhost:5000
 
 Running sevabot as service
 ====================================
 
 Sevabot and all related services can be controller with ``scripts/start-server.sh``
-helper script::
+helper script. Services include
+
+* Xvfb
+
+* Fluxbox
+
+* Skype
+
+* Sevabot itself
+
+Example::
 
     scripts/start-server.sh stop
     ...
