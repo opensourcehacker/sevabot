@@ -88,7 +88,7 @@ You see the remote desktop. Login to Skype for the first time.
 Make Skype to save your username and password. Create Skype
 account in this point if you don't have one for sevabot.
 
-.. image:: /images/login.png
+.. image:: /images/skype-login.png
     :width: 500px
 
 Now, in your **local** Skype, invite the bot as your friend. Then accept the friend request.
@@ -229,7 +229,12 @@ Just access the Sevabot server by going with your web browser to::
 .. image:: /images/admin.png
     :width: 500px
 
-Restarting Sevabot
+Troubleshooting
+====================================
+
+If you have problems see :doc:`Troubleshooting section for more information how to resolve them </troubleshooting>`.
+
+Running sevabot as service
 ====================================
 
 This should restart the full stack::
