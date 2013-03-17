@@ -18,7 +18,7 @@ README = open("README.rst", "rt").read() + "\n" + open("CHANGES.rst", "rt").read
 
 
 setup(name = "sevabot",
-    version='y.dev0',
+    version='1.2.4',
     description = "A Skype bot supporting integration with external services",
     long_description = README,
     author = "Mikko Ohtamaa",
