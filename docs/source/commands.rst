@@ -61,6 +61,8 @@ MODULE_PATHS = ["modules", "custom"]
     #!/bin/sh
     echo "Hello world from my sevabot command"
 
+* Trigger arguments are passed from the chat forward as command line arguments and you can read them in shell scripts normally as $1, $2, etc.
+
 * Add UNIX execution bit on the script using ``chmod u+x myscript.sh``
 
 * In Sevabot chat, type command  ``!reload`` to relaod all scripts
