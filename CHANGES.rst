@@ -4,8 +4,7 @@ Changelog for Sevabot
 1.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Reworked start up scripts and installation manual [miohtama]
 
 1.2.2 (2013-03-14)
 ------------------
