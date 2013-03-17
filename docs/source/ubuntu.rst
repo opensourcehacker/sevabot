@@ -88,7 +88,7 @@ You see the remote desktop. Login to Skype for the first time.
 Make Skype to save your username and password. Create Skype
 account in this point if you don't have one for sevabot.
 
-.. image:: /images/login.png
+.. image:: /images/skype-login.png
     :width: 500px
 
 Now, in your **local** Skype, invite the bot as your friend. Then accept the friend request.
