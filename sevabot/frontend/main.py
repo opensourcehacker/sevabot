@@ -67,6 +67,8 @@ def main(settings="settings.py", verbose=False, daemon=False):
     try:
         settings = imp.load_source("settings", settings)
     except Exception:
+        import traceback
+        traceback.print_exc()
         sys.exit("Could not load settings file: %s" % settings)
 
     # Config logging
