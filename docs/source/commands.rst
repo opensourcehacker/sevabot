@@ -52,7 +52,9 @@ commands like ``ping``, but you can add your own custom commands by
 
 * There is a ``custom/`` folder where you can place your own modules
 
-* Enable ``custom`` folder in settings.py
+* Enable ``custom`` folder in settings.py::
+
+MODULE_PATHS = ["modules", "custom"]
 
 * Create a a script in ``custom`` folder. Example ``myscript.sh``::
 

@@ -9,6 +9,9 @@ ADMINS = ["oulu"]
 #: Can be absolute path or relative to the current working directory
 MODULE_PATHS = ["modules"]
 
+# Enable this if you are developing your custom modules
+#MODULE_PATHS = ["modules", "custom"]
+
 #: How fast module script must finish
 TIMEOUT = 30
 
