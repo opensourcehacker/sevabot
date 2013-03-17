@@ -13,6 +13,21 @@ You can watch this log in real time with UNIX command::
 
     tail -f logs/sevabot.log
 
+To increase log level to max, edit ``settings.py`` and set::
+
+    LOG_LEVEL = "DEBUG"
+
+    DEBUG_HTTP = True
+
+This will dump everything + HTTP request to the log.
+
+Double messages
+======================
+
+Sevabot replies to all commands twice.
+
+Still no idea what could be causing this. Restarting everything helps.
+
 Segfaults
 ===========
 
