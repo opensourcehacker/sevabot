@@ -183,7 +183,7 @@ From the log files see that Sevabot starts up::
 
 It should end up reading like this::
 
-    2013-03-17 18:45:16,262 - sevabot - INFO - Discovered module weather: /home/skype/sevabot/modules/weather.py
+    Started Sevabot web server process
 
 Test it
 ========
