@@ -18,17 +18,25 @@ export DISPLAY=:$XSERVERNUM
 dnb=`dirname "$0"`
 
 start() {
-    "$dnb/start-server.sh" status
+    SERVICES='xvfb fluxbox skype' "$dnb/start-server.sh" status
     if [[ "$?" == '0' ]]; then
         echo "Starting x11vnc"
         if [[ `ps aux | grep "$DAEMON_USER" | grep "x11vnc -display :$XSERVERNUM" | grep -v grep | wc -l` == '0' ]]; then
-            x11vnc -display :$XSERVERNUM -bg -nopw -listen localhost -xkb
+
+            install -d ~/.x11vnc
+            if [[ ! -e ~/.x11vnc/passwd ]]
+            then
+                # Set the default password
+                x11vnc -storepasswd ~/.x11vnc/passwd
+            fi
+
+            x11vnc -display :$XSERVERNUM -bg -xkb -rfbauth ~/.x11vnc/passwd
         else
             echo "x11vnc is already running!"
         fi
-        #pid=`ps aux | grep skype | grep "x11vnc -display :1" | grep -v grep | awk '{ print $2; }'`
-        echo "	now use on your machine: ssh -L 5900:127.0.0.1:5900 'skype@`hostname`'"
-        echo "	and connect to your local port with vncviewer!"
+        echo "----------------------------------------------------------------------------------------"
+        echo "Now connect to this server from your local computer using VNC remote desktop viewer"
+        echo "----------------------------------------------------------------------------------------"
     else
         echo "The server doesn't run."
         echo 'Use "'"$dnb"'/start-server.sh" to start the server'
