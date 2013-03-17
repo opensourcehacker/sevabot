@@ -1,6 +1,12 @@
 Changelog for Sevabot
 -------------------------
 
+y (unreleased)
+--------------
+
+- Nothing changed yet.
+
+
 1.2.3 (2013-03-17)
 ------------------
 
