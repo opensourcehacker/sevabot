@@ -1,11 +1,10 @@
 Changelog for Sevabot
 -------------------------
 
-y (unreleased)
+1.2.4 (unreleased)
 --------------
 
-- Nothing changed yet.
-
+- Make sure the bot doesn't reply to messages twice if a funny Skype client/device is attached to a group chat [miohtama]
 
 1.2.3 (2013-03-17)
 ------------------
