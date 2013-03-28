@@ -119,7 +119,7 @@ BSD.
 Authors
 ----------
 
-`Mikko Ohtamaa <https://twitter.com/moo9000>`_ - concept, documentation and maintainer
+Mikko Ohtamaa (`blog <https://opensourcehacker.com>`_, `Facebook <https://www.facebook.com/?q=#/pages/Open-Source-Hacker/181710458567630>`_, `Twitter <https://twitter.com/moo9000>`_, `Google+ <https://plus.google.com/u/0/103323677227728078543/>`_) - concept, documentation and maintainer
 
 `Pete Sevander <https://twitter.com/sevanteri>`_ - initial implementation
 
