@@ -106,6 +106,10 @@ Community, support and development
 
 `See community information <https://sevabot-skype-bot.readthedocs.org/en/latest/development.html>`_
 
+Elsewhere
+
+* `Building Skype chat bots in Python <http://opensourcehacker.com/2013/03/28/building-chat-applications-and-robots-for-skype/>`_
+
 Commercial support
 ------------------------------------
 
