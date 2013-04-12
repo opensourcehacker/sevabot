@@ -27,7 +27,10 @@ def call_weather_api(location):
 
     request = urllib.urlopen(url % location)
 
-    payload = json.loads(request.read())
+    try:
+        payload = json.loads(request.read())
+    except ValueError:
+        sys.exit('Error: No data')
 
     if 'cod' in payload and payload['cod'] == '200':
         if 'list' in payload:
