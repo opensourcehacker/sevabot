@@ -4,7 +4,7 @@ Changelog for Sevabot
 1.2.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adding a check for a valid JSON response from the weather API in !weather [mpdavis] 
 
 
 1.2.4 (2013-03-17)
