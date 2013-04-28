@@ -26,7 +26,7 @@ class SendMessage(View):
 
     * chat
 
-    Other parameters are for compatibiltiy reasons only and will be removed in the future.
+    Other parameters are for compatibility reasons only and will be removed in the future.
 
     We validate only shared secret, not message signing.
     """
@@ -58,7 +58,7 @@ class SendMessage(View):
                         return "Message payload missing", 500, {"Content-type": "text/plain"}
 
                     self.sevabot.sendMessage(chat_id, msg)
-                    logger.info("Succefully send message %s" % msg)
+                    logger.info("Successfully sent message %s" % msg)
                     return "OK"
             else:
                 logger.error("Not enough parameters to send message (chat id missing)")
@@ -172,9 +172,9 @@ class JenkinsNotifier(SendMessage):
         try:
             payload = json.loads(request.form.keys()[0])
         except IndexError:
-            logger.error("Jenkins did not post good HTTP POST payload. Check the logs for further info.")
+            logger.error("Jenkins did not post a valid HTTP POST payload. Check the logs for further info.")
             logger.error(request.form.items())
-            return "Jenkings bad notification: Could not read HTTP POST data"
+            return "Jenkins bad notification: Could not read HTTP POST data"
 
         # Filter out completed status, lots of unneeded noise
         if payload['build']['phase'] != 'COMPLETED':
