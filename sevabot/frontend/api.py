@@ -168,6 +168,7 @@ class JenkinsNotifier(SendMessage):
     """
 
     def compose(self):
+        msg = None
 
         try:
             payload = json.loads(request.form.keys()[0])
