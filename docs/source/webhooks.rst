@@ -38,6 +38,7 @@ Here are some services and examples how to integrate Sevabot
    github
    subversion
    jenkins
+   teamcity
    zabbix
 
 
