@@ -23,6 +23,7 @@ Contents:
    ubuntu
    osx
    vagrant
+   windows
    commands
    webhooks
    troubleshooting
