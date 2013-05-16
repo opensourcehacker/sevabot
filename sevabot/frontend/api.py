@@ -152,12 +152,30 @@ class GitHubPostCommit(SendMessage):
 
         payload = json.loads(request.form["payload"])
 
-        msg = u"★ %s fresh commits 〜 %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
+        msg = u"(*) %s fresh commits - %s\n" % (payload["repository"]["name"], payload["repository"]["url"])
         for c in payload["commits"]:
-            msg += u"★ %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
+            msg += u"(*) %s: %s\n%s\n" % (c["author"]["name"], c["message"], c["url"])
 
         return msg
+		
+class GitHubPullRequest(SendMessage):
+    """
+    Handle post-commit hook from Github.
 
+    https://help.github.com/articles/post-receive-hooks/
+    """
+
+    def compose(self):
+
+        payload = json.loads(request.form["payload"])
+        
+        if payload["action"] == "opened":
+            msg = u"(*) %s new pull request %s from %s - %s\n" % (payload["repository"]["name"], payload["number"], payload["pull_request"]["user"]["login"], payload["pull_request"]["html_url"])
+        elif payload["action"] == "closed":
+            msg = u"(y) %s pull request %s merged by %s - %s\n" % (payload["repository"]["name"], payload["number"], payload["pull_request"]["merged_by"]["login"], payload["pull_request"]["html_url"])
+        else:
+            msg = u""
+        return msg
 
 class JenkinsNotifier(SendMessage):
 
@@ -221,7 +239,10 @@ def configure(sevabot, settings, server):
     server.add_url_rule('/msg/', view_func=SendMessageMD5.as_view(str('send_message_md5'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
 
     # rule for notifying on github commits
-    server.add_url_rule('/github-post-commit/<string:chat_id>/<string:shared_secret>/', view_func=GitHubPostCommit.as_view(str('send_message_github'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+    server.add_url_rule('/github-post-commit/<string:chat_id>/<string:shared_secret>/', view_func=GitHubPostCommit.as_view(str('send_message_github_1'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
+
+    # rule for notifying on github pull requests
+    server.add_url_rule('/github-pull-request/<string:chat_id>/<string:shared_secret>/', view_func=GitHubPullRequest.as_view(str('send_message_github_2'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
 
     server.add_url_rule('/jenkins-notifier/<string:chat_id>/<string:shared_secret>/', view_func=JenkinsNotifier.as_view(str('send_message_jenkins'), sevabot=sevabot, shared_secret=settings.SHARED_SECRET))
 
