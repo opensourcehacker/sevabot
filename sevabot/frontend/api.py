@@ -189,7 +189,7 @@ class JenkinsNotifier(SendMessage):
         msg = None
 
         try:
-            payload = json.loads(request.form.keys()[0])
+            payload = json.loads(request.data)
         except IndexError:
             logger.error("Jenkins did not post a valid HTTP POST payload. Check the logs for further info.")
             logger.error(request.form.items())
