@@ -187,14 +187,11 @@ class JenkinsNotifier(SendMessage):
 
     def compose(self):
         msg = None
+        payload = request.json
 
-        try:
-            payload = json.loads(request.data)
-        except IndexError:
+        if payload is None:
             logger.error("Jenkins did not post a valid HTTP POST payload. Check the logs for further info.")
-            logger.error(request.form.items())
             return "Jenkins bad notification: Could not read HTTP POST data"
-
         # Filter out completed status, lots of unneeded noise
         if payload['build']['phase'] != 'COMPLETED':
             if payload['build']['status'] == 'SUCCESS':
