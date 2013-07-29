@@ -21,6 +21,8 @@ Install the plugin as directed in the above wiki link.
 
 In Jenkins, for each build you want to send notifications for, under the 'Job Notifications' section, click 'Add Endpoint'.
 
+Select 'JSON' and 'HTTP' in the ''Format' and 'Protocol' drop-down menus, respectively.
+
 Enter your sevabot jenkins-notification endpoint, for example:
 http://sevabot.example.com:5000/jenkins-notifier/{your-channel-id}/{your-shared-secret}/
 

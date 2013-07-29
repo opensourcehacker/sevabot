@@ -1,10 +1,10 @@
 Changelog for Sevabot
 -------------------------
 
-1.2.5 (unreleased)
+1.2.5 (2013-07-29)
 ------------------
 
-- Nothing changed yet.
+- Updated Jenkins notification webhook to work with v1.5 of the Jenkins notification plugin [justnom]
 
 
 1.2.4 (2013-03-17)
