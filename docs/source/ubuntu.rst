@@ -52,7 +52,7 @@ Under ``sudo -i``::
     openssl rand -base64 32  # Copy this output, write down and use in the input of the following command
     adduser skype # We must run Skype under non-root user
 
-Exit from the current (root) terminal sessoin.
+Exit from the current (root) terminal session.
 
 Login to your server::
 
@@ -80,7 +80,7 @@ Start VNC server::
     # Delete file ~/.x11vnc/password to reset the password
     ~/sevabot/scripts/start-vnc.sh start
 
-On your **local computer** start the VNC viewing softare and connect the server::
+On your **local computer** start the VNC viewing software and connect the server::
 
     vncviewer yourserver.example.com  # Password as you give it above
 
@@ -101,7 +101,7 @@ Now, in your **local** Skype, invite the bot as your friend. Then accept the fri
     It is important to add one Skype buddy for your Sevabot instance in this point,
     so don't forget to do this step.
 
-Nowm, in Sevabot go to Skype's settings and set the following
+Now, in Sevabot go to Skype's settings and set the following:
 
 - No chat history
 
