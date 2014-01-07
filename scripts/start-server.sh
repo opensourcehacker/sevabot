@@ -65,7 +65,7 @@ start() {
         if [[ $? != '0' ]]; then
             sleep 3
             #  http://devforum.skype.com/t5/Audio-Video/bt-audio-service-open-connect-failed-Connection-refused-111/td-p/303
-            skype > /dev/null 2&>1 &
+            skype > /dev/null 2>&1 &
         else
             echo "skype already running"
         fi
