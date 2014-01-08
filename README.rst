@@ -1,9 +1,8 @@
 .. contents::
 
 
-.. note ::
 
-    Microsoft is in proceed to kill third party API for Skype. 
+Note: **Microsoft is in proceed to kill third party API for Skype.**
     
 `Change.org petition to stop Microsoft <http://www.change.org/en-CA/petitions/skype-microsoft-provide-continued-support-for-third-party-skype-utilities-that-have-become-mission-critical-to-skype-s-users>`_
     
