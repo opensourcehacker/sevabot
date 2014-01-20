@@ -15,10 +15,11 @@ fi
 
 export DISPLAY=:$XSERVERNUM
 
-dnb=`dirname "$0"`
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$DIR/../"
 
 start() {
-    SERVICES='xvfb fluxbox skype' "$dnb/start-server.sh" status
+    SERVICES='xvfb fluxbox skype' "scripts/start-server.sh" status
     if [[ "$?" == '0' ]]; then
         echo "Starting x11vnc"
         if [[ `ps aux | grep "$DAEMON_USER" | grep "x11vnc -display :$XSERVERNUM" | grep -v grep | wc -l` == '0' ]]; then
@@ -39,7 +40,7 @@ start() {
         echo "----------------------------------------------------------------------------------------"
     else
         echo "The server doesn't run."
-        echo 'Use "'"$dnb"'/start-server.sh" to start the server'
+        echo 'Use "'"$DIR"'/start-server.sh" to start the server'
     fi
 
 }
