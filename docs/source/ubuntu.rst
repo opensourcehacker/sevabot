@@ -126,10 +126,18 @@ Login to your server as ``skype`` user over SSH::
 Deploy ``sevabot``, as checked out from Github earlier, using `Python virtualenv <http://pypi.python.org/pypi/virtualenv/>`_::
 
     cd sevabot
+    virtualenv venv
+    . venv/bin/activate
+    python setup.py develop
+
+**ALTERNATIVE** on some older Ubuntus - do only if the virtualenv and pip installation above doesn't seem to work:
+
+    cd sevabot
     curl -L -o virtualenv.py https://raw.github.com/pypa/virtualenv/master/virtualenv.py
     python virtualenv.py venv
     . venv/bin/activate
-    python setup.py develop
+    . venv/bin/activate
+    
 
 This will
 
