@@ -50,6 +50,7 @@ class UNIXScriptModule:
         # Not sure if this unicode on all platforms by default
         username = ensure_unicode(msg.Sender.Handle)
         full_name = ensure_unicode(msg.Sender.FullName)
+        chat_name = ensure_unicode(msg.ChatName)
 
         #timeout(execute_module, name, args, callback, default=)
         def threaded_run():
@@ -60,6 +61,7 @@ class UNIXScriptModule:
             env = os.environ.copy()
             env["SKYPE_USERNAME"] = username.encode("utf-8")
             env["SKYPE_FULLNAME"] = full_name.encode("utf-8")
+            env["SKYPE_CHATNAME"] = chat_name.encode("utf-8")
 
             process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, env=env)
             out = process.communicate()[0]
